@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Waluta</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{includes/menu :: heder}"></div>
+    <div th:insert="~{includes/menu :: menu}"></div>
+
+    <div class="container">
+    <p th:text="'Dodaj walutę do '+${countryEn}"> </p>
+        <p ><img class="flag" th:src="'/images/flags/'+${countryPl}+'.png'"></p>
+    </div>
+    <div>
+        <form th:action="@{/currency}" method="post" th:object="${currency}">
+
+            <table class="table table-bordered">
+                <tr>
+                    <td>Cod</td>
+                    <td><input type="text" th:field="*{cod}" placeholder="cod waluty"></td>
+                </tr>
+                <tr>
+                    <td>Waluta</td>
+                    <td><input type="text" th:field="*{nameCurrency}" placeholder="Nazwa waluty"></td>
+                </tr>
+                <tr>
+                    <td>Drobne</td>
+                    <td><input type="text" th:field="*{change}" placeholder="Drobna waluta"></td>
+                </tr>
+                <tr>
+                    <td>Obiegowa/wymienna/nie wymienna</td>
+                    <td><input type="number" th:field="*{active}" placeholder="101/102/103"></td>
+                </tr>
+                <tr>
+                    <td>Data zmiany/wymiany waluty</td>
+                    <td><input type="text" th:field="*{dataExchange}" placeholder="Datwa wymiany waluty"></td>
+                </tr>
+                <tr>
+                    <td>Sary kod waluty</td>
+                    <td><input type="text" th:field="*{codOld}" placeholder="Stary kod waluty"></td>
+                </tr>
+                <tr>
+                    <td>Nazwa starej waluty</td>
+                    <td><input type="text" th:field="*{nameCurrencyOld}" placeholder="Nazwa starej waluty"></td>
+                </tr>
+                <tr>
+                    <td>Nazwa starych drobnych waluty</td>
+                    <td><input type="text" th:field="*{changeOld}" placeholder="Nazwa starych drobnych waluty"></td>
+                </tr>
+                <tr>
+                    <td>Przelicznik</td>
+                    <td><input type="text" th:field="*{converter}" placeholder="Przelicznik np 1=100"></td>
+                </tr>
+                <tr>
+                    <td>Do kiedy jest wymienna</td>
+                    <td><input type="text" th:field="*{untilWhenExchange}" placeholder="Do kiedy jest wymiena"></td>
+                </tr>
+                <tr>
+                    <td>Dodatkowy opis</td>
+                    <td>
+                        <textarea th:field="*{description}" placeholder="Dodatkowy opis"></textarea>
+                    </td>
+                </tr>
+            </table>
+
+                <input type="text" th:name="countryEn" th:value="${countryEn}" style="display: none">
+
+            <input class="btn btn-primary" type="submit" value="Dodaj">
+
+        </form>
+    </div>
+
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</body>
+</html>

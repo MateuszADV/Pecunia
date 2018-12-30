@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MENU</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<div th:fragment="menu">
+    <div>
+
+        <ul class="nav nav-pills">
+            <li role="presentation" class="active"><a href="/">Home</a></li>
+            <li role="presentation"><a href="#">Dodaj bankonoty</a></li>
+            <li role="presentation"><a href="#">Klienci</a></li>
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Państwo <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li role="presentation"><a href="/country">Dodaj państwo</a></li>
+                    <li role="presentation"><a href="/editCountry">Edytuj/dodaj walutę</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li role="presentation"><a href="#">Europa</a></li>
+                    <li role="presentation"><a href="#">Azja</a></li>
+                    <li role="presentation"><a href="#">Afryka</a></li>
+                    <li role="presentation"><a href="#">Ameryka Pł</a></li>
+                    <li role="presentation"><a href="#">Ameryka Pn</a></li>
+                    <li role="presentation"><a href="#">Australia</a></li>
+                </ul>
+            </li>
+            <li role="presentation"><a href="swagger-ui.html">Swagger</a></li>
+        </ul>
+    </div>
+</div>
+
+<div th:fragment="heder">
+    <div class="page-header">
+        <h1>Nagłówek Strony <small>Subtext for header</small></h1>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>
