@@ -20,8 +20,12 @@
     <div th:insert="~{includes/menu :: menu}"></div>
 
     <div class="container">
-    <p th:text="'Dodaj walutę do '+${countryEn}"> </p>
-        <p ><img class="flag" th:src="'/images/flags/'+${countryPl}+'.png'"></p>
+        <div>
+            <center>
+                <p th:text="'Dodaj walutę do '+${countryEn}"> </p>
+                <p ><img class="flag" th:src="'/images/flags/'+${countryPl}+'.png'"></p>
+            </center>
+        </div>
     </div>
     <div>
         <form th:action="@{/currency}" method="post" th:object="${currency}">
@@ -48,24 +52,12 @@
                     <td><input type="text" th:field="*{dataExchange}" placeholder="Datwa wymiany waluty"></td>
                 </tr>
                 <tr>
-                    <td>Sary kod waluty</td>
-                    <td><input type="text" th:field="*{codOld}" placeholder="Stary kod waluty"></td>
-                </tr>
-                <tr>
-                    <td>Nazwa starej waluty</td>
-                    <td><input type="text" th:field="*{nameCurrencyOld}" placeholder="Nazwa starej waluty"></td>
-                </tr>
-                <tr>
-                    <td>Nazwa starych drobnych waluty</td>
-                    <td><input type="text" th:field="*{changeOld}" placeholder="Nazwa starych drobnych waluty"></td>
+                    <td>Poprzednia waluta</td>
+                    <td><input type="text" th:field="*{currencyFrom}" placeholder="Poprzednia waluta"></td>
                 </tr>
                 <tr>
                     <td>Przelicznik</td>
                     <td><input type="text" th:field="*{converter}" placeholder="Przelicznik np 1=100"></td>
-                </tr>
-                <tr>
-                    <td>Do kiedy jest wymienna</td>
-                    <td><input type="text" th:field="*{untilWhenExchange}" placeholder="Do kiedy jest wymiena"></td>
                 </tr>
                 <tr>
                     <td>Dodatkowy opis</td>

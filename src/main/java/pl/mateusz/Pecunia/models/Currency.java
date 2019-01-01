@@ -22,18 +22,12 @@ public class Currency {
     @Column(name = "currency")
     private String nameCurrency;
     private String change;
-    private int active;
     @Column(name = "data_exchange")
     private String dataExchange;
-    @Column(name = "cod_old")
-    private String codOld;
-    @Column(name = "currency_old")
-    private String nameCurrencyOld;
-    @Column(name = "change_old")
-    private String changeOld;
+    @Column(name = "currency_from")
+    private String currencyFrom;
     private String converter;
-    @Column(name = "until_when_exchange")
-    private String untilWhenExchange;
+    private int active;
     private String description;
 
     @ManyToOne

@@ -27,7 +27,7 @@ public class CountryController {
     @GetMapping("/country")
     public String getCountry(ModelMap modelMap) {
         modelMap.addAttribute("country", new Country());
-        
+
         return "country";
     }
 

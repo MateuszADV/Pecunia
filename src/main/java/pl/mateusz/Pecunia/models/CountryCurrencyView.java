@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @ToString
 @Entity
 @Table(name = "v_currency_country")
-public class CountryCountryView {
+public class CountryCurrencyView {
 
     @Id
     private Long id;

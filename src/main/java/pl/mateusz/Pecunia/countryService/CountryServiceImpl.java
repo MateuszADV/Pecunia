@@ -1,15 +1,21 @@
 package pl.mateusz.Pecunia.countryService;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.Country;
-import pl.mateusz.Pecunia.models.CountryCountryView;
+import pl.mateusz.Pecunia.models.CountryCurrencyView;
 import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.dtos.CountryDtoList;
+import pl.mateusz.Pecunia.models.dtos.CountryViewDto;
+import pl.mateusz.Pecunia.models.forms.ContinentRequest;
+import pl.mateusz.Pecunia.models.forms.ContinentResponse;
+import pl.mateusz.Pecunia.models.forms.CountryFromContinent;
 import pl.mateusz.Pecunia.models.forms.CountryViewList;
+import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
-import pl.mateusz.Pecunia.models.repositories.CountryViewRepository;
+import pl.mateusz.Pecunia.models.repositories.CountryCurencyViewRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +23,18 @@ import java.util.List;
 @Service
 public class CountryServiceImpl implements CountryService {
 
-    private CountryViewRepository countryViewRepository;
+    private CountryCurencyViewRepository countryCurrencyViewRepository;
     private CountryRepository countryRepository;
 
     @Autowired
-    public CountryServiceImpl(CountryViewRepository countryViewRepository, CountryRepository countryRepository) {
-        this.countryViewRepository = countryViewRepository;
+    public CountryServiceImpl(CountryCurencyViewRepository countryViewRepository, CountryRepository countryRepository) {
+        this.countryCurrencyViewRepository = countryViewRepository;
         this.countryRepository = countryRepository;
     }
 
     @Override
     public CountryViewList countryViewList() {
-        List<CountryCountryView> countryCountryViews = countryViewRepository.findAll();
+        List<CountryCurrencyView> countryCountryViews = countryCurrencyViewRepository.findAll();
         CountryViewList countryViewList = new CountryViewList();
         countryViewList.setCountryList(countryCountryViews);
         return countryViewList;
@@ -47,5 +53,69 @@ public class CountryServiceImpl implements CountryService {
         countryDtoList.setCountryDtoList(countryDtos);
 
         return countryDtoList;
+    }
+
+    @Override
+    public ContinentResponse continentResponse() {
+        ContinentResponse continentResponse = new ContinentResponse();
+        List<CountryFromContinent> countryFromContinents = new ArrayList<>();
+
+        for (ContinentEnum continent : ContinentEnum.values()) {
+            countryFromContinents.add(new CountryFromContinent(continent.getNamePl(), countryViewDtos(continent.getNamePl())));
+        }
+        continentResponse.setContinents(countryFromContinents);
+
+        return continentResponse;
+    }
+
+    @Override
+    public ContinentResponse continentResponse(ContinentRequest request) {
+        ContinentResponse continentResponse = new ContinentResponse();
+        List<CountryFromContinent> countryFromContinents = new ArrayList<>();
+
+        for (ContinentEnum continent : continentActive(request)) {
+            countryFromContinents.add(new CountryFromContinent(continent.getNamePl(), countryViewDtos(continent.getNamePl())));
+        }
+        continentResponse.setContinents(countryFromContinents);
+
+        System.out.println(continentResponse);
+        return continentResponse;
+    }
+
+    private List<CountryViewDto> countryViewDtos(String continent) {
+        List<CountryCurrencyView> countryCurrencyViews = countryCurrencyViewRepository.findByContinent(continent);
+        List<CountryViewDto> countryViewDtos = new ArrayList<>();
+
+        for (CountryCurrencyView countryCurrencyView : countryCurrencyViews) {
+            countryViewDtos.add(new ModelMapper().map(countryCurrencyView, CountryViewDto.class));
+        }
+        return countryViewDtos;
+    }
+
+    private List<ContinentEnum> continentActive(ContinentRequest request) {
+        List<ContinentEnum> continentActive = new ArrayList<>();
+
+        if (BooleanUtils.isTrue(request.getEurope())) {
+            continentActive.add(ContinentEnum.EUROPE);
+        }
+        if (BooleanUtils.isTrue(request.getAfrica())) {
+            continentActive.add(ContinentEnum.AFRICA);
+        }
+        if (BooleanUtils.isTrue(request.getAsia())) {
+            continentActive.add(ContinentEnum.ASIA);
+        }
+        if (BooleanUtils.isTrue(request.getAustralia())) {
+            continentActive.add(ContinentEnum.AUSTRALIA_OCEANIA);
+        }
+        if (BooleanUtils.isTrue(request.getNorthAmerica())) {
+            continentActive.add(ContinentEnum.NORTH_AMERICA);
+        }
+        if (BooleanUtils.isTrue(request.getSouthAmerica())) {
+            continentActive.add(ContinentEnum.SOUTH_AMERICA);
+        }
+        if (BooleanUtils.isTrue(request.getAntarctica())) {
+            continentActive.add(ContinentEnum.ANTARCTICA);
+        }
+        return continentActive;
     }
 }

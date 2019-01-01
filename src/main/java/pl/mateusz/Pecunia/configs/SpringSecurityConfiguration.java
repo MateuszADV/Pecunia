@@ -15,6 +15,7 @@ public class SpringSecurityConfiguration  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+                //.antMatchers("/api/country/continent").permitAll()
                 .antMatchers("/*").hasAnyRole("ADMIN")
                 .and()
                 .formLogin()
@@ -24,6 +25,7 @@ public class SpringSecurityConfiguration  extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedPage("/error")
                 .and()
+                .csrf().disable()
                 .httpBasic();
     }
 
