@@ -48,7 +48,10 @@ public class CountryController {
     @GetMapping("/currency/{countryEn}")
     public String getCurrency(@PathVariable String countryEn, ModelMap modelMap) {
         modelMap.addAttribute("currency", new Currency());
-        Country country = countryRepository.findByCountryEn(countryEn);
+        Country country = countryRepository.findByCountryEnOrderById(countryEn);
+
+        modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(country.getId()));
+
         modelMap.addAttribute("countryEn", country.getCountryEn());
         modelMap.addAttribute("countryPl", country.getCountryPl().replace(" ", "_"));
 
@@ -59,12 +62,13 @@ public class CountryController {
     public String postCurrency(@ModelAttribute("currency") Currency currency,
                                @RequestParam(value = "countryEn") String countryEn,
                                ModelMap modelMap) {
-        Country country = countryRepository.findByCountryEn(countryEn);
+        Country country = countryRepository.findByCountryEnOrderById(countryEn);
         currency.setCountry(country);
         currencyRepository.save(currency);
         modelMap.addAttribute("countryEn", countryEn);
-
         modelMap.addAttribute("countryPl", country.getCountryPl().replace(" ", "_"));
+
+        modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(country.getId()));
         return "currency";
     }
 }

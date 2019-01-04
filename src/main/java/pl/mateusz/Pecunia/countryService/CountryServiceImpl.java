@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.CountryCurrencyView;
+import pl.mateusz.Pecunia.models.Currency;
 import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.dtos.CountryDtoList;
 import pl.mateusz.Pecunia.models.dtos.CountryViewDto;
+import pl.mateusz.Pecunia.models.dtos.CurrencyDto;
 import pl.mateusz.Pecunia.models.forms.ContinentRequest;
 import pl.mateusz.Pecunia.models.forms.ContinentResponse;
 import pl.mateusz.Pecunia.models.forms.CountryFromContinent;
@@ -16,6 +18,7 @@ import pl.mateusz.Pecunia.models.forms.CountryViewList;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CountryCurencyViewRepository;
+import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +28,13 @@ public class CountryServiceImpl implements CountryService {
 
     private CountryCurencyViewRepository countryCurrencyViewRepository;
     private CountryRepository countryRepository;
+    private CurrencyRepository currencyRepository;
 
     @Autowired
-    public CountryServiceImpl(CountryCurencyViewRepository countryViewRepository, CountryRepository countryRepository) {
-        this.countryCurrencyViewRepository = countryViewRepository;
+    public CountryServiceImpl(CountryCurencyViewRepository countryCurrencyViewRepository, CountryRepository countryRepository, CurrencyRepository currencyRepository) {
+        this.countryCurrencyViewRepository = countryCurrencyViewRepository;
         this.countryRepository = countryRepository;
+        this.currencyRepository = currencyRepository;
     }
 
     @Override
@@ -42,7 +47,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryDtoList countryDtoList() {
-        List<Country> countrys = countryRepository.findAll();
+        List<Country> countrys = countryRepository.findAllByOrderById();
         CountryDtoList countryDtoList = new CountryDtoList();
         List<CountryDto> countryDtos = new ArrayList<>();
 
@@ -117,5 +122,17 @@ public class CountryServiceImpl implements CountryService {
             continentActive.add(ContinentEnum.ANTARCTICA);
         }
         return continentActive;
+    }
+
+    @Override
+    public List<CurrencyDto> curencyFromCountryId(Long currencyId) {
+        List<Currency> currencys = currencyRepository.findByCountry_Id(currencyId);
+        List<CurrencyDto> currencyDtos = new ArrayList<>();
+
+        for (Currency currency : currencys) {
+            currencyDtos.add(new ModelMapper().map(currency, CurrencyDto.class));
+        }
+
+        return currencyDtos;
     }
 }

@@ -19,6 +19,7 @@
     <div th:insert="~{includes/menu :: heder}"></div>
     <div th:insert="~{includes/menu :: menu}"></div>
 
+
     <div class="container">
         <div>
             <center>
@@ -27,51 +28,81 @@
             </center>
         </div>
     </div>
-    <div>
-        <form th:action="@{/currency}" method="post" th:object="${currency}">
+    <div class="row">
+        <div class="col-md-4">
+            <form th:action="@{/currency}" method="post" th:object="${currency}">
 
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Cod</td>
+                        <td><input type="text" th:field="*{cod}" placeholder="cod waluty"></td>
+                    </tr>
+                    <tr>
+                        <td>Waluta</td>
+                        <td><input type="text" th:field="*{nameCurrency}" placeholder="Nazwa waluty"></td>
+                    </tr>
+                    <tr>
+                        <td>Drobne</td>
+                        <td><input type="text" th:field="*{change}" placeholder="Drobna waluta"></td>
+                    </tr>
+                    <tr>
+                        <td>Obiegowa/wymienna/nie wymienna</td>
+                        <td><input type="number" th:field="*{active}" placeholder="101/102/103"></td>
+                    </tr>
+                    <tr>
+                        <td>Data zmiany/wymiany waluty</td>
+                        <td><input type="text" th:field="*{dataExchange}" placeholder="Datwa wymiany waluty"></td>
+                    </tr>
+                    <tr>
+                        <td>Poprzednia waluta</td>
+                        <td><input type="text" th:field="*{currencyFrom}" placeholder="Poprzednia waluta"></td>
+                    </tr>
+                    <tr>
+                        <td>Przelicznik</td>
+                        <td><input type="text" th:field="*{converter}" placeholder="Przelicznik np 1=100"></td>
+                    </tr>
+                    <tr>
+                        <td>Dodatkowy opis</td>
+                        <td>
+                            <textarea th:field="*{description}" placeholder="Dodatkowy opis"></textarea>
+                        </td>
+                    </tr>
+                </table>
+
+                    <input type="text" th:name="countryEn" th:value="${countryEn}" style="display: none">
+
+                <input class="btn btn-primary" type="submit" value="Dodaj">
+
+            </form>
+        </div>
+        <div class="col-md-8">
             <table class="table table-bordered">
                 <tr>
-                    <td>Cod</td>
-                    <td><input type="text" th:field="*{cod}" placeholder="cod waluty"></td>
+                    <th>Id</th>
+                    <th>Cod</th>
+                    <th>Waluta</th>
+                    <th>Drobne</th>
+                    <th>KOB </th>
+                    <th>Data wymiany</th>
+                    <th>Poprzednia waluta</th>
+                    <th>przelicznik</th>
+                    <th>opis</th>
                 </tr>
-                <tr>
-                    <td>Waluta</td>
-                    <td><input type="text" th:field="*{nameCurrency}" placeholder="Nazwa waluty"></td>
-                </tr>
-                <tr>
-                    <td>Drobne</td>
-                    <td><input type="text" th:field="*{change}" placeholder="Drobna waluta"></td>
-                </tr>
-                <tr>
-                    <td>Obiegowa/wymienna/nie wymienna</td>
-                    <td><input type="number" th:field="*{active}" placeholder="101/102/103"></td>
-                </tr>
-                <tr>
-                    <td>Data zmiany/wymiany waluty</td>
-                    <td><input type="text" th:field="*{dataExchange}" placeholder="Datwa wymiany waluty"></td>
-                </tr>
-                <tr>
-                    <td>Poprzednia waluta</td>
-                    <td><input type="text" th:field="*{currencyFrom}" placeholder="Poprzednia waluta"></td>
-                </tr>
-                <tr>
-                    <td>Przelicznik</td>
-                    <td><input type="text" th:field="*{converter}" placeholder="Przelicznik np 1=100"></td>
-                </tr>
-                <tr>
-                    <td>Dodatkowy opis</td>
-                    <td>
-                        <textarea th:field="*{description}" placeholder="Dodatkowy opis"></textarea>
-                    </td>
-                </tr>
+                <th:block th:each="currency : ${currencyList}">
+                    <tr>
+                        <td th:text="${currency.id}"></td>
+                        <td th:text="${currency.cod}"></td>
+                        <td th:text="${currency.nameCurrency}"></td>
+                        <td th:text="${currency.change}"></td>
+                        <td th:text="${currency.active}"></td>
+                        <td th:text="${currency.dataExchange}"></td>
+                        <td th:text="${currency.currencyFrom}"></td>
+                        <td th:text="${currency.converter}"></td>
+                        <td th:text="${currency.description}"></td>
+                    </tr>
+                </th:block>
             </table>
-
-                <input type="text" th:name="countryEn" th:value="${countryEn}" style="display: none">
-
-            <input class="btn btn-primary" type="submit" value="Dodaj">
-
-        </form>
+        </div>
     </div>
 
 </div>
