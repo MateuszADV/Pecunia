@@ -1,5 +1,6 @@
 package pl.mateusz.Pecunia.controllers.viewController;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -7,8 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.Currency;
+import pl.mateusz.Pecunia.models.dtos.CountryDto;
+import pl.mateusz.Pecunia.models.dtos.CurrencyDto;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CountryController {
@@ -27,6 +34,15 @@ public class CountryController {
     @GetMapping("/country")
     public String getCountry(ModelMap modelMap) {
         modelMap.addAttribute("country", new Country());
+        List<Country> countries = countryRepository.findAllByOrderById();
+        List<CountryDto> countryDtoList = new ArrayList<>();
+
+        for (Country country : countries) {
+            country.setCountryPl(country.getCountryPl().replace(" ", "_"));
+            countryDtoList.add(new ModelMapper().map(country, CountryDto.class));
+        }
+
+        modelMap.addAttribute("countryList", countryDtoList);
 
         return "country";
     }
@@ -48,26 +64,38 @@ public class CountryController {
     @GetMapping("/currency/{countryEn}")
     public String getCurrency(@PathVariable String countryEn, ModelMap modelMap) {
         modelMap.addAttribute("currency", new Currency());
-        Country country = countryRepository.findByCountryEnOrderById(countryEn);
+        Country country = countryRepository.findByCountryEn(countryEn);
 
-        modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(country.getId()));
-
-        modelMap.addAttribute("countryEn", country.getCountryEn());
-        modelMap.addAttribute("countryPl", country.getCountryPl().replace(" ", "_"));
-
-        return "currency";
+        return currencyDate(modelMap, country);
     }
 
     @PostMapping("/currency")
     public String postCurrency(@ModelAttribute("currency") Currency currency,
                                @RequestParam(value = "countryEn") String countryEn,
                                ModelMap modelMap) {
-        Country country = countryRepository.findByCountryEnOrderById(countryEn);
+        Country country = countryRepository.findByCountryEn(countryEn);
         currency.setCountry(country);
         currencyRepository.save(currency);
-        modelMap.addAttribute("countryEn", countryEn);
-        modelMap.addAttribute("countryPl", country.getCountryPl().replace(" ", "_"));
 
+        return currencyDate(modelMap, country);
+    }
+
+    @GetMapping("/currencyEdit/{currencyId}")
+    public String postCurrency(@PathVariable Long currencyId, ModelMap modelMap) {
+        Optional<Currency> currency = currencyRepository.findById(currencyId);
+        Country country = currency.get().getCountry();
+        modelMap.addAttribute("currency", currency);
+
+        if (currency.isPresent()) {
+            CurrencyDto currencyDto = (new ModelMapper().map(currency.get(), CurrencyDto.class));
+        }
+
+        return currencyDate(modelMap, country);
+    }
+
+    private String currencyDate(ModelMap modelMap, Country country) {
+        modelMap.addAttribute("countryEn", country.getCountryEn());
+        modelMap.addAttribute("countryPl", country.getCountryPl().replace(" ", "_"));
         modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(country.getId()));
         return "currency";
     }

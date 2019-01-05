@@ -126,7 +126,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<CurrencyDto> curencyFromCountryId(Long currencyId) {
-        List<Currency> currencys = currencyRepository.findByCountry_Id(currencyId);
+        List<Currency> currencys = currencyRepository.findByCountry_IdOrderByDataExchangeDesc(currencyId);
         List<CurrencyDto> currencyDtos = new ArrayList<>();
 
         for (Currency currency : currencys) {

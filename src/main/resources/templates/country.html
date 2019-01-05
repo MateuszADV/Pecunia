@@ -12,6 +12,8 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+
 </head>
 <body>
 <div class="container">
@@ -19,29 +21,55 @@
     <div th:insert="~{includes/menu :: menu}"></div>
     <h2>Dodaj państwo</h2>
 
-    <div class="container">
-        <form th:action="@{/country}" method="post" th:object="${country}">
-            <table class="table table-bordered">
-                <tr>
-                    <td>Kontynent (region)</td>
-                    <td><input type="text" th:field="*{continent}" placeholder="Kontynent (region)"></td>
-                </tr>
-                <tr>
-                    <td>Państwo po angielsku</td>
-                    <td><input type="text" th:field="*{countryEn}" placeholder="Nazwa po angielsku"></td>
-                </tr>
-                <tr>
-                    <td>Państwo po polsku</td>
-                    <td><input type="text" th:field="*{countryPl}" placeholder="Nazwa po polsku"></td>
-                </tr>
-                <tr>
-                    <td>Stolica</td>
-                    <td><input type="text" th:field="*{capitalCity}" placeholder="Stolica"></td>
-                </tr>
-            </table>
-            <p><input class="btn btn-primary"  type="submit" value="Dodaj"></p>
-        </form>
+    <div class="row">
+        <div class="container col-md-4">
+            <form th:action="@{/country}" method="post" th:object="${country}">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Kontynent (region)</td>
+                        <td><input class="form-control" type="text" th:field="*{continent}" placeholder="Kontynent (region)"></td>
+                    </tr>
+                    <tr>
+                        <td>Państwo po angielsku</td>
+                        <td><input class="form-control" type="text" th:field="*{countryEn}" placeholder="Nazwa po angielsku"></td>
+                    </tr>
+                    <tr>
+                        <td>Państwo po polsku</td>
+                        <td><input class="form-control" type="text" th:field="*{countryPl}" placeholder="Nazwa po polsku"></td>
+                    </tr>
+                    <tr>
+                        <td>Stolica</td>
+                        <td><input class="form-control" type="text" th:field="*{capitalCity}" placeholder="Stolica"></td>
+                    </tr>
+                </table>
+                <p><input class="btn btn-primary"  type="submit" value="Dodaj"></p>
+            </form>
 
+        </div>
+        <div class="col-md-8">
+            <table class="table table-bordered table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>kontynent</th>
+                    <th class="col-xs-1">Flaga</th>
+                    <th>Państwo po Angielsku</th>
+                    <th>Państwo po Polsku</th>
+                    <th>Stolica</th>
+                    <th>Edytuj</th>
+                </tr>
+                <th:block th:each="country : ${countryList}">
+                <tr>
+                    <td th:text="${country.id}"></td>
+                    <td th:text="${country.continent}"></td>
+                    <td class="col-xs-1"><img class="flagInTable" th:src="'/images/flags/'+${country.countryPl}+'.png'"></td>
+                    <td th:text="${country.countryEn}"></td>
+                    <td th:text="${country.countryPl}"></td>
+                    <td th:text="${country.capitalCity}"></td>
+                    <td></td>
+                </tr>
+                </th:block>
+            </table>
+        </div>
     </div>
 
 </div>

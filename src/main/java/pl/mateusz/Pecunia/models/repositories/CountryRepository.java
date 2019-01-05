@@ -6,6 +6,6 @@ import pl.mateusz.Pecunia.models.Country;
 import java.util.List;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
-    Country findByCountryEnOrderById(String countryEn);
+    Country findByCountryEn(String countryEn);
     List<Country> findAllByOrderById();
 }
