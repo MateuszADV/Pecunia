@@ -25,6 +25,7 @@
         <div class="container col-md-4">
             <form th:action="@{/country}" method="post" th:object="${country}">
                 <table class="table table-bordered">
+                    <input type="number" th:field="*{id}" style="display: none">
                     <tr>
                         <td>Kontynent (region)</td>
                         <td><input class="form-control" type="text" th:field="*{continent}" placeholder="Kontynent (region)"></td>
@@ -42,7 +43,7 @@
                         <td><input class="form-control" type="text" th:field="*{capitalCity}" placeholder="Stolica"></td>
                     </tr>
                 </table>
-                <p><input class="btn btn-primary"  type="submit" value="Dodaj"></p>
+                <p><input class="btn btn-primary"  type="submit" value="Zapisz"></p>
             </form>
 
         </div>
@@ -65,7 +66,7 @@
                     <td th:text="${country.countryEn}"></td>
                     <td th:text="${country.countryPl}"></td>
                     <td th:text="${country.capitalCity}"></td>
-                    <td></td>
+                    <td><a th:href="@{'/country/'+${country.countryEn}}">Edytuj walute</a></td>
                 </tr>
                 </th:block>
             </table>

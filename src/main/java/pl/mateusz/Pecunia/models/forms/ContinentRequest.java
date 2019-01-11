@@ -11,4 +11,5 @@ public class ContinentRequest {
     private Boolean northAmerica;
     private Boolean southAmerica;
     private Boolean antarctica;
+    private Boolean autonomousTerritories;
 }

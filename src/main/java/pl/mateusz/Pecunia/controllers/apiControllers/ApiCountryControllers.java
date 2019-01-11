@@ -7,6 +7,7 @@ import pl.mateusz.Pecunia.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.forms.ContinentRequest;
 import pl.mateusz.Pecunia.models.forms.ContinentResponse;
 import pl.mateusz.Pecunia.models.forms.CountryViewList;
+import pl.mateusz.Pecunia.models.forms.CurrencyOfCountryResponse;
 
 @RestController
 @RequestMapping("/api/country")
@@ -37,4 +38,9 @@ public class ApiCountryControllers {
         return ResponseEntity.ok().body(countryService.continentResponse(request));
     }
 
+    @GetMapping("currencyOfCountry")
+    public ResponseEntity<CurrencyOfCountryResponse> getCurrencyOfCountry() {
+
+        return ResponseEntity.ok().body(countryService.currencyOfCountryResponse());
+    }
 }

@@ -11,10 +11,7 @@ import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.dtos.CountryDtoList;
 import pl.mateusz.Pecunia.models.dtos.CountryViewDto;
 import pl.mateusz.Pecunia.models.dtos.CurrencyDto;
-import pl.mateusz.Pecunia.models.forms.ContinentRequest;
-import pl.mateusz.Pecunia.models.forms.ContinentResponse;
-import pl.mateusz.Pecunia.models.forms.CountryFromContinent;
-import pl.mateusz.Pecunia.models.forms.CountryViewList;
+import pl.mateusz.Pecunia.models.forms.*;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CountryCurencyViewRepository;
@@ -121,6 +118,9 @@ public class CountryServiceImpl implements CountryService {
         if (BooleanUtils.isTrue(request.getAntarctica())) {
             continentActive.add(ContinentEnum.ANTARCTICA);
         }
+        if (BooleanUtils.isTrue(request.getAutonomousTerritories())) {
+            continentActive.add(ContinentEnum.AUTONOMOUS_TERRITORIES);
+        }
         return continentActive;
     }
 
@@ -134,5 +134,26 @@ public class CountryServiceImpl implements CountryService {
         }
 
         return currencyDtos;
+    }
+
+    @Override
+    public CurrencyOfCountryResponse currencyOfCountryResponse() {
+        CurrencyOfCountryResponse currencyOfCountryResponse = new CurrencyOfCountryResponse();
+        List<CurrencyOfCountry> currencyOfCountryList = new ArrayList<>();
+        List<Country> countryList = countryRepository.findAll();
+
+        for (Country country : countryList) {
+            List<CurrencyDto> currencyDtoList = new ArrayList<>();
+            List<Currency> currencyList = currencyRepository.findByCountry_IdOrderByDataExchangeDesc(country.getId());
+
+            for (Currency currency : currencyList) {
+                currencyDtoList.add(new ModelMapper().map(currency, CurrencyDto.class));
+            }
+            currencyOfCountryList.add(new CurrencyOfCountry(country.getCountryEn(),currencyDtoList));
+        }
+
+        currencyOfCountryResponse.setCurrencyOfCountries(currencyOfCountryList);
+
+        return currencyOfCountryResponse;
     }
 }

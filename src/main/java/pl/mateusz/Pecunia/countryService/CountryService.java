@@ -5,6 +5,7 @@ import pl.mateusz.Pecunia.models.dtos.CurrencyDto;
 import pl.mateusz.Pecunia.models.forms.ContinentRequest;
 import pl.mateusz.Pecunia.models.forms.ContinentResponse;
 import pl.mateusz.Pecunia.models.forms.CountryViewList;
+import pl.mateusz.Pecunia.models.forms.CurrencyOfCountryResponse;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface CountryService {
     ContinentResponse continentResponse(ContinentRequest request);
 
     List<CurrencyDto> curencyFromCountryId(Long currencyId);
+
+    CurrencyOfCountryResponse currencyOfCountryResponse();
 
 }

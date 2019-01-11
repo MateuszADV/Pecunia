@@ -10,7 +10,8 @@ public enum ContinentEnum {
     AUSTRALIA_OCEANIA("Australia i Oceania"),
     NORTH_AMERICA("Ameryka Północna"),
     SOUTH_AMERICA("Ameryka Południowa"),
-    ANTARCTICA("Antarktyda");
+    ANTARCTICA("Antarktyda"),
+    AUTONOMOUS_TERRITORIES("Terytorium Autonomiczne");
 
     private String namePl;
 

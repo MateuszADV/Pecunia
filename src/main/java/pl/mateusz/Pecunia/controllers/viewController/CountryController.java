@@ -34,17 +34,7 @@ public class CountryController {
     @GetMapping("/country")
     public String getCountry(ModelMap modelMap) {
         modelMap.addAttribute("country", new Country());
-        List<Country> countries = countryRepository.findAllByOrderById();
-        List<CountryDto> countryDtoList = new ArrayList<>();
-
-        for (Country country : countries) {
-            country.setCountryPl(country.getCountryPl().replace(" ", "_"));
-            countryDtoList.add(new ModelMapper().map(country, CountryDto.class));
-        }
-
-        modelMap.addAttribute("countryList", countryDtoList);
-
-        return "country";
+        return countryList(modelMap);
     }
 
     @PostMapping("/country")
@@ -61,6 +51,27 @@ public class CountryController {
         return "editCountry";
     }
 
+    @GetMapping("/country/{countryEn}")
+    public String getCountryEn(@PathVariable String countryEn, ModelMap modelMap) {
+        Country country = countryRepository.findByCountryEn(countryEn);
+        modelMap.addAttribute("country", country);
+
+        return countryList(modelMap);
+    }
+
+    private String countryList(ModelMap modelMap) {
+        List<Country> countries = countryRepository.findAllByOrderById();
+        List<CountryDto> countryDtoList = new ArrayList<>();
+
+        for (Country country : countries) {
+            country.setCountryPl(country.getCountryPl().replace(" ", "_"));
+            countryDtoList.add(new ModelMapper().map(country, CountryDto.class));
+        }
+
+        modelMap.addAttribute("countryList", countryDtoList);
+        return "country";
+    }
+
     @GetMapping("/currency/{countryEn}")
     public String getCurrency(@PathVariable String countryEn, ModelMap modelMap) {
         modelMap.addAttribute("currency", new Currency());
@@ -72,12 +83,24 @@ public class CountryController {
     @PostMapping("/currency")
     public String postCurrency(@ModelAttribute("currency") Currency currency,
                                @RequestParam(value = "countryEn") String countryEn,
+                               @RequestParam(value = "edit") Integer edit,
                                ModelMap modelMap) {
         Country country = countryRepository.findByCountryEn(countryEn);
         currency.setCountry(country);
-        currencyRepository.save(currency);
 
-        return currencyDate(modelMap, country);
+         currencyRepository.save(currency);
+
+        modelMap.addAttribute("countryEn", country.getCountryEn());
+        modelMap.addAttribute("countryPl", country.getCountryPl().replace(" ", "_"));
+        modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(country.getId()));
+
+        if (edit == null) {
+            modelMap.addAttribute("currency", new Currency());
+        }
+        System.out.println("---Powinna byćiczba: " + edit);
+        System.out.println("Powinno bić id waluty: "  + currency.getId());
+
+        return "currency";
     }
 
     @GetMapping("/currencyEdit/{currencyId}")
@@ -86,9 +109,11 @@ public class CountryController {
         Country country = currency.get().getCountry();
         modelMap.addAttribute("currency", currency);
 
-        if (currency.isPresent()) {
-            CurrencyDto currencyDto = (new ModelMapper().map(currency.get(), CurrencyDto.class));
-        }
+        modelMap.addAttribute("edit", 1);
+
+//        if (currency.isPresent()) {
+//            CurrencyDto currencyDto = (new ModelMapper().map(currency.get(), CurrencyDto.class));
+//        }
 
         return currencyDate(modelMap, country);
     }
