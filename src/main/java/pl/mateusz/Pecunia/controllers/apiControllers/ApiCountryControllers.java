@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.forms.ContinentRequest;
 import pl.mateusz.Pecunia.models.forms.ContinentResponse;
+import pl.mateusz.Pecunia.models.forms.ContinentCountryCurrencysResponse;
 import pl.mateusz.Pecunia.models.forms.CountryViewList;
-import pl.mateusz.Pecunia.models.forms.CurrencyOfCountryResponse;
+
 
 @RestController
 @RequestMapping("/api/country")
@@ -38,9 +39,16 @@ public class ApiCountryControllers {
         return ResponseEntity.ok().body(countryService.continentResponse(request));
     }
 
-    @GetMapping("currencyOfCountry")
-    public ResponseEntity<CurrencyOfCountryResponse> getCurrencyOfCountry() {
+    @GetMapping("/currencysOfWorld")
+    public ResponseEntity<ContinentCountryCurrencysResponse> getCurrencysOfWorld() {
 
-        return ResponseEntity.ok().body(countryService.currencyOfCountryResponse());
+        return ResponseEntity.ok().body(countryService.continentCountryCurrencysResponse());
     }
+
+    @PostMapping("/currencysOfWorld")
+    public ResponseEntity<ContinentCountryCurrencysResponse> postCurrencysOfWorld(@RequestBody ContinentRequest request) {
+
+        return ResponseEntity.ok().body(countryService.continentCountryCurrencysResponse(request));
+    }
+
 }

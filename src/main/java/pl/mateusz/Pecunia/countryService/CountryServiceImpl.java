@@ -64,6 +64,7 @@ public class CountryServiceImpl implements CountryService {
 
         for (ContinentEnum continent : ContinentEnum.values()) {
             countryFromContinents.add(new CountryFromContinent(continent.getNamePl(), countryViewDtos(continent.getNamePl())));
+
         }
         continentResponse.setContinents(countryFromContinents);
 
@@ -77,6 +78,7 @@ public class CountryServiceImpl implements CountryService {
 
         for (ContinentEnum continent : continentActive(request)) {
             countryFromContinents.add(new CountryFromContinent(continent.getNamePl(), countryViewDtos(continent.getNamePl())));
+
         }
         continentResponse.setContinents(countryFromContinents);
 
@@ -88,6 +90,7 @@ public class CountryServiceImpl implements CountryService {
         List<CountryCurrencyView> countryCurrencyViews = countryCurrencyViewRepository.findByContinent(continent);
         List<CountryViewDto> countryViewDtos = new ArrayList<>();
 
+        System.out.println("powinien byćkontynent: " + continent);
         for (CountryCurrencyView countryCurrencyView : countryCurrencyViews) {
             countryViewDtos.add(new ModelMapper().map(countryCurrencyView, CountryViewDto.class));
         }
@@ -137,23 +140,44 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CurrencyOfCountryResponse currencyOfCountryResponse() {
-        CurrencyOfCountryResponse currencyOfCountryResponse = new CurrencyOfCountryResponse();
-        List<CurrencyOfCountry> currencyOfCountryList = new ArrayList<>();
-        List<Country> countryList = countryRepository.findAll();
+    public ContinentCountryCurrencysResponse continentCountryCurrencysResponse() {
+        ContinentCountryCurrencysResponse continentCountryCurrencysResponse = new ContinentCountryCurrencysResponse();
+        List<ContinentCountrys> continentCountrysList = new ArrayList<>();
+
+        for (ContinentEnum continent : ContinentEnum.values()) {
+            continentCountryCurrencys(continentCountrysList, continent);
+        }
+        continentCountryCurrencysResponse.setContinents(continentCountrysList);
+
+        return continentCountryCurrencysResponse;
+    }
+
+    @Override
+    public ContinentCountryCurrencysResponse continentCountryCurrencysResponse(ContinentRequest request) {
+        ContinentCountryCurrencysResponse continentCountryCurrencysResponse = new ContinentCountryCurrencysResponse();
+        List<ContinentCountrys> continentCountrysList = new ArrayList<>();
+
+        for (ContinentEnum continent : continentActive(request)) {
+            continentCountryCurrencys(continentCountrysList, continent);
+        }
+        continentCountryCurrencysResponse.setContinents(continentCountrysList);
+
+        return continentCountryCurrencysResponse;
+    }
+
+    private void continentCountryCurrencys(List<ContinentCountrys> continentCountrysList, ContinentEnum continent) {
+        List<CountryOfCurrency> countryOfCurrencyList = new ArrayList<>();
+        List<Country> countryList = countryRepository.findByContinent(continent.getNamePl());
 
         for (Country country : countryList) {
-            List<CurrencyDto> currencyDtoList = new ArrayList<>();
             List<Currency> currencyList = currencyRepository.findByCountry_IdOrderByDataExchangeDesc(country.getId());
+            List<CurrencyDto> currencyDtoList = new ArrayList<>();
 
             for (Currency currency : currencyList) {
                 currencyDtoList.add(new ModelMapper().map(currency, CurrencyDto.class));
             }
-            currencyOfCountryList.add(new CurrencyOfCountry(country.getCountryEn(),currencyDtoList));
+            countryOfCurrencyList.add(new CountryOfCurrency(country.getCountryEn(),currencyDtoList));
         }
-
-        currencyOfCountryResponse.setCurrencyOfCountries(currencyOfCountryList);
-
-        return currencyOfCountryResponse;
+        continentCountrysList.add(new ContinentCountrys(continent.getNamePl(), countryOfCurrencyList));
     }
 }

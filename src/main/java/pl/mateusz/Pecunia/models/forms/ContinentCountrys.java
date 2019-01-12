@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @ToString
-public class CurrencyOfCountryResponse {
-    private List<CurrencyOfCountry> currencyOfCountries;
+public class ContinentCountrys {
+    private String continent;
+    List<CountryOfCurrency> countrys;
 }

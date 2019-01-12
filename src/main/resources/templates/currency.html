@@ -33,7 +33,7 @@
             <form th:action="@{/currency}" method="post" th:object="${currency}">
 
                 <table class="table table-bordered">
-                    <input type="number" th:name="edit" th:value="${edit}">
+                    <input type="number" th:name="edit" th:value="${edit}" style="display: none">
                     <input type="number" th:field="*{id}" style="display: none">
                     <tr>
                         <td>Cod</td>
