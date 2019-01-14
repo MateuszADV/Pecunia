@@ -20,12 +20,23 @@
     <div th:insert="~{includes/menu :: menu}"></div>
 
 
-    <div class="container">
-        <div>
+    <div class="container row">
+        <div class="col-md-4">
+            <center>
+                <p> TEST TEXT</p>
+            </center>
+        </div>
+        <div class="col-md-4">
             <center>
                 <p th:text="'Dodaj walutę do '+${countryEn}"> </p>
-                <p ><img class="flag" th:src="'/images/flags/'+${countryPl}+'.png'"></p>
+                <p ><img class="flag" th:src="'/images/flags/'+${countryEn}+'.png'"></p>
             </center>
+        </div>
+        <div class="col-md-4">
+            <form th:action="@{/showJson}" method="post">
+                <input type="text" th:name="countryId" th:value="${countryId}" style="display: none">
+                <input class="btn btn-primary" th:target="_blank" type="submit" value="Wyświtl Json">
+            </form>
         </div>
     </div>
     <div class="row">
@@ -74,7 +85,7 @@
                     <input type="text" th:name="countryEn" th:value="${countryEn}" style="display: none">
 
 
-                <input class="btn btn-primary" type="submit" value="Dodaj">
+                <!--<input class="btn btn-primary" type="submit" value="Dodaj">-->
 
             </form>
         </div>

@@ -9,9 +9,9 @@ import pl.mateusz.Pecunia.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.Currency;
 import pl.mateusz.Pecunia.models.dtos.CountryDto;
-import pl.mateusz.Pecunia.models.dtos.CurrencyDto;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
+import pl.mateusz.Pecunia.utils.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +43,12 @@ public class CountryController {
         return "redirect:/country";
     }
 
-    @GetMapping("/editCountry")
+    @GetMapping("/addCurrency")
     public String getCountryView(ModelMap modelMap) {
 
         modelMap.addAttribute("countryList", countryService.countryDtoList().getCountryDtoList());
 
-        return "editCountry";
+        return "addCurrency";
     }
 
     @GetMapping("/country/{countryEn}")
@@ -64,7 +64,7 @@ public class CountryController {
         List<CountryDto> countryDtoList = new ArrayList<>();
 
         for (Country country : countries) {
-            country.setCountryPl(country.getCountryPl().replace(" ", "_"));
+            country.setCountryPl(country.getCountryPl());
             countryDtoList.add(new ModelMapper().map(country, CountryDto.class));
         }
 
@@ -91,8 +91,9 @@ public class CountryController {
          currencyRepository.save(currency);
 
         modelMap.addAttribute("countryEn", country.getCountryEn());
-        modelMap.addAttribute("countryPl", country.getCountryPl().replace(" ", "_"));
+        modelMap.addAttribute("countryPl", country.getCountryPl());
         modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(country.getId()));
+
 
         if (edit == null) {
             modelMap.addAttribute("currency", new Currency());
@@ -120,8 +121,9 @@ public class CountryController {
 
     private String currencyDate(ModelMap modelMap, Country country) {
         modelMap.addAttribute("countryEn", country.getCountryEn());
-        modelMap.addAttribute("countryPl", country.getCountryPl().replace(" ", "_"));
+        modelMap.addAttribute("countryPl", country.getCountryPl());
         modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(country.getId()));
+        modelMap.addAttribute("countryId", country.getId());
         return "currency";
     }
 }

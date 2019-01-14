@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Państwa</title>
+    <title>Show JSon</title>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -15,47 +16,29 @@
 </head>
 <body>
 <div class="container">
+
     <div th:insert="~{includes/menu :: heder}"></div>
     <div th:insert="~{includes/menu :: menu}"></div>
-    <h2>Edytuj państwo</h2>
-    <div class="container">
-        <table class="table table-bordered">
-            <tr>
-                <th>Id</th>
-                <th>Kontynent</th>
-                <th>Nazwa po En</th>
-                <th>Nazwa po Pl</th>
-                <th>Stolica</th>
-                <th>Edytyj Państwo</th>
-                <th>Dodaj/Edytuj walute</th>
-            </tr>
-            <th:block th:each="country : ${countryList}">
-                <tr>
-                    <td th:text="${country.id}"></td>
-                    <td th:text="${country.continent}"></td>
-                    <td th:text="${country.countryEn}"></td>
-                    <td th:text="${country.countryPl}"></td>
-                    <td th:text="${country.capitalCity}"></td>
-                    <td></td>
-                    <td><a th:href="@{'/currency/'+${country.countryEn}}">Dodaj/Edytuj walute</a></td>
-                </tr>
-            </th:block>
-        </table>
 
+    <div class="container">
+        <center><h3>Test wyświetlania danych w formacie JSon</h3></center>
+        <div class="form-group purple-border" style="min-height: 500px;">
+            <textarea class="form-control" th:text="${Gson}"  rows="35" style="min-height: 100%; resize: none; background: steelblue ; color: lightgray"></textarea>
+        </div>
     </div>
 
-
-
 </div>
+
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
-</body>
 </body>
 </html>

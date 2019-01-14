@@ -57,16 +57,18 @@
                     <th>Państwo po Polsku</th>
                     <th>Stolica</th>
                     <th>Edytuj</th>
+                    <th>Dodaj/Edytuj walute</th>
                 </tr>
                 <th:block th:each="country : ${countryList}">
                 <tr>
                     <td th:text="${country.id}"></td>
                     <td th:text="${country.continent}"></td>
-                    <td class="col-xs-1"><img class="flagInTable" th:src="'/images/flags/'+${country.countryPl}+'.png'"></td>
+                    <td class="col-xs-1"><img class="flagInTable" th:src="'/images/flags/'+${country.countryEn}+'.png'"></td>
                     <td th:text="${country.countryEn}"></td>
                     <td th:text="${country.countryPl}"></td>
                     <td th:text="${country.capitalCity}"></td>
-                    <td><a th:href="@{'/country/'+${country.countryEn}}">Edytuj walute</a></td>
+                    <td><a th:href="@{'/country/'+${country.countryEn}}">Edytuj</a></td>
+                    <td><a th:href="@{'/currency/'+${country.countryEn}}">Dodaj/Edytuj walute</a></td>
                 </tr>
                 </th:block>
             </table>
