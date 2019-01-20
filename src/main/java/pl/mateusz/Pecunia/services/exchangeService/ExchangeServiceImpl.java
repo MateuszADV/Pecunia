@@ -22,6 +22,19 @@ public class ExchangeServiceImpl implements ExchangeService {
         return exchange("http://api.nbp.pl/api/exchangerates/tables/a/last/");
     }
 
+    @Override
+    public Exchange exchange(List<String> listCode) {
+        Exchange exchange = exchange("http://api.nbp.pl/api/exchangerates/tables/a/last/");
+        List<Rates> ratesList = new ArrayList<>();
+        for (Rates rate : exchange.getRates()) {
+            if (listCode.contains(rate.getCod())) {
+                ratesList.add(rate);
+            }
+        }
+        exchange.setRates(ratesList);
+        return exchange;
+    }
+
     private Exchange exchange (String url) {
         String exchangeRate = jsonString(url);
 
@@ -55,30 +68,15 @@ public class ExchangeServiceImpl implements ExchangeService {
         exchange.setRates(ratesList);
         return exchange;
     }
-    @Override
-    public Exchange exchange(List<String> listCode) {
-        Exchange exchange = exchange("http://api.nbp.pl/api/exchangerates/tables/a/last/");
-        List<Rates> ratesList = new ArrayList<>();
-        for (Rates rate : exchange.getRates()) {
-                if (listCode.contains(rate.getCod())) {
-                    ratesList.add(rate);
-                    System.out.println(rate.getCod());
-                }
-        }
-        exchange.setRates(ratesList);
-        System.out.println(JsonUtils.gsonPretty(exchange));
-        return exchange;
-    }
 
     private String jsonString(String url) {
         Client client = Client.create();
-        WebResource webResource = client.resource("http://api.nbp.pl/api/exchangerates/tables/a/last/");
+        WebResource webResource = client.resource(url);
         ClientResponse clientResponse = webResource.accept("application/json").get(ClientResponse.class);
 
         if(clientResponse.getStatus() !=200){
             throw new RuntimeException("Błąd pobrania... " + clientResponse.getStatus());
         }
-
         return clientResponse.getEntity(String.class);
     }
 }
