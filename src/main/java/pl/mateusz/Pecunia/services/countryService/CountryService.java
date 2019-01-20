@@ -1,6 +1,7 @@
-package pl.mateusz.Pecunia.countryService;
+package pl.mateusz.Pecunia.services.countryService;
 
 import pl.mateusz.Pecunia.models.dtos.CountryDtoList;
+import pl.mateusz.Pecunia.models.dtos.CountryJsonDto;
 import pl.mateusz.Pecunia.models.dtos.CurrencyDto;
 import pl.mateusz.Pecunia.models.forms.*;
 
@@ -21,5 +22,7 @@ public interface CountryService {
     ContinentCountryCurrencysResponse continentCountryCurrencysResponse();
 
     ContinentCountryCurrencysResponse continentCountryCurrencysResponse(ContinentRequest request);
+
+    CountryJsonDto countryJson(Long country_id);
 
 }

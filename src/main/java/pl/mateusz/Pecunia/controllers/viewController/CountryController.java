@@ -5,13 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import pl.mateusz.Pecunia.countryService.CountryServiceImpl;
+import pl.mateusz.Pecunia.services.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.Currency;
 import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
-import pl.mateusz.Pecunia.utils.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,14 +92,11 @@ public class CountryController {
         modelMap.addAttribute("countryEn", country.getCountryEn());
         modelMap.addAttribute("countryPl", country.getCountryPl());
         modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(country.getId()));
-
+        modelMap.addAttribute("countryId", currency.getCountry().getId()); //Wysyła Id państwa potrzebnego do wyswietlenia Jsona
 
         if (edit == null) {
             modelMap.addAttribute("currency", new Currency());
         }
-        System.out.println("---Powinna byćiczba: " + edit);
-        System.out.println("Powinno bić id waluty: "  + currency.getId());
-
         return "currency";
     }
 
@@ -111,7 +107,6 @@ public class CountryController {
         modelMap.addAttribute("currency", currency);
 
         modelMap.addAttribute("edit", 1);
-
 //        if (currency.isPresent()) {
 //            CurrencyDto currencyDto = (new ModelMapper().map(currency.get(), CurrencyDto.class));
 //        }

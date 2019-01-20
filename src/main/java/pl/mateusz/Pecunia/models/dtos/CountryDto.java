@@ -14,5 +14,8 @@ public class CountryDto {
     private String countryEn;
     private String countryPl;
     private String capitalCity;
-
+    private String alfa2;
+    private String alfa3;
+    private String numericCode;
+    private String isoCode;
 }

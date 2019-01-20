@@ -26,6 +26,14 @@ public class Country {
     private String countryPl;
     @Column(name = "capital_city")
     private String capitalCity;
+    @Column(name = "alfa_2")
+    private String alfa2;
+    @Column(name = "alfa_3")
+    private String alfa3;
+    @Column(name = "numeric_code")
+    private String numericCode;
+    @Column(name = "iso_code")
+    private String isoCode;
 
     @OneToMany(mappedBy = "country", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Currency> currencies;

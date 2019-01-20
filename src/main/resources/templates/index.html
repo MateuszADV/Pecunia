@@ -20,6 +20,34 @@
     <div th:insert="~{includes/menu :: heder}"></div>
     <div th:insert="~{includes/menu :: menu}"></div>
 
+    <div class="container" style="background-color: aqua">
+        <h3>Strona główna, będzi ekrótki opis, tabela kursów walut i może jaiś obrazek</h3>
+        <p><img src="/images/bank_notes/Argentyna/Argentina_1_Peso_11a.jpg"></p>
+    </div>
+
+    <div class="container col-xs-4">
+        <p th:text="'Tablela ' + ${exchangeRate.table}"></p>
+        <p th:text="'nr: ' + ${exchangeRate.no}"> </p>
+        <p th:text="'Data: ' + ${exchangeRate.effectiveDate}"> </p>
+        <table class="table table-bordered table table-striped">
+            <tr>
+                <th>waluta</th>
+                <th>kod</th>
+                <th>kurs średni</th>
+            </tr>
+            <block th:each="rate : ${exchangeRate.rates}">
+                <tr>
+                    <td th:text="${rate.currency}"></td>
+                    <td th:text="${rate.cod}"></td>
+                    <td th:text="${rate.mid} + 'zł'"></td>
+                </tr>
+
+            </block>
+        </table>
+
+    </div>
+
+
 
 </div>
 

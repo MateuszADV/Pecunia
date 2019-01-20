@@ -16,13 +16,14 @@
 
 </head>
 <body>
-<div class="container">
-    <div th:insert="~{includes/menu :: heder}"></div>
-    <div th:insert="~{includes/menu :: menu}"></div>
-    <h2>Dodaj państwo</h2>
-
-    <div class="row">
-        <div class="container col-md-4">
+<div class="container-fluid">
+    <div class="container">
+        <div th:insert="~{includes/menu :: heder}"></div>
+        <div th:insert="~{includes/menu :: menu}"></div>
+        <h2>Dodaj państwo</h2>
+    </div>
+    <div class="container-fluid">
+        <div class="container col-md-6 col-md-offset-3">
             <form th:action="@{/country}" method="post" th:object="${country}">
                 <table class="table table-bordered">
                     <input type="number" th:field="*{id}" style="display: none">
@@ -42,12 +43,28 @@
                         <td>Stolica</td>
                         <td><input class="form-control" type="text" th:field="*{capitalCity}" placeholder="Stolica"></td>
                     </tr>
+                    <tr>
+                        <td>Alfa 2</td>
+                        <td><input class="form-control" type="text" th:field="*{alfa2}" placeholder="Alfa 2"></td>
+                    </tr>
+                    <tr>
+                        <td>Alfa 3</td>
+                        <td><input class="form-control" type="text" th:field="*{alfa3}" placeholder="Alfa 3"></td>
+                    </tr>
+                    <tr>
+                        <td>kod numeryczny</td>
+                        <td><input class="form-control" type="text" th:field="*{numericCode}" placeholder="Kod lczbowy"></td>
+                    </tr>
+                    <tr>
+                        <td>kod iso</td>
+                        <td><input class="form-control" type="text" th:field="*{isoCode}" placeholder="kod ISO"></td>
+                    </tr>
                 </table>
-                <p><input class="btn btn-primary"  type="submit" value="Zapisz"></p>
+                <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" value="Zapisz"></p>
             </form>
 
         </div>
-        <div class="col-md-8">
+        <div class="container col-xs-12">
             <table class="table table-bordered table table-striped">
                 <tr>
                     <th>Id</th>
@@ -55,7 +72,11 @@
                     <th class="col-xs-1">Flaga</th>
                     <th>Państwo po Angielsku</th>
                     <th>Państwo po Polsku</th>
-                    <th>Stolica</th>
+                    <th class="col-md-1">Stolica</th>
+                    <th>Alfa 2</th>
+                    <th>Alfa 3</th>
+                    <th>Kod liczbowy</th>
+                    <th class="col-md-1">Kod ISO</th>
                     <th>Edytuj</th>
                     <th>Dodaj/Edytuj walute</th>
                 </tr>
@@ -67,6 +88,10 @@
                     <td th:text="${country.countryEn}"></td>
                     <td th:text="${country.countryPl}"></td>
                     <td th:text="${country.capitalCity}"></td>
+                    <td th:text="${country.alfa2}"></td>
+                    <td th:text="${country.alfa3}"></td>
+                    <td th:text="${country.numericCode}"></td>
+                    <td th:text="${country.isoCode}"></td>
                     <td><a th:href="@{'/country/'+${country.countryEn}}">Edytuj</a></td>
                     <td><a th:href="@{'/currency/'+${country.countryEn}}">Dodaj/Edytuj walute</a></td>
                 </tr>

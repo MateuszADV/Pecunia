@@ -1,4 +1,4 @@
-package pl.mateusz.Pecunia.countryService;
+package pl.mateusz.Pecunia.services.countryService;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.CountryCurrencyView;
 import pl.mateusz.Pecunia.models.Currency;
-import pl.mateusz.Pecunia.models.dtos.CountryDto;
-import pl.mateusz.Pecunia.models.dtos.CountryDtoList;
-import pl.mateusz.Pecunia.models.dtos.CountryViewDto;
-import pl.mateusz.Pecunia.models.dtos.CurrencyDto;
+import pl.mateusz.Pecunia.models.dtos.*;
 import pl.mateusz.Pecunia.models.forms.*;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
@@ -179,5 +176,20 @@ public class CountryServiceImpl implements CountryService {
             countryOfCurrencyList.add(new CountryOfCurrency(country.getCountryEn(),currencyDtoList));
         }
         continentCountrysList.add(new ContinentCountrys(continent.getNamePl(), countryOfCurrencyList));
+    }
+
+    @Override
+    public CountryJsonDto countryJson(Long country_id) {
+        Country country = countryRepository.findById(country_id).get();
+        List<Currency> currencyList = currencyRepository.findByCountry_IdOrderByDataExchangeDesc(country_id);
+        CountryJsonDto countryJsonDto = new ModelMapper().map(country, CountryJsonDto.class);
+
+        List<CurrencyDto> currencyDtoList = new ArrayList<>();
+
+        for (Currency currency : currencyList) {
+            currencyDtoList.add(new ModelMapper().map(currency, CurrencyDto.class));
+        }
+        countryJsonDto.setCurrencys(currencyDtoList);
+        return countryJsonDto;
     }
 }
