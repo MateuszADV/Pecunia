@@ -2,7 +2,7 @@ package pl.mateusz.Pecunia.models.forms;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import pl.mateusz.Pecunia.models.CountryCurrencyView;
+import pl.mateusz.Pecunia.models.CurrencyCountryActiveView;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
 public class CountryViewList {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<CountryCurrencyView> CountryList;
+    private List<CurrencyCountryActiveView> CountryList;
 }

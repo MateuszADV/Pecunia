@@ -13,6 +13,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
 </head>
 <body>
 <div class="container">
@@ -20,40 +21,16 @@
     <div th:insert="~{includes/menu :: heder}"></div>
     <div th:insert="~{includes/menu :: menu}"></div>
 
-    <div>
-        <center><h2>Banknoty Świata</h2></center>
+    <div style="text-align: center">
+        <h2>Banknoty Świata</h2>
     </div>
 
     <div class="container">
-
-        <div class="classUseContainer">
-            <ul class="nav nav-tabs nav-justified" role="tablist">
-                <li class="active"><a href="#1kartajust" role="tab" data-toggle="tab">Europa</a></li>
-                <li><a href="#2kartajust" role="tab" data-toggle="tab">Azja</a></li>
-                <li><a href="#3kartajust" role="tab" data-toggle="tab">Afryka</a></li>
-                <li><a href="#4kartajust" role="tab" data-toggle="tab">Ameryka północna</a></li>
-                <li><a href="#5kartajust" role="tab" data-toggle="tab">Ameryka południowa</a></li>
-                <li><a href="#6kartajust" role="tab" data-toggle="tab">Australia i Oceania</a></li>
-            </ul>
-        </div>
-
-        <!-- Zawartość zakładek -->
-        <div class="tab-content">
-            <div class="container tab-pane active" id="1kartajust">Banknoty Europa</div>
-            <div class="container tab-pane" id="2kartajust">Banknoty Azja</div>
-            <div class="container tab-pane" id="3kartajust">Banknoty Afryka</div>
-            <div class="container tab-pane" id="4kartajust">Banknoty Ameryka północna</div>
-            <div class="container tab-pane" id="5kartajust">Banknoty Ameryka południowa</div>
-            <div class="container tab-pane" id="6kartajust">Banknoty Australia i oceania</div>
-        </div>
+        <Block th:each="note : ${noteList}">
+            <p><img class="flag" th:src="${note.aversPath}"></p>
+        </Block>
     </div>
 
-
-
-
-    <!--<div>-->
-        <!--<textarea th:text="${Gson}"></textarea>-->
-    <!--</div>-->
 </div>
 
 

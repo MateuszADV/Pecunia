@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Banknoty</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+</head>
+<body>
+<div class="container">
+
+    <div th:insert="~{includes/menu :: heder}"></div>
+    <div th:insert="~{includes/menu :: menu}"></div>
+
+    <div style="text-align: center">
+        <h2>Banknoty Świata</h2>
+    </div>
+
+    <div class="container row">
+        <div class="container col-md-6">
+            <span><b>Kontynent: </b></span>
+            <span th:text="${countryCurrency.continent}"></span>
+            <br>
+            <span><b>Państwo: </b></span>
+            <span th:text="${countryCurrency.countryEn}"></span>
+            <br>
+            <span><b>Kod: </b></span>
+            <span th:text="${countryCurrency.cod}"></span>
+            <br>
+            <span><b>Waluta: </b></span>
+            <span th:text="${countryCurrency.currency}"></span>
+        </div>
+        <div class="container col-md-6">
+            <p><img class="flag" th:src="'/images/flags/'+${countryCurrency.countryEn}+'.png'"></p>
+        </div>
+    </div>
+    <div class="container row">
+        <div class="container  col-md-6">
+            <form  th:action="@{/note}" method="post" th:object="${note}">
+                <table class="table table-bordered">
+                    <input type="number" th:name="currencyId" th:value="${currencyId}" style="display: none">
+                    <tr>
+                        <td>Nominał</td>
+                        <td><input class="form-control" type="text" th:field="*{denomination}" placeholder="Nominał banknotu"></td>
+                    </tr>
+                    <tr>
+                        <td>Data druku</td>
+                        <td><input class="form-control" type="text" th:field="*{noteDate}" placeholder="Data druku banknotu"></td>
+                    </tr>
+                    <tr>
+                        <td>Sygnatura</td>
+                        <td><input class="form-control" type="number" th:field="*{signatureCode}" placeholder=" Sygnatura 101/102..."></td>
+                    </tr>
+                    <tr>
+                        <td>Cena zakupu</td>
+                        <td><input class="form-control" type="text" th:field="*{priceBuy}" placeholder="Cena zakupu"></td>
+                    </tr>
+                    <tr>
+                        <td>Cena sprzedaży</td>
+                        <td><input class="form-control" type="text" th:field="*{priceSell}" placeholder="Cena sprzedaży"></td>
+                    </tr>
+                    <tr>
+                        <td>Iloc sztuk</td>
+                        <td><input class="form-control" type="number" th:field="*{quantity}" placeholder="Ilość sztuk"></td>
+                    </tr>
+                    <tr>
+                        <td>Stan banknotu</td>
+                        <td><input class="form-control" type="text" th:field="*{quality}" placeholder="Stan banknotu"></td>
+                    </tr>
+                    <tr>
+                        <td>Opisu</td>
+                        <td><textarea class="form-control" th:field="*{description}" placeholder="Opis"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Avers</td>
+                        <td><input class="form-control" type="text" th:field="*{aversPath}" placeholder="avers banknotu"></td>
+                    </tr>
+                    <tr>
+                        <td>Revers</td>
+                        <td><input class="form-control" type="text" th:field="*{reversePath}" placeholder="revers banknotu"></td>
+                    </tr>
+                </table>
+                <input class="btn btn-primary" type="submit" value="Dodaj">
+            </form>
+        </div>
+        <div class="container  col-md-6">
+            <p>prawa strona</p>
+        </div>
+    </div>
+    <!--<div class="container">-->
+
+        <!--<div class="classUseContainer">-->
+            <!--<ul class="nav nav-tabs nav-justified" role="tablist">-->
+                <!--<li class="active"><a href="#1kartajust" role="tab" data-toggle="tab">Europa</a></li>-->
+                <!--<li><a href="#2kartajust" role="tab" data-toggle="tab">Azja</a></li>-->
+                <!--<li><a href="#3kartajust" role="tab" data-toggle="tab">Afryka</a></li>-->
+                <!--<li><a href="#4kartajust" role="tab" data-toggle="tab">Ameryka północna</a></li>-->
+                <!--<li><a href="#5kartajust" role="tab" data-toggle="tab">Ameryka południowa</a></li>-->
+                <!--<li><a href="#6kartajust" role="tab" data-toggle="tab">Australia i Oceania</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; Zawartość zakładek &ndash;&gt;-->
+        <!--<div class="tab-content">-->
+            <!--<div class="container tab-pane active" id="1kartajust">Banknoty Europa</div>-->
+            <!--<div class="container tab-pane" id="2kartajust">Banknoty Azja</div>-->
+            <!--<div class="container tab-pane" id="3kartajust">Banknoty Afryka</div>-->
+            <!--<div class="container tab-pane" id="4kartajust">Banknoty Ameryka północna</div>-->
+            <!--<div class="container tab-pane" id="5kartajust">Banknoty Ameryka południowa</div>-->
+            <!--<div class="container tab-pane" id="6kartajust">Banknoty Australia i oceania</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+
+
+    <!--<div>-->
+        <!--<textarea th:text="${Gson}"></textarea>-->
+    <!--</div>-->
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -5,13 +5,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.Country;
-import pl.mateusz.Pecunia.models.CountryCurrencyView;
+import pl.mateusz.Pecunia.models.CurrencyCountryActiveView;
 import pl.mateusz.Pecunia.models.Currency;
 import pl.mateusz.Pecunia.models.dtos.*;
 import pl.mateusz.Pecunia.models.forms.*;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
-import pl.mateusz.Pecunia.models.repositories.CountryCurencyViewRepository;
+import pl.mateusz.Pecunia.models.repositories.CurrencyCountryActiveViewRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
 
 import java.util.ArrayList;
@@ -20,20 +20,20 @@ import java.util.List;
 @Service
 public class CountryServiceImpl implements CountryService {
 
-    private CountryCurencyViewRepository countryCurrencyViewRepository;
+    private CurrencyCountryActiveViewRepository currencyCountryActiveViewRepository;
     private CountryRepository countryRepository;
     private CurrencyRepository currencyRepository;
 
     @Autowired
-    public CountryServiceImpl(CountryCurencyViewRepository countryCurrencyViewRepository, CountryRepository countryRepository, CurrencyRepository currencyRepository) {
-        this.countryCurrencyViewRepository = countryCurrencyViewRepository;
+    public CountryServiceImpl(CurrencyCountryActiveViewRepository countryCurrencyViewRepository, CountryRepository countryRepository, CurrencyRepository currencyRepository) {
+        this.currencyCountryActiveViewRepository = countryCurrencyViewRepository;
         this.countryRepository = countryRepository;
         this.currencyRepository = currencyRepository;
     }
 
     @Override
     public CountryViewList countryViewList() {
-        List<CountryCurrencyView> countryCountryViews = countryCurrencyViewRepository.findAll();
+        List<CurrencyCountryActiveView> countryCountryViews = currencyCountryActiveViewRepository.findAll();
         CountryViewList countryViewList = new CountryViewList();
         countryViewList.setCountryList(countryCountryViews);
         return countryViewList;
@@ -84,12 +84,12 @@ public class CountryServiceImpl implements CountryService {
     }
 
     private List<CountryViewDto> countryViewDtos(String continent) {
-        List<CountryCurrencyView> countryCurrencyViews = countryCurrencyViewRepository.findByContinent(continent);
+        List<CurrencyCountryActiveView> currencyCountryActiveViews = currencyCountryActiveViewRepository.findByContinent(continent);
         List<CountryViewDto> countryViewDtos = new ArrayList<>();
 
         System.out.println("powinien byćkontynent: " + continent);
-        for (CountryCurrencyView countryCurrencyView : countryCurrencyViews) {
-            countryViewDtos.add(new ModelMapper().map(countryCurrencyView, CountryViewDto.class));
+        for (CurrencyCountryActiveView currencyCountryActiveView : currencyCountryActiveViews) {
+            countryViewDtos.add(new ModelMapper().map(currencyCountryActiveView, CountryViewDto.class));
         }
         return countryViewDtos;
     }

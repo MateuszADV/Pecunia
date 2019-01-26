@@ -22,7 +22,17 @@
         <ul class="nav nav-pills">
             <li role="presentation" class="active"><a href="/">Home</a></li>
             <li role="presentation"><a href="#">Dodaj bankonoty</a></li>
-            <li role="presentation"><a href="/bills">Banknoty</a></li>
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Banknoty <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li role="presentation"><a href="/notes">Dodaj banknot</a></li>
+                    <!--<li role="presentation"><a href="/addCurrency">Edytuj/dodaj walutę</a></li>-->
+                    <li role="separator" class="divider"></li>
+                    <li role="presentation"><a href="#">Wyświetl banknoty</a></li>
+                </ul>
+            </li>
             <li role="presentation"><a href="#">Klienci</a></li>
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
