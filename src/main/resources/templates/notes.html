@@ -22,13 +22,52 @@
     <div th:insert="~{includes/menu :: menu}"></div>
 
     <div style="text-align: center">
-        <h2>Banknoty Świata</h2>
+        <h2>Państwa</h2>
     </div>
 
     <div class="container">
-        <Block th:each="note : ${noteList}">
-            <p><img class="flag" th:src="${note.aversPath}"></p>
-        </Block>
+        <div class="row">
+            <Block th:each="country : ${countrys}">
+                <a th:href="@{'/notes/' + ${country.id}}">
+                    <div class="col-md-2" style="text-align: center; height: 90px">
+                        <span th:text="${country.id} + ' ' + ${country.countryEn}"></span>
+                        <br>
+                        <img class="flag" th:src="'/images/flags/'+${country.countryEn}+'.png'">
+                    </div>
+                </a>
+            </Block>
+        </div>
+
+        <div class="col-md-8 col-md-offset-2">
+            <table class="table table-bordered  table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Cod</th>
+                    <th>Waluta</th>
+                    <th>Drobne</th>
+                    <th>KOB </th>
+                    <th>Data wymiany</th>
+                    <th>Poprzednia waluta</th>
+                    <th>Przelicznik</th>
+                    <th>Opis</th>
+                    <th>Dodaj banknot</th>
+                </tr>
+                <th:block th:each="currency : ${currencyList}">
+                    <tr>
+                        <td th:text="${currency.id}"></td>
+                        <td th:text="${currency.cod}"></td>
+                        <td th:text="${currency.nameCurrency}"></td>
+                        <td th:text="${currency.change}"></td>
+                        <td th:text="${currency.active}"></td>
+                        <td th:text="${currency.dataExchange}"></td>
+                        <td th:text="${currency.currencyFrom}"></td>
+                        <td th:text="${currency.converter}"></td>
+                        <td th:text="${currency.description}"></td>
+                        <th><a th:href="@{'/note/' + ${currency.id}}">Dodaj banknot</a></th>
+                    </tr>
+                </th:block>
+            </table>
+        </div>
     </div>
 
 </div>
