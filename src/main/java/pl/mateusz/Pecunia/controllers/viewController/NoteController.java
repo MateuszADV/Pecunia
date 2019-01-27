@@ -71,8 +71,8 @@ public class NoteController {
 
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
 
-        List<Note> noteList = noteRepository.findAll();
-        modelMap.addAttribute("noteList", noteList);
+//        List<Note> noteList = noteRepository.findAll();
+//        modelMap.addAttribute("noteList", noteList);
 
         return "notes";
     }
@@ -80,9 +80,15 @@ public class NoteController {
     @GetMapping("/notes/{countryId}")
     public String getNotesCountry(@PathVariable Long countryId, ModelMap modelMap) {
         modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(countryId));
-
+        modelMap.addAttribute("test",true);
         System.out.println("powinno byćid państwa: " + countryId);
 
         return "notes";
+    }
+
+    @GetMapping("/quality")
+    public String getQuality(){
+
+        return "quality";
     }
 }

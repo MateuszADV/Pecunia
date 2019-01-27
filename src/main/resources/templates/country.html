@@ -21,6 +21,10 @@
         <div th:insert="~{includes/menu :: heder}"></div>
         <div th:insert="~{includes/menu :: menu}"></div>
         <h2>Dodaj państwo</h2>
+
+    <div class="container" th:if="${countryExist} == true" style="text-align: center">
+        <h2 class="bg-danger" th:text="${countryInfo}"></h2>
+    </div>
     </div>
     <div class="container-fluid">
         <div class="container col-md-6 col-md-offset-3">
@@ -60,7 +64,8 @@
                         <td><input class="form-control" type="text" th:field="*{isoCode}" placeholder="kod ISO"></td>
                     </tr>
                 </table>
-                <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" value="Zapisz"></p>
+                <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" value="Dodaj państwo"></p>
+                <br><br>
             </form>
 
         </div>
@@ -78,7 +83,7 @@
                     <th>Kod liczbowy</th>
                     <th class="col-md-1">Kod ISO</th>
                     <th>Edytuj</th>
-                    <th>Dodaj/Edytuj walute</th>
+                    <!--<th>Dodaj/Edytuj walute</th>-->
                 </tr>
                 <th:block th:each="country : ${countryList}">
                 <tr>
@@ -93,7 +98,7 @@
                     <td th:text="${country.numericCode}"></td>
                     <td th:text="${country.isoCode}"></td>
                     <td><a th:href="@{'/country/'+${country.countryEn}}">Edytuj</a></td>
-                    <td><a th:href="@{'/currency/'+${country.countryEn}}">Dodaj/Edytuj walute</a></td>
+                    <!--<td><a th:href="@{'/currency/'+${country.countryEn}}">Dodaj/Edytuj walute</a></td>-->
                 </tr>
                 </th:block>
             </table>

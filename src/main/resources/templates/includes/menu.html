@@ -21,7 +21,22 @@
 
         <ul class="nav nav-pills">
             <li role="presentation" class="active"><a href="/">Home</a></li>
-            <li role="presentation"><a href="#">Dodaj bankonoty</a></li>
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Państwo <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li role="presentation"><a href="/country">Dodaj państwo</a></li>
+                    <li role="presentation"><a href="/currency">Dodaj wlutę</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li role="presentation"><a href="#">Europa</a></li>
+                    <li role="presentation"><a href="#">Azja</a></li>
+                    <li role="presentation"><a href="#">Afryka</a></li>
+                    <li role="presentation"><a href="#">Ameryka Pł</a></li>
+                    <li role="presentation"><a href="#">Ameryka Pn</a></li>
+                    <li role="presentation"><a href="#">Australia</a></li>
+                </ul>
+            </li>
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     Banknoty <span class="caret"></span>
@@ -33,31 +48,34 @@
                     <li role="presentation"><a href="#">Wyświetl banknoty</a></li>
                 </ul>
             </li>
-            <li role="presentation"><a href="#">Klienci</a></li>
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    Państwo <span class="caret"></span>
+                    Klienci <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li role="presentation"><a href="/country">Dodaj państwo</a></li>
+                    <li role="presentation"><a href="#">Dodaj Zamawiającego</a></li>
                     <!--<li role="presentation"><a href="/addCurrency">Edytuj/dodaj walutę</a></li>-->
                     <li role="separator" class="divider"></li>
-                    <li role="presentation"><a href="#">Europa</a></li>
-                    <li role="presentation"><a href="#">Azja</a></li>
-                    <li role="presentation"><a href="#">Afryka</a></li>
-                    <li role="presentation"><a href="#">Ameryka Pł</a></li>
-                    <li role="presentation"><a href="#">Ameryka Pn</a></li>
-                    <li role="presentation"><a href="#">Australia</a></li>
+                    <li role="presentation"><a href="#">Wyświetl Lite klientów</a></li>
                 </ul>
             </li>
+            <li role="presentation"><a href="quality">Stan Banknotów</a></li>
             <li role="presentation"><a href="swagger-ui.html">Swagger</a></li>
         </ul>
     </div>
 </div>
 
 <div th:fragment="heder">
-    <div class="page-header">
-        <center><h1>PECUNIA <small></small></h1></center>
+    <div class="container row" >
+        <div class="page-header col-md-2" style="background-color: aqua">
+            <p>lewa strona</p>
+        </div>
+        <div class="page-header col-md-8" style="text-align: center">
+            <h1>PECUNIA <small></small></h1>
+        </div>
+        <div class="page-header col-md-2" style="background-color: aqua">
+            <p>Prawa strona</p>
+        </div>
     </div>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

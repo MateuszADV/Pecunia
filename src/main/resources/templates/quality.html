@@ -2,8 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Pecunia</title>
-
+    <title>Państwa</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -13,57 +12,29 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+
 </head>
 <body>
-<div class="container">
 
-    <div th:insert="~{includes/menu :: heder}"></div>
-    <div th:insert="~{includes/menu :: menu}"></div>
-
-    <div class="container" style="text-align: center">
-        <h3 class="bg-info">Strona główna, będzie krótki opis, tabela kursów walut i może jaiś obrazek</h3>
+    <div class="container">
+        <div th:insert="~{includes/menu :: heder}"></div>
+        <div th:insert="~{includes/menu :: menu}"></div>
+        <div style="text-align: center">
+            <h2 class="bg-info">Opis Stanu banknotów</h2>
+        </div>
     </div>
-
-    <div class="container col-xs-4 col-md-offset-2" style="text-align: center">
-        <span th:text="'Tablela ' + ${exchangeRate.table}"></span>
-        <br>
-        <span th:text="'nr: ' + ${exchangeRate.no}"> </span>
-        <br>
-        <span th:text="'Data: ' + ${exchangeRate.effectiveDate}"> </span>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>waluta</th>
-                    <th>kod</th>
-                    <th>kurs średni</th>
-                </tr>
-            </thead>
-            <block th:each="rate : ${exchangeRate.rates}">
-                <tr>
-                    <td th:text="${rate.currency}"></td>
-                    <td th:text="${rate.cod}"></td>
-                    <td th:text="${rate.mid} + 'zł'"></td>
-                </tr>
-
-            </block>
-        </table>
-
-    </div>
-
-
 
 </div>
-
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+</body>
 </body>
 </html>

@@ -37,7 +37,17 @@ public class CountryController {
     }
 
     @PostMapping("/country")
-    public String postCountry(@ModelAttribute("country") Country country) {
+    public String postCountry(@ModelAttribute("country") Country country, ModelMap modelMap) {
+
+        Country country1 = countryRepository.findByCountryEn(country.getCountryEn());
+
+        if (country1 != null) {
+            modelMap.addAttribute("countryExist", true);
+            modelMap.addAttribute("countryInfo", "Państwo które chcez dodać już jest w bazie");
+            modelMap.addAttribute("country", new Country());
+            return countryList(modelMap);
+        }
+
         countryRepository.save(country);
         return "redirect:/country";
     }
@@ -69,6 +79,13 @@ public class CountryController {
 
         modelMap.addAttribute("countryList", countryDtoList);
         return "country";
+    }
+
+    @GetMapping("/currency")
+    public String getCurrency1(ModelMap modelMap) {
+        modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
+        modelMap.addAttribute("currencyTrue", false);
+        return "currency";
     }
 
     @GetMapping("/currency/{countryEn}")

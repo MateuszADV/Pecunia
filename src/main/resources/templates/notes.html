@@ -32,41 +32,45 @@
                     <div class="col-md-2" style="text-align: center; height: 90px">
                         <span th:text="${country.id} + ' ' + ${country.countryEn}"></span>
                         <br>
+                        <span th:text="${country.alfa3}"></span>
+                        <br>
                         <img class="flag" th:src="'/images/flags/'+${country.countryEn}+'.png'">
                     </div>
                 </a>
             </Block>
         </div>
 
-        <div class="col-md-8 col-md-offset-2">
-            <table class="table table-bordered  table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>Cod</th>
-                    <th>Waluta</th>
-                    <th>Drobne</th>
-                    <th>KOB </th>
-                    <th>Data wymiany</th>
-                    <th>Poprzednia waluta</th>
-                    <th>Przelicznik</th>
-                    <th>Opis</th>
-                    <th>Dodaj banknot</th>
-                </tr>
-                <th:block th:each="currency : ${currencyList}">
+        <div class="container" th:if="${test} == true">
+            <div class="col-md-8 col-md-offset-2">
+                <table class="table table-bordered  table-striped">
                     <tr>
-                        <td th:text="${currency.id}"></td>
-                        <td th:text="${currency.cod}"></td>
-                        <td th:text="${currency.nameCurrency}"></td>
-                        <td th:text="${currency.change}"></td>
-                        <td th:text="${currency.active}"></td>
-                        <td th:text="${currency.dataExchange}"></td>
-                        <td th:text="${currency.currencyFrom}"></td>
-                        <td th:text="${currency.converter}"></td>
-                        <td th:text="${currency.description}"></td>
-                        <th><a th:href="@{'/note/' + ${currency.id}}">Dodaj banknot</a></th>
+                        <th>Id</th>
+                        <th>Cod</th>
+                        <th>Waluta</th>
+                        <th>Drobne</th>
+                        <th>KOB </th>
+                        <th>Data wymiany</th>
+                        <th>Poprzednia waluta</th>
+                        <th>Przelicznik</th>
+                        <th>Opis</th>
+                        <th>Dodaj banknot</th>
                     </tr>
-                </th:block>
-            </table>
+                    <th:block th:each="currency : ${currencyList}">
+                        <tr>
+                            <td th:text="${currency.id}"></td>
+                            <td th:text="${currency.cod}"></td>
+                            <td th:text="${currency.nameCurrency}"></td>
+                            <td th:text="${currency.change}"></td>
+                            <td th:text="${currency.active}"></td>
+                            <td th:text="${currency.dataExchange}"></td>
+                            <td th:text="${currency.currencyFrom}"></td>
+                            <td th:text="${currency.converter}"></td>
+                            <td th:text="${currency.description}"></td>
+                            <th><a th:href="@{'/note/' + ${currency.id}}">Dodaj banknot</a></th>
+                        </tr>
+                    </th:block>
+                </table>
+            </div>
         </div>
     </div>
 
