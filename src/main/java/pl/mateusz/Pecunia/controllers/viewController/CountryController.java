@@ -33,38 +33,37 @@ public class CountryController {
     @GetMapping("/country")
     public String getCountry(ModelMap modelMap) {
         modelMap.addAttribute("country", new Country());
+        modelMap.addAttribute("edit", false);
+        modelMap.addAttribute("buton", "Dodaj Banknot");
         return countryList(modelMap);
     }
 
     @PostMapping("/country")
-    public String postCountry(@ModelAttribute("country") Country country, ModelMap modelMap) {
+    public String postCountry(@ModelAttribute("country") Country country,
+                              @RequestParam Boolean edit,
+                              ModelMap modelMap) {
 
-        Country country1 = countryRepository.findByCountryEn(country.getCountryEn());
+        Country countryFind = countryRepository.findByCountryEn(country.getCountryEn());
 
-        if (country1 != null) {
+        if (countryFind != null && edit != true) {
             modelMap.addAttribute("countryExist", true);
             modelMap.addAttribute("countryInfo", "Państwo które chcez dodać już jest w bazie");
+            modelMap.addAttribute("buton", "Dodaj Banknot");
             modelMap.addAttribute("country", new Country());
             return countryList(modelMap);
         }
 
         countryRepository.save(country);
+        System.out.println("Zapis do bazy");
         return "redirect:/country";
-    }
-
-    @GetMapping("/addCurrency")
-    public String getCountryView(ModelMap modelMap) {
-
-        modelMap.addAttribute("countryList", countryService.countryDtoList().getCountryDtoList());
-
-        return "addCurrency";
     }
 
     @GetMapping("/country/{countryEn}")
     public String getCountryEn(@PathVariable String countryEn, ModelMap modelMap) {
         Country country = countryRepository.findByCountryEn(countryEn);
         modelMap.addAttribute("country", country);
-
+        modelMap.addAttribute("edit", true);
+        modelMap.addAttribute("buton", "Zapisz Zmiany");
         return countryList(modelMap);
     }
 

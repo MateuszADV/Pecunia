@@ -4,18 +4,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "notes")
-public class Note {
+@Table(name = "v_note_info")
+public class NoteInfoView {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "notes_sequence")
-    private Long id;
+    @Column(name = "id")
+    private Long noteId;
+    private String continent;
+    @Column(name = "country_en")
+    private String countryEn;
+    private String cod;
+    private String currency;
     private Double denomination;
     @Column(name = "note_date")
     private String noteDate;
@@ -32,9 +40,5 @@ public class Note {
     @Column(name = "avers_path")
     private String aversPath;
     @Column(name = "reverse_path")
-    private String  reversePath;
-
-    @ManyToOne
-    @JoinColumn(name = "currency_id")
-    private Currency currency;
+    private String reversePath;
 }

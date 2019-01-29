@@ -30,7 +30,7 @@
             <Block th:each="country : ${countrys}">
                 <a th:href="@{'/notes/' + ${country.id}}">
                     <div class="col-md-2" style="text-align: center; height: 90px">
-                        <span th:text="${country.id} + ' ' + ${country.countryEn}"></span>
+                        <span th:text="${country.countryEn}"></span>
                         <br>
                         <span th:text="${country.alfa3}"></span>
                         <br>
@@ -40,7 +40,7 @@
             </Block>
         </div>
 
-        <div class="container" th:if="${test} == true">
+        <div class="container" th:if="${countryVisible} == true">
             <div class="col-md-8 col-md-offset-2">
                 <table class="table table-bordered  table-striped">
                     <tr>
