@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+//@RequestMapping("/Pecunia")
 public class NoteController {
 
 

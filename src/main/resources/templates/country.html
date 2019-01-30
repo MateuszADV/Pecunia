@@ -28,41 +28,58 @@
     </div>
     <div class="container-fluid">
         <div class="container col-md-6 col-md-offset-3">
-            <form th:action="@{/country}" method="post" th:object="${country}">
+            <form th:action="@{/country}" method="post" th:object="${countryDto}">
                 <table class="table table-bordered">
                     <input type="number" th:field="*{id}" style="display: none">
                     <input type="text" th:name="edit" th:value="${edit}" style="display: none">
                     <tr>
                         <td>Kontynent (region)</td>
-                        <td><input class="form-control" type="text" th:field="*{continent}" placeholder="Kontynent (region)"></td>
+                        <td><input class="form-control" type="text" th:field="*{continent}" placeholder="Kontynent (region)">
+                            <span th:if="${#fields.hasErrors('continent')}" th:errors="*{continent}" style="color: red"></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>Państwo po angielsku</td>
-                        <td><input class="form-control" type="text" th:field="*{countryEn}" placeholder="Nazwa po angielsku"></td>
+                        <td><input class="form-control" type="text" th:field="*{countryEn}" placeholder="Nazwa po angielsku">
+                            <span  th:if="${#fields.hasErrors('countryEn')}" th:errors="*{countryEn}" style="color: red">></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>Państwo po polsku</td>
-                        <td><input class="form-control" type="text" th:field="*{countryPl}" placeholder="Nazwa po polsku"></td>
+                        <td><input class="form-control" type="text" th:field="*{countryPl}" placeholder="Nazwa po polsku">
+                            <span  th:if="${#fields.hasErrors('countryPl')}" th:errors="*{countryPl}" style="color: red">></span>
+                        </td>
+
                     </tr>
                     <tr>
                         <td>Stolica</td>
-                        <td><input class="form-control" type="text" th:field="*{capitalCity}" placeholder="Stolica"></td>
+                        <td><input class="form-control" type="text" th:field="*{capitalCity}" placeholder="Stolica">
+                            <span  th:if="${#fields.hasErrors('capitalCity')}" th:errors="*{capitalCity}" style="color: red">></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>Alfa 2</td>
-                        <td><input class="form-control" type="text" th:field="*{alfa2}" placeholder="Alfa 2"></td>
+                        <td><input class="form-control" type="text" th:field="*{alfa2}" placeholder="Alfa 2">
+                            <span  th:if="${#fields.hasErrors('alfa2')}" th:errors="*{alfa2}" style="color: red">></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>Alfa 3</td>
-                        <td><input class="form-control" type="text" th:field="*{alfa3}" placeholder="Alfa 3"></td>
+                        <td><input class="form-control" type="text" th:field="*{alfa3}" placeholder="Alfa 3">
+                            <span  th:if="${#fields.hasErrors('alfa3')}" th:errors="*{alfa3}" style="color: red">></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>kod numeryczny</td>
-                        <td><input class="form-control" type="text" th:field="*{numericCode}" placeholder="Kod lczbowy"></td>
+                        <td><input class="form-control" type="text" th:field="*{numericCode}" placeholder="Kod lczbowy">
+                            <span  th:if="${#fields.hasErrors('numericCode')}" th:errors="*{numericCode}" style="color: red">></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>kod iso</td>
-                        <td><input class="form-control" type="text" th:field="*{isoCode}" placeholder="kod ISO"></td>
+                        <td><input class="form-control" type="text" th:field="*{isoCode}" placeholder="kod ISO">
+                            <span  th:if="${#fields.hasErrors('isoCode')}" th:errors="*{isoCode}" style="color: red">></span>
+                        </td>
                     </tr>
                 </table>
                 <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" th:value="${buton}"></p>
@@ -90,7 +107,7 @@
                 <tr>
                     <td th:text="${country.id}"></td>
                     <td th:text="${country.continent}"></td>
-                    <td class="col-xs-1"><img class="flagInTable" th:src="'/images/flags/'+${country.countryEn}+'.png'"></td>
+                    <td class="col-xs-1"><img class="flagInTable" th:src="'images/flags/'+${country.countryEn}+'.png'"></td>
                     <td th:text="${country.countryEn}"></td>
                     <td th:text="${country.countryPl}"></td>
                     <td th:text="${country.capitalCity}"></td>

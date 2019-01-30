@@ -29,6 +29,8 @@ public class Note {
     private String quality;
     private String status;
     private String description;
+    @Column(name = "img_type")
+    private String imgType;
     @Column(name = "avers_path")
     private String aversPath;
     @Column(name = "reverse_path")

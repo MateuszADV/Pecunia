@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.services.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.Country;
@@ -12,6 +13,7 @@ import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,18 +34,24 @@ public class CountryController {
 
     @GetMapping("/country")
     public String getCountry(ModelMap modelMap) {
-        modelMap.addAttribute("country", new Country());
+        modelMap.addAttribute("countryDto", new CountryDto());
         modelMap.addAttribute("edit", false);
         modelMap.addAttribute("buton", "Dodaj Banknot");
         return countryList(modelMap);
     }
 
     @PostMapping("/country")
-    public String postCountry(@ModelAttribute("country") Country country,
+    public String postCountry(@ModelAttribute("countryDto")@Valid CountryDto countryDto, BindingResult result,
                               @RequestParam Boolean edit,
                               ModelMap modelMap) {
 
-        Country countryFind = countryRepository.findByCountryEn(country.getCountryEn());
+        Country countryFind = countryRepository.findByCountryEn(countryDto.getCountryEn());
+
+        if (result.hasErrors()) {
+            modelMap.addAttribute("error", "Wypełnij poprawnie pole");
+            modelMap.addAttribute("buton", "Dodaj Banknot");
+            return countryList(modelMap);
+        }
 
         if (countryFind != null && edit != true) {
             modelMap.addAttribute("countryExist", true);
@@ -53,7 +61,9 @@ public class CountryController {
             return countryList(modelMap);
         }
 
-        countryRepository.save(country);
+        Country country = (new ModelMapper().map(countryDto, Country.class));
+
+//        countryRepository.save(country);
         System.out.println("Zapis do bazy");
         return "redirect:/country";
     }
@@ -61,7 +71,8 @@ public class CountryController {
     @GetMapping("/country/{countryEn}")
     public String getCountryEn(@PathVariable String countryEn, ModelMap modelMap) {
         Country country = countryRepository.findByCountryEn(countryEn);
-        modelMap.addAttribute("country", country);
+        CountryDto countryDto = (new ModelMapper().map(country, CountryDto.class));
+        modelMap.addAttribute("countryDto", countryDto);
         modelMap.addAttribute("edit", true);
         modelMap.addAttribute("buton", "Zapisz Zmiany");
         return countryList(modelMap);
