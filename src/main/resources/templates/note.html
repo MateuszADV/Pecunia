@@ -25,6 +25,7 @@
         <h2>Banknoty Świata</h2>
     </div>
 
+
     <div class="container row">
         <div class="container col-md-6">
             <span><b>Kontynent: </b></span>
@@ -40,12 +41,15 @@
             <span th:text="${countryCurrency.currency}"></span>
         </div>
         <div class="container col-md-6">
-            <p><img class="flag" th:src="'/images/flags/'+${countryCurrency.countryEn}+'.png'"></p>
+            <p><img class="flag" th:src="#{flagPath} + ${countryCurrency.countryEn}+'.png'"></p>
         </div>
     </div>
+    <div class="container" style="text-align: center">
+        <h3 th:text="${save}" th:class="${statusSave} ? bg-success : bg-danger"></h3>
+    </div>
     <div class="container row">
-        <div class="container  col-md-6">
-            <form  th:action="@{/note}" method="post" th:object="${note}">
+        <div class="container  col-md-5">
+            <form  th:action="@{/note}" method="post" th:object="${noteDto}">
                 <table class="table table-bordered">
                     <input type="number" th:name="currencyId" th:value="${currencyId}" style="display: none">
                     <tr>
@@ -85,6 +89,10 @@
                         <td><textarea class="form-control" th:field="*{description}" placeholder="Opis"></textarea></td>
                     </tr>
                     <tr>
+                        <td>Typ obrazka</td>
+                        <td><input class="form-control" type="text" th:field="*{imgType}" placeholder="skan/foto/www/LOC"></td>
+                    </tr>
+                    <tr>
                         <td>Avers</td>
                         <td><input class="form-control" type="text" th:field="*{aversPath}" placeholder="avers banknotu"></td>
                     </tr>
@@ -96,8 +104,31 @@
                 <input class="btn btn-primary" type="submit" value="Dodaj">
             </form>
         </div>
-        <div class="container  col-md-6">
-            <p>prawa strona</p>
+        <div class="container  col-md-7">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nominał</th>
+                    <th>Sygnature</th>
+                    <th>Kupno</th>
+                    <th>Sprzedż</th>
+                    <th>Sztuki</th>
+                    <th>Status</th>
+                    <th style="width: 109px">Avers</th>
+                    <th style="width: 109px">Reverse</th>
+                </tr>
+                <th:block th:each=" note : ${currencyNoteList}">
+                    <tr>
+                        <td th:text="${note.denomination}"></td>
+                        <td th:text="${note.signatureCode}"></td>
+                        <td th:text="${note.priceBuy} + 'zł'"></td>
+                        <td th:text="${note.priceSell} + 'zł'"></td>
+                        <td th:text="${note.quantity}"></td>
+                        <td th:text="${note.status}"></td>
+                        <td ><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
+                        <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                    </tr>
+                </th:block>
+            </table>
         </div>
     </div>
 

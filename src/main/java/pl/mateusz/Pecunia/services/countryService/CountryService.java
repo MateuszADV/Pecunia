@@ -17,7 +17,7 @@ public interface CountryService {
 
     ContinentResponse continentResponse(ContinentRequest request);
 
-    List<CurrencyDto> curencyFromCountryId(Long currencyId);
+    List<CurrencyDto> currencyFromCountryId(Long currencyId);
 
     ContinentCountryCurrencysResponse continentCountryCurrencysResponse();
 

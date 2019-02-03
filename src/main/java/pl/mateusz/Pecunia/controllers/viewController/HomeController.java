@@ -1,28 +1,22 @@
 package pl.mateusz.Pecunia.controllers.viewController;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import pl.mateusz.Pecunia.models.CodeParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import pl.mateusz.Pecunia.models.repositories.CodeParamRepository;
-import pl.mateusz.Pecunia.services.HomeService.HomeService;
-import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
+import pl.mateusz.Pecunia.services.HomeService.HomeService;
+import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.services.exchangeService.ExchangeService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/Pecunia")
 public class HomeController {
 
 
@@ -50,7 +44,7 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping("/")
+    @GetMapping(value = {"Pecunia","/"})
     public String getIndex(ModelMap modelMap) {
         List<String > codeList = homeService.currencyCode();
 
@@ -65,7 +59,7 @@ public class HomeController {
         return "<h1>BRAK STRONY BŁĄD 404</h1";
     }
 
-    @PostMapping("/showJson")
+    @PostMapping(value = {"/Pecunia/showJson","/showJson"})
     public String getShowJson(@RequestParam(value = "countryId") Long countryId, ModelMap modelMap) {
 
         modelMap.addAttribute("Gson", JsonUtils.gsonPretty(countryService.countryJson(countryId)));

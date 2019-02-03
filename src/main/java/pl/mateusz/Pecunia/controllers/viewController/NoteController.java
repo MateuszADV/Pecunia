@@ -1,23 +1,30 @@
 package pl.mateusz.Pecunia.controllers.viewController;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.models.Currency;
 import pl.mateusz.Pecunia.models.Note;
+import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.NoteInfoView;
+import pl.mateusz.Pecunia.models.dtos.NoteCountryViewDto;
+import pl.mateusz.Pecunia.models.dtos.NoteDto;
+import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
+import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteInfoViewRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteRepository;
 import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-//@RequestMapping("/Pecunia")
 public class NoteController {
 
 
@@ -26,74 +33,112 @@ public class NoteController {
     private CurrencyRepository currencyRepository;
     private CountryService countryService;
     private NoteInfoViewRepository noteInfoViewRepository;
+    private NoteCountryViewRepository noteCountryViewRepository;
 
     @Autowired
-    public NoteController(NoteService noteService, NoteRepository noteRepository, CurrencyRepository currencyRepository
-                         ,CountryService countryService, NoteInfoViewRepository noteInfoViewRepository) {
+    public NoteController(NoteService noteService, NoteRepository noteRepository, CurrencyRepository currencyRepository, CountryService countryService,
+                          NoteInfoViewRepository noteInfoViewRepository, NoteCountryViewRepository noteCountryViewRepository) {
         this.noteService = noteService;
         this.noteRepository = noteRepository;
         this.currencyRepository = currencyRepository;
         this.countryService = countryService;
         this.noteInfoViewRepository = noteInfoViewRepository;
+        this.noteCountryViewRepository = noteCountryViewRepository;
     }
 
-    @GetMapping("/note")
+    @GetMapping(value = {"/Pecunia/note","/note"})
     public String getNotes(ModelMap modelMap) {
         modelMap.addAttribute("note", new Note());
         return "note";
     }
 
-    @GetMapping("/note/{currencyId}")
+    @GetMapping(value = {"/Pecunia/note/{currencyId}","/note/{currencyId}"})
     public String getNote(@PathVariable Long currencyId, ModelMap modelMap) {
 
-        modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
-        modelMap.addAttribute("currencyId", currencyId);
-        modelMap.addAttribute("note", new Note());
+        NoteModelMap(currencyId, modelMap);
 
         return "/note";
     }
 
-    @GetMapping("/notes")
+    @GetMapping(value = {"/Pecunia/notes","/notes"})
     public String getNotesSize(ModelMap modelMap) {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
 
         return "notes";
     }
 
-    @GetMapping("/notes/{countryId}")
+    @GetMapping(value = {"/Pecunia/notes/{countryId}","/notes/{countryId}"})
     public String getNotesCountry(@PathVariable Long countryId, ModelMap modelMap) {
-        modelMap.addAttribute("currencyList", countryService.curencyFromCountryId(countryId));
+        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
         modelMap.addAttribute("countryVisible",true);
-        System.out.println("powinno byćid państwa: " + countryId);
 
         return "notes";
     }
 
-    @PostMapping("/note")
-    public String postNote(@ModelAttribute("note") Note note,
+    @PostMapping(value = {"/Pecunia/note","/note"})
+    public String postNote(@ModelAttribute("noteDto") NoteDto noteDto,
                            @RequestParam("currencyId") Long currencyId,
                            ModelMap modelMap) {
 
-        Optional<Currency> currency = currencyRepository.findById(currencyId);
-        note.setCurrency(currency.get());
-        noteRepository.save(note);
-        modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
-        modelMap.addAttribute("currencyId", currencyId);
-        modelMap.addAttribute("note", new Note());
+        if (BooleanUtils.isTrue(noteService.saveNote(noteDto,currencyId))) {
+            modelMap.addAttribute("save", "Bnknot został dodany do bazy");
+            modelMap.addAttribute("statusSave", true);
+        }else {
+            modelMap.addAttribute("save", "Coś poszło nie tak :(!!!");
+            modelMap.addAttribute("statusSave", false);
+        }
+
+        NoteModelMap(currencyId, modelMap);
         return "note";
     }
 
-    @GetMapping("/quality")
+    private void NoteModelMap(@RequestParam("currencyId") Long currencyId, ModelMap modelMap) {
+        modelMap.addAttribute("currencyNoteList",noteService.currencyNoteList(currencyId));
+        modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
+        modelMap.addAttribute("currencyId", currencyId);
+        modelMap.addAttribute("noteDto", new NoteDto());
+    }
+
+    @GetMapping(value = {"Pecunia/quality","/quality"})
     public String getQuality(){
 
         return "quality";
     }
 
-    @GetMapping("/showNotes")
-    public String getShoowNote(ModelMap modelMap) {
+    @GetMapping(value = {"/Pecunia/showNotes","/showNotes"})
+    public String getShowNote(ModelMap modelMap) {
 
         List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllByOrderByCountryEn();
-        modelMap.addAttribute("noteInfo", noteInfoViewList);
+        modelMap.addAttribute("banknotes", noteInfoViewList);
+        modelMap.addAttribute("countryEn", "Wszystkie banknoty");
+
+        return "showNotes";
+    }
+
+    @GetMapping(value = {"/Pecunia/banknotesCollection","/banknotesCollection"})
+    public String getBanknotesColletion(ModelMap modelMap) {
+        List<NoteCountryView> noteCountryViewList = noteCountryViewRepository.findAll();
+        List<NoteCountryViewDto> noteCountryViewDtoList = new ArrayList<>();
+
+        for (NoteCountryView noteCountryView : noteCountryViewList) {
+            noteCountryViewDtoList.add(new ModelMapper().map(noteCountryView, NoteCountryViewDto.class));
+        }
+
+        modelMap.addAttribute("noteCountry", noteCountryViewDtoList);
+
+        return "banknotesCollection";
+    }
+
+    @GetMapping(value = {"/Pecunia/banknotes/{countryEn}","/banknotes/{countryEn}"})
+    public String postbanknotes(@PathVariable String countryEn, ModelMap modelMap) {
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllByCountryEnOrderByNoteId(countryEn);
+        List<NoteInfoViewDto> noteInfoViewDtoList = new ArrayList<>();
+        for (NoteInfoView noteInfoView : noteInfoViewList) {
+            noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
+        }
+
+        modelMap.addAttribute("countryEn", noteInfoViewDtoList.get(0).getCountryEn());
+        modelMap.addAttribute("banknotes", noteInfoViewDtoList);
 
         return "showNotes";
     }

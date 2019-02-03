@@ -23,7 +23,7 @@
 </div>
 <div class="container-fluid">
     <div class="container" style="text-align: center">
-        <h3>LISTA BANKNOTÓW</h3>
+        <h3 th:text="'LISTA BANKNOTÓW: ' + ${countryEn}"></h3>
     </div>
 
     <div class="container-fluid">
@@ -43,10 +43,10 @@
                 <th>Status</th>
                 <th>Status</th>
                 <th>Opis</th>
-                <th style="width: 200px">Avers</th>
-                <th style="width: 200px">Revers</th>
+                <th style="width: 150px">Avers</th>
+                <th style="width: 150px">Revers</th>
             </tr>
-            <block th:each="note : ${noteInfo}">
+            <block th:each="note : ${banknotes}">
                 <tr>
                     <td th:text="${note.noteId}"></td>
                     <td th:text="${note.continent}"></td>
@@ -62,8 +62,8 @@
                     <td th:text="${note.status}"></td>
                     <td th:text="${note.quality}"></td>
                     <td th:text="${note.description}"></td>
-                    <td><a target="_blank" th:href="${note.aversPath}"><img class="imageNote" th:src="${note.aversPath}"></a></td>
-                    <td><a target="_blank" th:href="${note.reversePath}"><img class="imageNote" th:src="${note.reversePath}"></a></td>
+                    <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
+                    <td><a target="_blank" th:href="#{notePath} + ${note.reversePath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
                 </tr>
             </block>
 

@@ -107,7 +107,7 @@
                 <tr>
                     <td th:text="${country.id}"></td>
                     <td th:text="${country.continent}"></td>
-                    <td class="col-xs-1"><img class="flagInTable" th:src="'images/flags/'+${country.countryEn}+'.png'"></td>
+                    <td class="col-xs-1"><img class="flagInTable" th:src="#{flagPath} + ${country.countryEn}+'.png'"></td>
                     <td th:text="${country.countryEn}"></td>
                     <td th:text="${country.countryPl}"></td>
                     <td th:text="${country.capitalCity}"></td>

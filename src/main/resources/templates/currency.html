@@ -30,7 +30,7 @@
                     <div class="col-md-2" style="text-align: center; height: 90px">
                         <span th:text="${country.id} + ' ' + ${country.countryEn}"></span>
                         <br>
-                        <img class="flag" th:src="'/images/flags/'+${country.countryEn}+'.png'">
+                        <img class="flag" th:src="#{flagPath} + ${country.countryEn}+'.png'">
                     </div>
                 </a>
             </Block>
@@ -44,7 +44,7 @@
             <div class="col-md-4">
                 <center>
                     <p th:text="'Dodaj walutę do '+${countryEn}"> </p>
-                    <p ><img class="flag" th:src="'/images/flags/'+${countryEn}+'.png'"></p>
+                    <p ><img class="flag" th:src="#{flagPath} + ${countryEn}+'.png'"></p>
                 </center>
             </div>
             <div class="col-md-4">
