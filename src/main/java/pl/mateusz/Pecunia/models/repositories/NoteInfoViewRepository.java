@@ -12,4 +12,5 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
     List<NoteInfoView> findAllByOrderByCountryEn();
     List<NoteInfoView> findAllByCountryEnOrderByNoteId(String countryEn);
     List<NoteInfoView> findAllByCurrencyId(Long currencyId);
+    NoteInfoView findByNoteId(Long noteId);
 }

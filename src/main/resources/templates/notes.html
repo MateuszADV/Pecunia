@@ -28,7 +28,7 @@
     <div class="container">
         <div class="row">
             <Block th:each="country : ${countrys}">
-                <a th:href="@{'/notes/' + ${country.id}}">
+                <a th:href="@{'/selectCurrency/' + ${country.id}}">
                     <div class="col-md-2" style="text-align: center; height: 90px">
                         <span th:text="${country.countryEn}"></span>
                         <br>

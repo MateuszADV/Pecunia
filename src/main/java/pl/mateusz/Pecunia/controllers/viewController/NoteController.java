@@ -3,6 +3,7 @@ package pl.mateusz.Pecunia.controllers.viewController;
 import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -46,28 +47,29 @@ public class NoteController {
         this.noteCountryViewRepository = noteCountryViewRepository;
     }
 
-    @GetMapping(value = {"/Pecunia/note","/note"})
-    public String getNotes(ModelMap modelMap) {
-        modelMap.addAttribute("note", new Note());
-        return "note";
-    }
+//    @GetMapping(value = {"/Pecunia/note","/note"})
+//    public String getNotes(ModelMap modelMap) {
+//        modelMap.addAttribute("note", new Note());
+//        return "note";
+//    }
 
     @GetMapping(value = {"/Pecunia/note/{currencyId}","/note/{currencyId}"})
     public String getNote(@PathVariable Long currencyId, ModelMap modelMap) {
 
+        modelMap.addAttribute("buton", "Dodaj Banknot");
         NoteModelMap(currencyId, modelMap);
 
         return "/note";
     }
 
-    @GetMapping(value = {"/Pecunia/notes","/notes"})
+    @GetMapping(value = {"/Pecunia/selectCountry","/selectCountry"})
     public String getNotesSize(ModelMap modelMap) {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
 
         return "notes";
     }
 
-    @GetMapping(value = {"/Pecunia/notes/{countryId}","/notes/{countryId}"})
+    @GetMapping(value = {"/Pecunia/selectCurrency/{countryId}","/selectCurrency/{countryId}"})
     public String getNotesCountry(@PathVariable Long countryId, ModelMap modelMap) {
         modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
         modelMap.addAttribute("countryVisible",true);
@@ -75,7 +77,7 @@ public class NoteController {
         return "notes";
     }
 
-    @PostMapping(value = {"/Pecunia/note","/note"})
+    @PostMapping(value = {"/Pecunia/addNote","/addNote"})
     public String postNote(@ModelAttribute("noteDto") NoteDto noteDto,
                            @RequestParam("currencyId") Long currencyId,
                            ModelMap modelMap) {
@@ -141,5 +143,22 @@ public class NoteController {
         modelMap.addAttribute("banknotes", noteInfoViewDtoList);
 
         return "showNotes";
+    }
+
+    @GetMapping(value = {"/Pecunia/noteEdit/{noteId}","/noteEdit/{noteId}"})
+    public String getEditNote(@PathVariable Long noteId,
+                              ModelMap modelMap) {
+        NoteInfoView noteInfoView = noteInfoViewRepository.findByNoteId(noteId);
+        Long currencyId = noteInfoView.getCurrencyId();
+        Note note = noteRepository.getOne(noteId);
+        NoteDto noteDto = new ModelMapper().map(note, NoteDto.class);
+
+        modelMap.addAttribute("currencyNoteList",noteService.currencyNoteList(currencyId));
+        modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
+        modelMap.addAttribute("currencyId", currencyId);
+        modelMap.addAttribute("noteDto", noteDto);
+        modelMap.addAttribute("buton", "zapisz zmiany");
+
+        return "/note";
     }
 }

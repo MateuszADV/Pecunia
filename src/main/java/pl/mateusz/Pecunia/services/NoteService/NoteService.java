@@ -13,4 +13,5 @@ public interface NoteService {
     Boolean saveNote(NoteDto noteDto, Long currencyId);
 
     List<NoteInfoViewDto> currencyNoteList(Long currencyId);
+
 }

@@ -49,9 +49,10 @@
     </div>
     <div class="container row">
         <div class="container  col-md-5">
-            <form  th:action="@{/note}" method="post" th:object="${noteDto}">
+            <form  th:action="@{/addNote}" method="post" th:object="${noteDto}">
                 <table class="table table-bordered">
                     <input type="number" th:name="currencyId" th:value="${currencyId}" style="display: none">
+                    <input type="number" th:field="*{id}" style="display: none">
                     <tr>
                         <td>Nominał</td>
                         <td><input class="form-control" type="text" th:field="*{denomination}" placeholder="Nominał banknotu"></td>
@@ -101,7 +102,7 @@
                         <td><input class="form-control" type="text" th:field="*{reversePath}" placeholder="revers banknotu"></td>
                     </tr>
                 </table>
-                <input class="btn btn-primary" type="submit" value="Dodaj">
+                <input class="btn btn-primary" type="submit" th:value="${buton}">
             </form>
         </div>
         <div class="container  col-md-7">
@@ -115,6 +116,7 @@
                     <th>Status</th>
                     <th style="width: 109px">Avers</th>
                     <th style="width: 109px">Reverse</th>
+                    <th>Edycja</th>
                 </tr>
                 <th:block th:each=" note : ${currencyNoteList}">
                     <tr>
@@ -126,6 +128,7 @@
                         <td th:text="${note.status}"></td>
                         <td ><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
                         <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                        <td><a th:href="@{'/noteEdit/' + ${note.noteId}}">Edytuj</a></td>
                     </tr>
                 </th:block>
             </table>

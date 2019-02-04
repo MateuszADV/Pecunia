@@ -11,6 +11,7 @@ public class NoteInfoViewDto {
     private Long noteId;
     private String continent;
     private String countryEn;
+    private Long currencyId;
     private String cod;
     private String currency;
     private Double denomination;
