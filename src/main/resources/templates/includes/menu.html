@@ -13,6 +13,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
 </head>
 <body>
 
@@ -55,10 +56,10 @@
                     Klienci <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li role="presentation"><a href="#">Dodaj Zamawiającego</a></li>
+                    <li role="presentation"><a href="#">Nowy klient</a></li>
                     <!--<li role="presentation"><a href="/addCurrency">Edytuj/dodaj walutę</a></li>-->
                     <li role="separator" class="divider"></li>
-                    <li role="presentation"><a href="#">Wyświetl listę klientów</a></li>
+                    <li role="presentation"><a href="#">Lista klientów</a></li>
                 </ul>
             </li>
             <li role="presentation"><a href="/Pecunia/quality">Stan Banknotów</a></li>
@@ -69,14 +70,14 @@
 
 <div th:fragment="heder">
     <div class="container row" >
-        <div class="page-header col-md-2" style="background-color: aqua">
-            <p>lewa strona</p>
+        <div class="page-header col-md-2">
+            <p><img class="img-responsive img-circle center-block" th:src="#{logoPath} + 'logo.png'" style="width: 50%; height: 50%"></p>
         </div>
         <div class="page-header col-md-8" style="text-align: center">
             <h1>PECUNIA <small></small></h1>
         </div>
-        <div class="page-header col-md-2" style="background-color: aqua">
-            <p>Prawa strona</p>
+        <div class="page-header col-md-2">
+            <p><img class="img-responsive img-circle center-block" th:src="#{logoPath} + 'logo.png'" style="width: 50%; height: 50%"></p>
         </div>
     </div>
 </div>

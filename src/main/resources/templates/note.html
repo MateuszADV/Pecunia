@@ -21,24 +21,24 @@
     <div th:insert="~{includes/menu :: heder}"></div>
     <div th:insert="~{includes/menu :: menu}"></div>
 
-    <div style="text-align: center">
-        <h2>Banknoty Świata</h2>
-    </div>
-
-
     <div class="container row">
         <div class="container col-md-6">
-            <span><b>Kontynent: </b></span>
-            <span th:text="${countryCurrency.continent}"></span>
-            <br>
-            <span><b>Państwo: </b></span>
-            <span th:text="${countryCurrency.countryEn}"></span>
-            <br>
-            <span><b>Kod: </b></span>
-            <span th:text="${countryCurrency.cod}"></span>
-            <br>
-            <span><b>Waluta: </b></span>
-            <span th:text="${countryCurrency.currency}"></span>
+            <h4>
+                <span><b>Kontynent: </b></span>
+                <span th:text="${countryCurrency.continent}"></span>
+            </h4>
+            <h4>
+                <span><b>Państwo: </b></span>
+                <span th:text="${countryCurrency.countryEn}"></span>
+            </h4>
+            <h4>
+                <span><b>Kod: </b></span>
+                <span th:text="${countryCurrency.cod}"></span>
+            </h4>
+            <h4>
+                <span><b>Waluta: </b></span>
+                <span th:text="${countryCurrency.currency}"></span>
+            </h4>
         </div>
         <div class="container col-md-6">
             <p><img class="flag" th:src="#{flagPath} + ${countryCurrency.countryEn}+'.png'"></p>
@@ -106,12 +106,16 @@
             </form>
         </div>
         <div class="container  col-md-7">
+
+                <center><h2 th:text="'Banknoty: ' + ${countryCurrency.countryEn}"></h2></center>
+
+
             <table class="table table-bordered">
                 <tr>
                     <th>Nominał</th>
-                    <th>Sygnature</th>
+                    <th>Sygnatura</th>
                     <th>Kupno</th>
-                    <th>Sprzedż</th>
+                    <th>Sprzedaż</th>
                     <th>Sztuki</th>
                     <th>Status</th>
                     <th style="width: 109px">Avers</th>
@@ -128,7 +132,11 @@
                         <td th:text="${note.status}"></td>
                         <td ><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
                         <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
-                        <td><a th:href="@{'/noteEdit/' + ${note.noteId}}">Edytuj</a></td>
+                        <td style="text-align: center">
+                            <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
+                                <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            </a>
+                        </td>
                     </tr>
                 </th:block>
             </table>

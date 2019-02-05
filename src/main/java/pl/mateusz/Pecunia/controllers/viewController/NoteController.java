@@ -47,11 +47,6 @@ public class NoteController {
         this.noteCountryViewRepository = noteCountryViewRepository;
     }
 
-//    @GetMapping(value = {"/Pecunia/note","/note"})
-//    public String getNotes(ModelMap modelMap) {
-//        modelMap.addAttribute("note", new Note());
-//        return "note";
-//    }
 
     @GetMapping(value = {"/Pecunia/note/{currencyId}","/note/{currencyId}"})
     public String getNote(@PathVariable Long currencyId, ModelMap modelMap) {
@@ -65,6 +60,7 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/selectCountry","/selectCountry"})
     public String getNotesSize(ModelMap modelMap) {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
+        modelMap.addAttribute("title","Wybierz państwo");
 
         return "notes";
     }
@@ -73,6 +69,7 @@ public class NoteController {
     public String getNotesCountry(@PathVariable Long countryId, ModelMap modelMap) {
         modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
         modelMap.addAttribute("countryVisible",true);
+        modelMap.addAttribute("title","Wybierz walute");
 
         return "notes";
     }
@@ -148,6 +145,12 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/noteEdit/{noteId}","/noteEdit/{noteId}"})
     public String getEditNote(@PathVariable Long noteId,
                               ModelMap modelMap) {
+        noteEdit(noteId, modelMap);
+
+        return "/note";
+    }
+
+    private void noteEdit(@PathVariable Long noteId, ModelMap modelMap) {
         NoteInfoView noteInfoView = noteInfoViewRepository.findByNoteId(noteId);
         Long currencyId = noteInfoView.getCurrencyId();
         Note note = noteRepository.getOne(noteId);
@@ -157,8 +160,6 @@ public class NoteController {
         modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
         modelMap.addAttribute("currencyId", currencyId);
         modelMap.addAttribute("noteDto", noteDto);
-        modelMap.addAttribute("buton", "zapisz zmiany");
-
-        return "/note";
+        modelMap.addAttribute("buton", "Zapisz zmiany");
     }
 }
