@@ -115,7 +115,12 @@
                     <td th:text="${country.alfa3}"></td>
                     <td th:text="${country.numericCode}"></td>
                     <td th:text="${country.isoCode}"></td>
-                    <td><a th:href="@{'/country/'+${country.countryEn}}">Edytuj</a></td>
+                    <td style="text-align: center">
+                        <a th:href="@{'/country/'+${country.countryEn}}">Edytuj
+                            <br>
+                            <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </a>
+                    </td>
                     <!--<td><a th:href="@{'/currency/'+${country.countryEn}}">Dodaj/Edytuj walute</a></td>-->
                 </tr>
                 </th:block>

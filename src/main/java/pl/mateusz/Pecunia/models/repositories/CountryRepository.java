@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
     Country findByCountryEn(String countryEn);
+    Country findById (long countryId);
     List<Country> findAllByOrderById();
     List<Country> findByContinent(String continent);
 }

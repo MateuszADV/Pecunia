@@ -44,7 +44,7 @@
             <p><img class="flag" th:src="#{flagPath} + ${countryCurrency.countryEn}+'.png'"></p>
         </div>
     </div>
-    <div class="container" style="text-align: center">
+    <div class="loading-container" style="text-align: center">
         <h3 th:text="${save}" th:class="${statusSave} ? bg-success : bg-danger"></h3>
     </div>
     <div class="container row">
@@ -140,6 +140,13 @@
                     </tr>
                 </th:block>
             </table>
+        </div>
+
+        <div>
+            <form th:action="@{/note/showJson}" method="post">
+                <input type="text" th:name="countryId" th:value="${countryCurrency.countryId}" style="display: none">
+                <input class="btn btn-primary" th:target="_blank" type="submit" value="Wyświtl Json">
+            </form>
         </div>
     </div>
 

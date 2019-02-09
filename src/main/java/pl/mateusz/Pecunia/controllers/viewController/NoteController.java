@@ -20,6 +20,7 @@ import pl.mateusz.Pecunia.models.repositories.NoteInfoViewRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteRepository;
 import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
+import pl.mateusz.Pecunia.utils.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,5 +162,12 @@ public class NoteController {
         modelMap.addAttribute("currencyId", currencyId);
         modelMap.addAttribute("noteDto", noteDto);
         modelMap.addAttribute("buton", "Zapisz zmiany");
+    }
+
+    @PostMapping(value = {"/Pecunia/note/showJson","note/showJson"})
+    public String getNoteJson(@RequestParam(value = "countryId") Long countryId, ModelMap modelMap) {
+
+        modelMap.addAttribute("Gson",JsonUtils.gsonPretty(noteService.continentCountryCuttencyNote(countryId)));
+        return "showJson";
     }
 }

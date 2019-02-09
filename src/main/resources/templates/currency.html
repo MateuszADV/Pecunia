@@ -20,10 +20,10 @@
     <div th:insert="~{includes/menu :: menu}"></div>
 
     <div style="text-align: center">
-        <h2>Wybierz państwo</h2>
+        <h2 th:text="${chooseCountry}"></h2>
     </div>
 
-    <div class="container">
+    <div class="loading-container">
         <div class="row">
             <Block th:each="country : ${countrys}">
                 <a th:href="@{'/currency/' + ${country.countryEn}}">
@@ -36,7 +36,7 @@
             </Block>
         </div>
     </div>
-    <div class="container" th:if="${currencyTrue} != false">
+    <div class="loading-container" th:if="${currencyTrue} != false">
         <div class="container row" >
             <div class="col-md-4">
 
@@ -48,7 +48,7 @@
                 </center>
             </div>
             <div class="col-md-4">
-                <form th:action="@{/showJson}" method="post">
+                <form th:action="@{/currency/showJson}" method="post">
                     <input type="text" th:name="countryId" th:value="${countryId}" style="display: none">
                     <input class="btn btn-primary" th:target="_blank" type="submit" value="Wyświtl Json">
                 </form>

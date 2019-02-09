@@ -95,6 +95,7 @@ public class CountryController {
     public String getCurrency1(ModelMap modelMap) {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
         modelMap.addAttribute("currencyTrue", false);
+        modelMap.addAttribute("chooseCountry", "Wyberz państwo");
         return "currency";
     }
 
@@ -102,6 +103,7 @@ public class CountryController {
     public String getCurrency(@PathVariable String countryEn, ModelMap modelMap) {
         modelMap.addAttribute("currency", new Currency());
         Country country = countryRepository.findByCountryEn(countryEn);
+        modelMap.addAttribute("chooseCountry", "Dodaj walutę");
 
         return currencyDate(modelMap, country);
     }

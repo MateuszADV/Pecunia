@@ -20,7 +20,7 @@
 <div th:fragment="menu">
     <div>
 
-        <ul class="nav nav-pills">
+        <ul class="nav nav-pills" style="background-color: azure">
             <li role="presentation" class="active"><a href="/Pecunia">Home</a></li>
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -71,10 +71,10 @@
 <div th:fragment="heder">
     <div class="container row" >
         <div class="page-header col-md-2">
-            <p><img class="img-responsive img-circle center-block" th:src="#{logoPath} + 'logo.png'" style="width: 50%; height: 50%"></p>
+            <p><img class="img-responsive img-circle center-block nested-img" th:src="#{logoPath} + 'logo.png'" style="width: 50%; height: 50%"></p>
         </div>
         <div class="page-header col-md-8" style="text-align: center">
-            <h1>PECUNIA <small></small></h1>
+            <h1>PECUNIA <small>BANKNOTS OF WORLD</small></h1>
         </div>
         <div class="page-header col-md-2">
             <p><img class="img-responsive img-circle center-block" th:src="#{logoPath} + 'logo.png'" style="width: 50%; height: 50%"></p>

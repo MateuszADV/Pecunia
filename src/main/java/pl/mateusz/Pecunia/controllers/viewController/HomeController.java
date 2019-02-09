@@ -59,7 +59,7 @@ public class HomeController {
         return "<h1>BRAK STRONY BŁĄD 404</h1";
     }
 
-    @PostMapping(value = {"/Pecunia/showJson","/showJson"})
+    @PostMapping(value = {"/Pecunia/currency/showJson","/currency/showJson"})
     public String getShowJson(@RequestParam(value = "countryId") Long countryId, ModelMap modelMap) {
 
         modelMap.addAttribute("Gson", JsonUtils.gsonPretty(countryService.countryJson(countryId)));

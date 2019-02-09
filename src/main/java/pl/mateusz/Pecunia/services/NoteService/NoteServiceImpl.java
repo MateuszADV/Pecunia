@@ -3,17 +3,11 @@ package pl.mateusz.Pecunia.services.NoteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-import pl.mateusz.Pecunia.models.CountryCurrencyView;
-import pl.mateusz.Pecunia.models.Currency;
-import pl.mateusz.Pecunia.models.Note;
-import pl.mateusz.Pecunia.models.NoteInfoView;
-import pl.mateusz.Pecunia.models.dtos.NoteDto;
-import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
-import pl.mateusz.Pecunia.models.repositories.CountryCurrencyViewRepository;
-import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
-import pl.mateusz.Pecunia.models.repositories.NoteInfoViewRepository;
-import pl.mateusz.Pecunia.models.repositories.NoteRepository;
+import pl.mateusz.Pecunia.models.*;
+import pl.mateusz.Pecunia.models.dtos.*;
+import pl.mateusz.Pecunia.models.forms.ContinentCountryCurrencyNote;
+import pl.mateusz.Pecunia.models.forms.CountryCurrencyNote;
+import pl.mateusz.Pecunia.models.repositories.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +20,16 @@ public class NoteServiceImpl implements NoteService {
     private NoteRepository noteRepository;
     private CurrencyRepository currencyRepository;
     private NoteInfoViewRepository noteInfoViewRepository;
+    private CountryRepository countryRepository;
 
     @Autowired
     public NoteServiceImpl(CountryCurrencyViewRepository countryCurrencyViewRepository, NoteRepository noteRepository,
-                           CurrencyRepository currencyRepository, NoteInfoViewRepository noteInfoViewRepository) {
+                           CurrencyRepository currencyRepository, NoteInfoViewRepository noteInfoViewRepository, CountryRepository countryRepository) {
         this.countryCurrencyViewRepository = countryCurrencyViewRepository;
         this.noteRepository = noteRepository;
         this.currencyRepository = currencyRepository;
         this.noteInfoViewRepository = noteInfoViewRepository;
+        this.countryRepository = countryRepository;
     }
 
     @Override
@@ -65,6 +61,44 @@ public class NoteServiceImpl implements NoteService {
             noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
         }
         return noteInfoViewDtoList;
+    }
+
+    @Override
+    public  ContinentCountryCurrencyNote continentCountryCuttencyNote(Long countryId) {
+        ContinentCountryCurrencyNote continentCountryCurrencyNote = new ContinentCountryCurrencyNote();
+        List<CountryCurrencyNote> countryCurrencyNoteList = new ArrayList<>();
+        List<CurrencyNoteDto> currencyNoteDtoList = new ArrayList<>();
+
+        Country country = countryRepository.findById(countryId).get();
+
+        List<Currency> currencyList = currencyRepository.findByCountry_IdOrderByDataExchangeDesc(countryId);
+        for (Currency currency : currencyList) {
+            CurrencyNoteDto currencyNoteDto = new ModelMapper().map(currency, CurrencyNoteDto.class);
+            currencyNoteDto.setBanknotes(noteJsonDtoList(currency.getId()));
+
+            currencyNoteDtoList.add(currencyNoteDto);
+        }
+        CountryCurrencyNote countryCurrencyNote = new CountryCurrencyNote();
+        countryCurrencyNote.setCountry(country.getCountryEn());
+        countryCurrencyNote.setAlfa3(country.getAlfa3());
+        countryCurrencyNote.setCurrencys(currencyNoteDtoList);
+
+        countryCurrencyNoteList.add(countryCurrencyNote);
+
+
+        continentCountryCurrencyNote.setContinent(country.getContinent());
+        continentCountryCurrencyNote.setCountryList(countryCurrencyNoteList);
+        return continentCountryCurrencyNote;
+    }
+
+
+    private List<NoteJsonDto> noteJsonDtoList(Long currencyId) {
+        List<Note> noteList = noteRepository.findByCurrencyId(currencyId);
+        List<NoteJsonDto> noteJsonDtoList = new ArrayList<>();
+        for (Note note : noteList) {
+            noteJsonDtoList.add(new ModelMapper().map(note, NoteJsonDto.class));
+        }
+        return noteJsonDtoList;
     }
 
 }

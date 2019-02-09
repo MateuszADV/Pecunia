@@ -12,18 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @ToString
-public class CurrencyDto {
+public class CurrencyNoteDto {
 
     private Long id;
     private String cod;
     private String nameCurrency;
     private String change;
     private int active;
-    private String dataExchange;
-    private String currencyFrom;
-    private String converter;
-    private String description;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NoteJsonDto> noteList;
+    private List<NoteJsonDto> banknotes;
 }
