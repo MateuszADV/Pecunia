@@ -85,12 +85,10 @@ public class NoteServiceImpl implements NoteService {
 
         countryCurrencyNoteList.add(countryCurrencyNote);
 
-
         continentCountryCurrencyNote.setContinent(country.getContinent());
         continentCountryCurrencyNote.setCountryList(countryCurrencyNoteList);
         return continentCountryCurrencyNote;
     }
-
 
     private List<NoteJsonDto> noteJsonDtoList(Long currencyId) {
         List<Note> noteList = noteRepository.findByCurrencyId(currencyId);

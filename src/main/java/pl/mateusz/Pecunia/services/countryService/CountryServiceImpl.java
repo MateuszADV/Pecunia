@@ -41,7 +41,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryDtoList countryDtoList() {
-        List<Country> countrys = countryRepository.findAllByOrderById();
+        List<Country> countrys = countryRepository.findAllByOrderByCountryEn();
         CountryDtoList countryDtoList = new CountryDtoList();
         List<CountryDto> countryDtos = new ArrayList<>();
 

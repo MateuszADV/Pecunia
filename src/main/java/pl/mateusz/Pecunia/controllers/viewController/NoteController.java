@@ -3,11 +3,10 @@ package pl.mateusz.Pecunia.controllers.viewController;
 import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import pl.mateusz.Pecunia.models.Currency;
+import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.Note;
 import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.NoteInfoView;
@@ -22,9 +21,7 @@ import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class NoteController {
@@ -52,7 +49,7 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/note/{currencyId}","/note/{currencyId}"})
     public String getNote(@PathVariable Long currencyId, ModelMap modelMap) {
 
-        modelMap.addAttribute("buton", "Dodaj Banknot");
+        modelMap.addAttribute("button", Constans.BUTTON_ADD_NOTE);
         NoteModelMap(currencyId, modelMap);
 
         return "/note";
@@ -82,6 +79,7 @@ public class NoteController {
 
         if (BooleanUtils.isTrue(noteService.saveNote(noteDto,currencyId))) {
             modelMap.addAttribute("save", "Bnknot został dodany do bazy");
+            modelMap.addAttribute("button", Constans.BUTTON_ADD_NOTE);
             modelMap.addAttribute("statusSave", true);
         }else {
             modelMap.addAttribute("save", "Coś poszło nie tak :(!!!");
@@ -161,7 +159,7 @@ public class NoteController {
         modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
         modelMap.addAttribute("currencyId", currencyId);
         modelMap.addAttribute("noteDto", noteDto);
-        modelMap.addAttribute("buton", "Zapisz zmiany");
+        modelMap.addAttribute("button", Constans.BUTTON_SAVE_CHANGE);
     }
 
     @PostMapping(value = {"/Pecunia/note/showJson","note/showJson"})

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.services.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.Currency;
@@ -36,7 +37,7 @@ public class CountryController {
     public String getCountry(ModelMap modelMap) {
         modelMap.addAttribute("countryDto", new CountryDto());
         modelMap.addAttribute("edit", false);
-        modelMap.addAttribute("buton", "Dodaj Państwo");
+        modelMap.addAttribute("button", Constans.BUTTON_ADD_COUNTRY);
         return countryList(modelMap);
     }
 
@@ -49,14 +50,13 @@ public class CountryController {
 
         if (result.hasErrors()) {
             modelMap.addAttribute("error", "Wypełnij poprawnie pole");
-            modelMap.addAttribute("buton", "Dodaj Państwo");
+            modelMap.addAttribute("button", Constans.BUTTON_ADD_COUNTRY);
             return countryList(modelMap);
         }
-
         if (countryFind != null && edit != true) {
             modelMap.addAttribute("countryExist", true);
             modelMap.addAttribute("countryInfo", "Państwo które chcez dodać już jest w bazie");
-            modelMap.addAttribute("buton", "Dodaj Państwo");
+            modelMap.addAttribute("button", Constans.BUTTON_ADD_COUNTRY);
             modelMap.addAttribute("country", new Country());
             return countryList(modelMap);
         }
@@ -64,7 +64,6 @@ public class CountryController {
         Country country = (new ModelMapper().map(countryDto, Country.class));
 
         countryRepository.save(country);
-//        System.out.println("Zapis do bazy");
         return "redirect:/country";
     }
 
@@ -74,12 +73,12 @@ public class CountryController {
         CountryDto countryDto = (new ModelMapper().map(country, CountryDto.class));
         modelMap.addAttribute("countryDto", countryDto);
         modelMap.addAttribute("edit", true);
-        modelMap.addAttribute("buton", "Zapisz Zmiany");
+        modelMap.addAttribute("button", Constans.BUTTON_SAVE_CHANGE);
         return countryList(modelMap);
     }
 
     private String countryList(ModelMap modelMap) {
-        List<Country> countries = countryRepository.findAllByOrderById();
+        List<Country> countries = countryRepository.findAllByOrderByCountryEn();
         List<CountryDto> countryDtoList = new ArrayList<>();
 
         for (Country country : countries) {
@@ -96,6 +95,7 @@ public class CountryController {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
         modelMap.addAttribute("currencyTrue", false);
         modelMap.addAttribute("chooseCountry", "Wyberz państwo");
+
         return "currency";
     }
 
@@ -105,6 +105,7 @@ public class CountryController {
         Country country = countryRepository.findByCountryEn(countryEn);
         modelMap.addAttribute("chooseCountry", "Dodaj walutę");
 
+        modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
         return currencyDate(modelMap, country);
     }
 
@@ -124,8 +125,10 @@ public class CountryController {
         modelMap.addAttribute("countryId", currency.getCountry().getId()); //Wysyła Id państwa potrzebnego do wyswietlenia Jsona
 
         if (edit == null) {
-            modelMap.addAttribute("currency", new Currency());
+            modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
         }
+        modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
+        modelMap.addAttribute("currency", new Currency());
         return "currency";
     }
 
@@ -136,10 +139,7 @@ public class CountryController {
         modelMap.addAttribute("currency", currency);
 
         modelMap.addAttribute("edit", 1);
-//        if (currency.isPresent()) {
-//            CurrencyDto currencyDto = (new ModelMapper().map(currency.get(), CurrencyDto.class));
-//        }
-
+        modelMap.addAttribute("button", Constans.BUTTON_SAVE_CHANGE);
         return currencyDate(modelMap, country);
     }
 

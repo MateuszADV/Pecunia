@@ -16,5 +16,5 @@ public class CountryViewDto {
     private String cod;
     private String currency;
     private String change;
-    private int active;
+//    private int active;
 }

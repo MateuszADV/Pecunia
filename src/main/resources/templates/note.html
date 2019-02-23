@@ -41,6 +41,7 @@
             </h4>
         </div>
         <div class="container col-md-6">
+            <br>
             <p><img class="flag" th:src="#{flagPath} + ${countryCurrency.countryEn}+'.png'"></p>
         </div>
     </div>
@@ -102,7 +103,7 @@
                         <td><input class="form-control" type="text" th:field="*{reversePath}" placeholder="revers banknotu"></td>
                     </tr>
                 </table>
-                <input class="btn btn-primary" type="submit" th:value="${buton}">
+                <input class="btn btn-primary" type="submit" th:value="${button}">
             </form>
         </div>
         <div class="container  col-md-7">
@@ -113,13 +114,13 @@
             <table class="table table-bordered">
                 <tr>
                     <th>Nominał</th>
-                    <th>Sygnatura</th>
+                    <th>Syg</th>
                     <th>Kupno</th>
                     <th>Sprzedaż</th>
                     <th>Sztuki</th>
                     <th>Status</th>
-                    <th style="width: 109px">Avers</th>
-                    <th style="width: 109px">Reverse</th>
+                    <th style="width: 95px">Avers</th>
+                    <th style="width: 95px">Reverse</th>
                     <th>Edycja</th>
                 </tr>
                 <th:block th:each=" note : ${currencyNoteList}">

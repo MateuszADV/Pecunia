@@ -45,6 +45,7 @@
                 <th>Opis</th>
                 <th style="width: 150px">Avers</th>
                 <th style="width: 150px">Revers</th>
+                <th>Edycja</th>
             </tr>
             <block th:each="note : ${banknotes}">
                 <tr>
@@ -64,6 +65,13 @@
                     <td th:text="${note.description}"></td>
                     <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
                     <td><a target="_blank" th:href="#{notePath} + ${note.reversePath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                    <td style="text-align: center">
+                        <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
+                            <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            <br>
+                            <span>EDYTUJ</span>
+                        </a>
+                    </td>
                 </tr>
             </block>
 

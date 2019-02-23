@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "v_note_country")
-public class NoteCountryView {
+public class NoteCountryView{
 
     @Id
     @Column(name = "country_id")
@@ -24,5 +24,5 @@ public class NoteCountryView {
     private String countryEn;
     @Column(name = "alfa_3")
     private String alfa3;
-    private String cod;
+
 }
