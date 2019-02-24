@@ -124,9 +124,9 @@ public class CountryController {
         modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country.getId()));
         modelMap.addAttribute("countryId", currency.getCountry().getId()); //Wysyła Id państwa potrzebnego do wyswietlenia Jsona
 
-        if (edit == null) {
-            modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
-        }
+//        if (edit == null) {
+//            modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
+//        }
         modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
         modelMap.addAttribute("currency", new Currency());
         return "currency";

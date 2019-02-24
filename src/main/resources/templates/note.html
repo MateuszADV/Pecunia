@@ -49,64 +49,94 @@
         <h3 th:text="${save}" th:class="${statusSave} ? bg-success : bg-danger"></h3>
     </div>
     <div class="container row">
-        <div class="container  col-md-5">
+        <div class="container  col-md-4">
             <form  th:action="@{/addNote}" method="post" th:object="${noteDto}">
                 <table class="table table-bordered">
                     <input type="number" th:name="currencyId" th:value="${currencyId}" style="display: none">
                     <input type="number" th:field="*{id}" style="display: none">
                     <tr>
                         <td>Nominał</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{denomination}" placeholder="Nominał banknotu"></td>
                     </tr>
                     <tr>
+                        <td>Nazwa</td>
+                    </tr>
+                    <tr>
+                        <td><input class="form-control" type="text" th:field="*{nameCurrency}" placeholder="Nazwa"></td>
+                    </tr>
+                    <tr>
                         <td>Data druku</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{noteDate}" placeholder="Data druku banknotu"></td>
                     </tr>
                     <tr>
                         <td>Sygnatura</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="number" th:field="*{signatureCode}" placeholder=" Sygnatura 101/102..."></td>
                     </tr>
                     <tr>
                         <td>Cena zakupu</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{priceBuy}" placeholder="Cena zakupu"></td>
                     </tr>
                     <tr>
                         <td>Cena sprzedaży</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{priceSell}" placeholder="Cena sprzedaży"></td>
                     </tr>
                     <tr>
                         <td>Iloc sztuk</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="number" th:field="*{quantity}" placeholder="Ilość sztuk"></td>
                     </tr>
                     <tr>
                         <td>Stan banknotu</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{quality}" placeholder="Stan banknotu"></td>
                     </tr>
                     <tr>
                         <td>Kolekja/Sprzedaż</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{status}" placeholder="K/S"></td>
                     </tr>
                     <tr>
                         <td>Opisu</td>
+                    </tr>
+                    <tr>
                         <td><textarea class="form-control" th:field="*{description}" placeholder="Opis"></textarea></td>
                     </tr>
                     <tr>
                         <td>Typ obrazka</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{imgType}" placeholder="skan/foto/www/LOC"></td>
                     </tr>
                     <tr>
                         <td>Avers</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{aversPath}" placeholder="avers banknotu"></td>
                     </tr>
                     <tr>
                         <td>Revers</td>
+                    </tr>
+                    <tr>
                         <td><input class="form-control" type="text" th:field="*{reversePath}" placeholder="revers banknotu"></td>
                     </tr>
                 </table>
                 <input class="btn btn-primary" type="submit" th:value="${button}">
             </form>
         </div>
-        <div class="container  col-md-7">
+        <div class="container  col-md-8">
 
                 <center><h2 th:text="'Banknoty: ' + ${countryCurrency.countryEn}"></h2></center>
 
@@ -114,6 +144,7 @@
             <table class="table table-bordered">
                 <tr>
                     <th>Nominał</th>
+                    <th>Nazwa</th>
                     <th>Syg</th>
                     <th>Kupno</th>
                     <th>Sprzedaż</th>
@@ -124,21 +155,43 @@
                     <th>Edycja</th>
                 </tr>
                 <th:block th:each=" note : ${currencyNoteList}">
-                    <tr>
+                    <tr  th:if="${note.noteId} == ${noteDto.id}" style="background-color: aqua">
                         <td th:text="${note.denomination}"></td>
+                        <td th:text="${note.nameCurrency}"></td>
+                        <td th:text="${note.signatureCode}"></td>
+                        <td th:text="${note.priceBuy} + 'zł'"></td>
+                        <td th:text="${note.priceSell} + 'zł'"></td>
+                        <td th:text="${note.quantity}"></td>
+                        <td th:text="${note.status}"></td>
+                        <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
+                        <td><a target="_blank" th:href="#{notePath} + ${note.reversePath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                        <td style="text-align: center">
+                            <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
+                                <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                <br>
+                                <span>Edytuj</span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${note.noteId} != ${noteDto.id}">
+                        <td th:text="${note.denomination}"></td>
+                        <td th:text="${note.nameCurrency}"></td>
                         <td th:text="${note.signatureCode}"></td>
                         <td th:text="${note.priceBuy} + 'zł'"></td>
                         <td th:text="${note.priceSell} + 'zł'"></td>
                         <td th:text="${note.quantity}"></td>
                         <td th:text="${note.status}"></td>
                         <td ><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
-                        <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                        <td><a target="_blank" th:href="#{notePath} + ${note.reversePath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
                         <td style="text-align: center">
                             <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
                                 <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                <br>
+                                <span>Edytuj</span>
                             </a>
                         </td>
                     </tr>
+
                 </th:block>
             </table>
         </div>

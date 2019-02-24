@@ -27,6 +27,8 @@ public class NoteInfoView {
     private String cod;
     private String currency;
     private Double denomination;
+    @Column(name = "name_currency")
+    private String nameCurrency;
     @Column(name = "note_date")
     private String noteDate;
     @Column(name = "signature_code")

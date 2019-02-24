@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class NoteDto {
     private Long id;
     private Double denomination;
+    private String nameCurrency;
     private String noteDate;
     private Integer signatureCode;
     private Double priceBuy;

@@ -160,6 +160,7 @@ public class NoteController {
         modelMap.addAttribute("currencyId", currencyId);
         modelMap.addAttribute("noteDto", noteDto);
         modelMap.addAttribute("button", Constans.BUTTON_SAVE_CHANGE);
+
     }
 
     @PostMapping(value = {"/Pecunia/note/showJson","note/showJson"})

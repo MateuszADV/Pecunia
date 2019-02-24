@@ -17,6 +17,8 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "notes_sequence")
     private Long id;
     private Double denomination;
+    @Column(name = "name_currency")
+    private String nameCurrency;
     @Column(name = "note_date")
     private String noteDate;
     @Column(name = "signature_code")

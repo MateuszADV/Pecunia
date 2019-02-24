@@ -15,6 +15,7 @@ public class NoteInfoViewDto {
     private String cod;
     private String currency;
     private Double denomination;
+    private String nameCurrency;
     private String noteDate;
     private Integer signatureCode;
     private Double priceBuy;
