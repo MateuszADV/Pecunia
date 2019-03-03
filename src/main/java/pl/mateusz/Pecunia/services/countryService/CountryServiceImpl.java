@@ -42,16 +42,7 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public CountryDtoList countryDtoList() {
         List<Country> countrys = countryRepository.findAllByOrderByCountryEn();
-        CountryDtoList countryDtoList = new CountryDtoList();
-        List<CountryDto> countryDtos = new ArrayList<>();
-
-        for (Country country : countrys) {
-            countryDtos.add(new ModelMapper().map(country, CountryDto.class));
-        }
-
-        countryDtoList.setCountryDtoList(countryDtos);
-
-        return countryDtoList;
+        return getCountryDtoList(countrys);
     }
 
     @Override
@@ -191,5 +182,24 @@ public class CountryServiceImpl implements CountryService {
         }
         countryJsonDto.setCurrencys(currencyDtoList);
         return countryJsonDto;
+    }
+
+    @Override
+    public CountryDtoList CountryFromContinent(String continent) {
+        List<Country> countrys = countryRepository.findByContinent(continent);
+        return getCountryDtoList(countrys);
+    }
+
+    private CountryDtoList getCountryDtoList(List<Country> countrys) {
+        CountryDtoList countryDtoList = new CountryDtoList();
+        List<CountryDto> countryDtos = new ArrayList<>();
+
+        for (Country country : countrys) {
+            countryDtos.add(new ModelMapper().map(country, CountryDto.class));
+        }
+
+        countryDtoList.setCountryDtoList(countryDtos);
+
+        return countryDtoList;
     }
 }

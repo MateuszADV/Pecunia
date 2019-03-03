@@ -25,4 +25,6 @@ public interface CountryService {
 
     CountryJsonDto countryJson(Long country_id);
 
+    CountryDtoList CountryFromContinent(String continent);
+
 }

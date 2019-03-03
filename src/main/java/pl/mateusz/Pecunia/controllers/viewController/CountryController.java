@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
+import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.services.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.Currency;
@@ -149,5 +150,25 @@ public class CountryController {
         modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country.getId()));
         modelMap.addAttribute("countryId", country.getId());
         return "currency";
+    }
+
+    @GetMapping(value = {"/Pecunia/continent","/continent"})
+    public String getContinent(ModelMap modelMap) {
+
+        for (ContinentEnum value : ContinentEnum.values()) {
+            System.out.println(value);
+        }
+
+        modelMap.addAttribute("continent", ContinentEnum.values());
+        return "continent";
+    }
+
+    @GetMapping(value = {"/Pecunia/continent/{continent}","/continent/{continent}"})
+    public String getContinent(@PathVariable String continent, ModelMap modelMap) {
+        modelMap.addAttribute("continentTrue", true);
+
+        modelMap.addAttribute("continent", ContinentEnum.values());
+        modelMap.addAttribute("countrys", countryService.CountryFromContinent(continent.replace("_"," ")).getCountryDtoList());
+        return "continent";
     }
 }

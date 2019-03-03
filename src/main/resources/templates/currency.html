@@ -117,7 +117,7 @@
                         <th>Przelicznik</th>
                         <th>Opis</th>
                         <th>Edytuj</th>
-                        <!--<th>Dodaj banknot</th>-->
+                        <th>Dodaj banknot</th>
                     </tr>
                     <th:block th:each="currency : ${currencyList}">
                         <tr>
@@ -131,7 +131,7 @@
                             <td th:text="${currency.converter}"></td>
                             <td th:text="${currency.description}"></td>
                             <td><a th:href="@{'/currencyEdit/' + ${currency.id}}">Edytuj walute</a></td>
-                            <!--<th><a th:href="@{'/note/' + ${currency.id}}">Dodaj banknot</a></th>-->
+                            <th><a th:href="@{'/note/' + ${currency.id}}">Dodaj banknot</a></th>
                         </tr>
                     </th:block>
                 </table>
