@@ -21,15 +21,17 @@ public class NoteServiceImpl implements NoteService {
     private CurrencyRepository currencyRepository;
     private NoteInfoViewRepository noteInfoViewRepository;
     private CountryRepository countryRepository;
+    private NoteCountryViewRepository noteCountryViewRepository;
 
-    @Autowired
     public NoteServiceImpl(CountryCurrencyViewRepository countryCurrencyViewRepository, NoteRepository noteRepository,
-                           CurrencyRepository currencyRepository, NoteInfoViewRepository noteInfoViewRepository, CountryRepository countryRepository) {
+                           CurrencyRepository currencyRepository, NoteInfoViewRepository noteInfoViewRepository,
+                           CountryRepository countryRepository, NoteCountryViewRepository noteCountryViewRepository) {
         this.countryCurrencyViewRepository = countryCurrencyViewRepository;
         this.noteRepository = noteRepository;
         this.currencyRepository = currencyRepository;
         this.noteInfoViewRepository = noteInfoViewRepository;
         this.countryRepository = countryRepository;
+        this.noteCountryViewRepository = noteCountryViewRepository;
     }
 
     @Override
@@ -97,6 +99,17 @@ public class NoteServiceImpl implements NoteService {
             noteJsonDtoList.add(new ModelMapper().map(note, NoteJsonDto.class));
         }
         return noteJsonDtoList;
+    }
+
+    @Override
+    public List<NoteCountryViewDto> CountryFromContinent(String continent) {
+        List<NoteCountryView> noteCountryViewList = noteCountryViewRepository.findAllByContinent(continent);
+        List<NoteCountryViewDto> noteCountryViewDtoList = new ArrayList<>();
+
+        for (NoteCountryView noteCountryView : noteCountryViewList) {
+            noteCountryViewDtoList.add(new ModelMapper().map(noteCountryView, NoteCountryViewDto.class));
+        }
+        return noteCountryViewDtoList;
     }
 
 }

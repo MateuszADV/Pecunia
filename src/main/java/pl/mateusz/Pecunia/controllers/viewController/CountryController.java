@@ -152,23 +152,5 @@ public class CountryController {
         return "currency";
     }
 
-    @GetMapping(value = {"/Pecunia/continent","/continent"})
-    public String getContinent(ModelMap modelMap) {
 
-        for (ContinentEnum value : ContinentEnum.values()) {
-            System.out.println(value);
-        }
-
-        modelMap.addAttribute("continent", ContinentEnum.values());
-        return "continent";
-    }
-
-    @GetMapping(value = {"/Pecunia/continent/{continent}","/continent/{continent}"})
-    public String getContinent(@PathVariable String continent, ModelMap modelMap) {
-        modelMap.addAttribute("continentTrue", true);
-
-        modelMap.addAttribute("continent", ContinentEnum.values());
-        modelMap.addAttribute("countrys", countryService.CountryFromContinent(continent.replace("_"," ")).getCountryDtoList());
-        return "continent";
-    }
 }

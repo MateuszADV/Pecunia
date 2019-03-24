@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.CurrencyCountryActiveView;
 import pl.mateusz.Pecunia.models.Currency;
+import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.dtos.*;
 import pl.mateusz.Pecunia.models.forms.*;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyCountryActiveViewRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
+import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +25,15 @@ public class CountryServiceImpl implements CountryService {
     private CurrencyCountryActiveViewRepository currencyCountryActiveViewRepository;
     private CountryRepository countryRepository;
     private CurrencyRepository currencyRepository;
+    private NoteCountryViewRepository noteCountryViewRepository;
 
     @Autowired
-    public CountryServiceImpl(CurrencyCountryActiveViewRepository countryCurrencyViewRepository, CountryRepository countryRepository, CurrencyRepository currencyRepository) {
-        this.currencyCountryActiveViewRepository = countryCurrencyViewRepository;
+    public CountryServiceImpl(CurrencyCountryActiveViewRepository currencyCountryActiveViewRepository, CountryRepository countryRepository, CurrencyRepository currencyRepository,
+                              NoteCountryViewRepository noteCountryViewRepository) {
+        this.currencyCountryActiveViewRepository = currencyCountryActiveViewRepository;
         this.countryRepository = countryRepository;
         this.currencyRepository = currencyRepository;
+        this.noteCountryViewRepository = noteCountryViewRepository;
     }
 
     @Override
@@ -70,7 +75,6 @@ public class CountryServiceImpl implements CountryService {
         }
         continentResponse.setContinents(countryFromContinents);
 
-        System.out.println(continentResponse);
         return continentResponse;
     }
 
@@ -78,7 +82,6 @@ public class CountryServiceImpl implements CountryService {
         List<CurrencyCountryActiveView> currencyCountryActiveViews = currencyCountryActiveViewRepository.findByContinent(continent);
         List<CountryViewDto> countryViewDtos = new ArrayList<>();
 
-        System.out.println("powinien byćkontynent: " + continent);
         for (CurrencyCountryActiveView currencyCountryActiveView : currencyCountryActiveViews) {
             countryViewDtos.add(new ModelMapper().map(currencyCountryActiveView, CountryViewDto.class));
         }
@@ -184,12 +187,13 @@ public class CountryServiceImpl implements CountryService {
         return countryJsonDto;
     }
 
-    @Override
-    public CountryDtoList CountryFromContinent(String continent) {
-        List<Country> countrys = countryRepository.findByContinent(continent);
-        return getCountryDtoList(countrys);
-    }
 
+    //    @Override
+//    public CountryDtoList CountryFromContinent(String continent) {
+//        List<Country> countrys = countryRepository.findByContinent(continent);
+//        return getCountryDtoList(countrys);
+//    }
+//
     private CountryDtoList getCountryDtoList(List<Country> countrys) {
         CountryDtoList countryDtoList = new CountryDtoList();
         List<CountryDto> countryDtos = new ArrayList<>();

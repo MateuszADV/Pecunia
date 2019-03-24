@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface NoteCountryViewRepository extends JpaRepository<NoteCountryView, Long> {
 
+    List<NoteCountryView> findAllByContinent(String continent);
+
 }

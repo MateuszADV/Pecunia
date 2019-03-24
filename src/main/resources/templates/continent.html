@@ -22,20 +22,22 @@
         <div th:insert="~{includes/menu :: menu}"></div>
     </div>
 
-    <div class="container">
-        <h2>Kontynenty</h2>
-    </div>
     <div class="container" th:if="${continentTrue} != true">
         <block th:each="con : ${continent}">
-            <a th:href="@{'/continent/' + ${con.webContinent}}"><p th:text="${con.namePl}"></p></a>
+            <a th:href="@{'/Pecunia/continent/' + ${con.webContinent}}"><p th:text="${con.namePl}"></p></a>
         </block>
     </div>
 
     <div class="container" th:if="${continentTrue} == true">
-        <p>państa danego kontynentu</p>
+        <div class="container" style="text-align: center; color: black">
+            <h2 th:text="'Kontynent ' + ${countryFromContinent}" ></h2>
+            <br>
+        </div>
+        <!--<p>państa danego kontynentu</p>-->
         <div class="row">
             <Block th:each="country : ${countrys}">
-                <a th:href="@{'/selectCurrency/' + ${country.id}}">
+                <!--<a th:href="@{'/selectCurrency/' + ${country.id}}">-->
+                <a th:href="@{'/banknotes/' + ${country.countryEn}}">
                     <div class="col-md-2" style="text-align: center; height: 90px">
                         <span th:text="${country.countryEn}"></span>
                         <br>

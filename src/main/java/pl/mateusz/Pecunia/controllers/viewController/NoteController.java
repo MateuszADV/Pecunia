@@ -13,6 +13,7 @@ import pl.mateusz.Pecunia.models.NoteInfoView;
 import pl.mateusz.Pecunia.models.dtos.NoteCountryViewDto;
 import pl.mateusz.Pecunia.models.dtos.NoteDto;
 import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
+import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteInfoViewRepository;
@@ -168,5 +169,27 @@ public class NoteController {
 
         modelMap.addAttribute("Gson",JsonUtils.gsonPretty(noteService.continentCountryCuttencyNote(countryId)));
         return "showJson";
+    }
+
+    @GetMapping(value = {"/Pecunia/continent","/continent"})
+    public String getContinent(ModelMap modelMap) {
+
+//        for (ContinentEnum value : ContinentEnum.values()) {
+//            System.out.println(value);
+//        }
+        modelMap.addAttribute("continent", ContinentEnum.values());
+        return "continent";
+    }
+
+    @GetMapping(value = {"/Pecunia/continent/{continent}","/continent/{continent}"})
+    public String getContinent(@PathVariable String continent, ModelMap modelMap) {
+        modelMap.addAttribute("continentTrue", true);
+
+        modelMap.addAttribute("continent", ContinentEnum.values());
+        modelMap.addAttribute("countrys", noteService.CountryFromContinent(continent.replace("_"," ")));
+
+        String countrysFromContinent =  noteService.CountryFromContinent(continent.replace("_"," ")).get(0).getContinent();
+        modelMap.addAttribute("countryFromContinent", countrysFromContinent);
+        return "continent";
     }
 }
