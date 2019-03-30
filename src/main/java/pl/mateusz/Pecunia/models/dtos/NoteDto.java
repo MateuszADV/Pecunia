@@ -21,5 +21,6 @@ public class NoteDto {
     private String description;
     private String imgType;
     private String aversPath;
-    private String  reversePath;
+    private String reversePath;
+    private String series;
 }

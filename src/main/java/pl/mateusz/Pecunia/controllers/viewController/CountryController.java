@@ -152,5 +152,11 @@ public class CountryController {
         return "currency";
     }
 
+//    @GetMapping(value = {"/Pecunia/currency/continent","/currency/continent"})
+//    public String getContinent(ModelMap modelMap) {
+//
+//        modelMap.addAttribute("continent", ContinentEnum.values());
+//        return "continent";
+//    }
 
 }

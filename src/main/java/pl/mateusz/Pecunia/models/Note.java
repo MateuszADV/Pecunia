@@ -37,6 +37,8 @@ public class Note {
     private String aversPath;
     @Column(name = "reverse_path")
     private String  reversePath;
+    private String series;
+
 
     @ManyToOne
     @JoinColumn(name = "currency_id")

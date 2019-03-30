@@ -112,9 +112,9 @@ public class CountryServiceImpl implements CountryService {
         if (BooleanUtils.isTrue(request.getAntarctica())) {
             continentActive.add(ContinentEnum.ANTARCTICA);
         }
-        if (BooleanUtils.isTrue(request.getAutonomousTerritories())) {
-            continentActive.add(ContinentEnum.AUTONOMOUS_TERRITORIES);
-        }
+//        if (BooleanUtils.isTrue(request.getAutonomousTerritories())) {
+//            continentActive.add(ContinentEnum.AUTONOMOUS_TERRITORIES);
+//        }
         return continentActive;
     }
 

@@ -130,7 +130,7 @@ public class NoteController {
 
     @GetMapping(value = {"/Pecunia/banknotes/{countryEn}","/banknotes/{countryEn}"})
     public String postbanknotes(@PathVariable String countryEn, ModelMap modelMap) {
-        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllByCountryEnOrderByNoteId(countryEn);
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllNoteCountry(countryEn);
         List<NoteInfoViewDto> noteInfoViewDtoList = new ArrayList<>();
         for (NoteInfoView noteInfoView : noteInfoViewList) {
             noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
@@ -188,8 +188,7 @@ public class NoteController {
         modelMap.addAttribute("continent", ContinentEnum.values());
         modelMap.addAttribute("countrys", noteService.CountryFromContinent(continent.replace("_"," ")));
 
-        String countrysFromContinent =  noteService.CountryFromContinent(continent.replace("_"," ")).get(0).getContinent();
-        modelMap.addAttribute("countryFromContinent", countrysFromContinent);
+        modelMap.addAttribute("countryFromContinent", continent.replace("_"," "));
         return "continent";
     }
 }

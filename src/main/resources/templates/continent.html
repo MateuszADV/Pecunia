@@ -28,12 +28,16 @@
         </block>
     </div>
 
+    <!--<div class="container" th:if="${#lists.isEmpty(countrys)}">-->
+        <!--<p>brak państw</p>-->
+        <!--<p th:text="'l ' + ${#lists.isEmpty(countrys)}"></p>-->
+
+    <!--</div>-->
     <div class="container" th:if="${continentTrue} == true">
-        <div class="container" style="text-align: center; color: black">
-            <h2 th:text="'Kontynent ' + ${countryFromContinent}" ></h2>
+        <div class="container-fluid" style="text-align: center; color: black">
+            <h2 th:text="'Kontynent: ' + ${countryFromContinent}"></h2>
             <br>
         </div>
-        <!--<p>państa danego kontynentu</p>-->
         <div class="row">
             <Block th:each="country : ${countrys}">
                 <!--<a th:href="@{'/selectCurrency/' + ${country.id}}">-->
@@ -50,6 +54,7 @@
         </div>
     </div>
 </div>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

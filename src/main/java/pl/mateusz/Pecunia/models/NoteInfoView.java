@@ -45,4 +45,6 @@ public class NoteInfoView {
     private String aversPath;
     @Column(name = "reverse_path")
     private String reversePath;
+
+    private String series;
 }

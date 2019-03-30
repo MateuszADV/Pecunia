@@ -10,8 +10,8 @@ public enum ContinentEnum {
     AUSTRALIA_OCEANIA("Australia i Oceania", "Australia_i_Oceania"),
     NORTH_AMERICA("Ameryka Północna","Ameryka_Północna"),
     SOUTH_AMERICA("Ameryka Południowa","Ameryka_Południowa"),
-    ANTARCTICA("Antarktyda", "Antarktyda"),
-    AUTONOMOUS_TERRITORIES("Terytorium Autonomiczne", "Terytorium_Autonomiczne");
+    ANTARCTICA("Antarktyda", "Antarktyda");
+//    AUTONOMOUS_TERRITORIES("Terytorium Autonomiczne", "Terytorium_Autonomiczne");
 
     private String namePl;
     private String webContinent;

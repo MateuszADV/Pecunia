@@ -26,4 +26,6 @@ public class NoteInfoViewDto {
     private String description;
     private String aversPath;
     private String reversePath;
+
+    private String series;
 }
