@@ -69,6 +69,7 @@ public class NoteController {
         modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
         modelMap.addAttribute("countryVisible",true);
         modelMap.addAttribute("title","Wybierz walute");
+        modelMap.addAttribute("country", countryService.countryFromId(countryId));
 
         return "notes";
     }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.CurrencyCountryActiveView;
 import pl.mateusz.Pecunia.models.Currency;
-import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.dtos.*;
 import pl.mateusz.Pecunia.models.forms.*;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
@@ -18,6 +17,7 @@ import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CountryServiceImpl implements CountryService {
@@ -205,5 +205,13 @@ public class CountryServiceImpl implements CountryService {
         countryDtoList.setCountryDtoList(countryDtos);
 
         return countryDtoList;
+    }
+
+    @Override
+    public CountryDto countryFromId(Long country_id) {
+        Country country = countryRepository.findById(country_id).get();
+        CountryDto countryDto = new ModelMapper().map(country, CountryDto.class);
+
+        return countryDto;
     }
 }
