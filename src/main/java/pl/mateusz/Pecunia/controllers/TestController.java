@@ -93,7 +93,12 @@ public class TestController {
     @GetMapping(value = {"/Pecunia/bootstraptest3", "/bootstraptest3"})
     public String getBootstrap3(ModelMap modelMap) {
 
-        List<NoteInfoView> banknotes = noteInfoViewRepository.findAllByCountryId(36l);
+        List<NoteInfoView> banknotes = noteInfoViewRepository.findAllByCountryId(61l);
+
+        for (NoteInfoView banknote : banknotes) {
+            System.out.println(banknote.getAversPath());
+            System.out.println(banknote.getReversePath());
+        }
 
         modelMap.addAttribute("banknotes", banknotes);
         modelMap.addAttribute("continent", ContinentEnum.values());

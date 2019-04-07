@@ -10,6 +10,7 @@ import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.Note;
 import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.NoteInfoView;
+import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.dtos.NoteCountryViewDto;
 import pl.mateusz.Pecunia.models.dtos.NoteDto;
 import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
@@ -61,7 +62,11 @@ public class NoteController {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
         modelMap.addAttribute("title","Wybierz państwo");
 
-        return "notes";
+        for (CountryDto countryDto : countryService.countryDtoList().getCountryDtoList()) {
+            System.out.println(countryDto);
+        }
+
+        return "banknotes";
     }
 
     @GetMapping(value = {"/Pecunia/selectCurrency/{countryId}","/selectCurrency/{countryId}"})
@@ -71,7 +76,7 @@ public class NoteController {
         modelMap.addAttribute("title","Wybierz walute");
         modelMap.addAttribute("country", countryService.countryFromId(countryId));
 
-        return "notes";
+        return "banknotes";
     }
 
     @PostMapping(value = {"/Pecunia/addNote","/addNote"})

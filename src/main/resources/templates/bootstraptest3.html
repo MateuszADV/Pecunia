@@ -41,18 +41,21 @@
 
             <block th:each="note : ${banknotes}">
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" >
-                    <div class="thumbnail" style="width: 210px; height: 230px;">
+                    <div class="thumbnail" style="width: 250px; height: 230px; background-color: lightgray">
                         <div class="row">
                             <a class="lightbox" th:href="#{notePath} + ${note.aversPath}">
-                                <img th:src="#{notePath} + ${note.aversPath}" alt="Park" style="width: 50%; height: 50%">
+                                <img th:src="#{notePath} + ${note.aversPath}" alt="Park" style="width: 35%; height: 35%">
                             </a>
+                            <br>
                             <a class="lightbox" th:href="#{notePath} + ${note.reversePath}">
-                                <img th:src="#{notePath} + ${note.reversePath}" alt="Park" style="width: 50%; height: 50%">
+                                <img th:src="#{notePath} + ${note.reversePath}" alt="Park" style="width: 35%; height: 35%">
                             </a>
                         </div>
                         <div class="caption">
                             <h5 th:text="${#numbers.formatDecimal(note.denomination,1,0)} + ' ' + ${note.nameCurrency}"></h5>
                             <p th:text="${note.description}"></p>
+                            <!--<p th:text="#{notePath} + ${note.aversPath}"></p>-->
+                            <!--<p th:text="#{notePath} + ${note.reversePath}"></p>-->
                         </div>
                     </div>
                 </div>
