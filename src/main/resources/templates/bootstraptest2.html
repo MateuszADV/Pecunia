@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BOOTSTRAP</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/4.0.1/ekko-lightbox.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+    <script src="/js/jsLightbox.js" defer></script>
+
+</head>
+<body>
+<div class="container">
+    <div class="container">
+        <div th:insert="~{includes/menu :: heder}"></div>
+        <div th:insert="~{includes/menu :: menu}"></div>
+
+    </div>
+    <div class="container">
+        <h2>BOOTSTRAP TEST</h2>
+    </div>
+
+    <div class="container" style="text-align: center" th:if="${continentTrue} != true">
+        <block th:each="con : ${continent}">
+            <a th:href="@{'/Pecunia/bootstraptest2/' + ${con.webContinent}}">
+                <img class="imageNote" th:src="#{continentPath} + ${con.webContinent} + '.png'" style="width: 10%; height: 10%; margin: 15px">
+            </a>
+        </block>
+    </div>
+
+    <div class="container" th:if="${continentTrue} == true">
+        <div class="container-fluid" style="text-align: center; color: black">
+            <h2 th:text="'Kontynent: ' + ${countryFromContinent}"></h2>
+            <br>
+        </div>
+        <div class="row">
+            <Block th:each="country : ${countrys}">
+                <!--<a th:href="@{'/selectCurrency/' + ${country.id}}">-->
+                <a th:href="@{'/bootstraotest2/note/' + ${country.countryEn}}">
+                    <div class="col-md-2" style="text-align: center; height: 90px">
+                        <span th:text="${country.countryEn}"></span>
+                        <br>
+                        <span th:text="${country.alfa3}"></span>
+                        <br>
+                        <img class="flag" th:src="#{flagPath} + ${country.countryEn}+'.png'">
+                    </div>
+                </a>
+            </Block>
+        </div>
+    </div>
+
+    <div class="container" th:if="${noteTrue} == true">
+        <div class="container row">
+            <block th:each="note : ${banknotes}">
+                <div  class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="width: 200px; height: 200px;">
+                    <div class="row">
+                        <a th:href="#{notePath} + ${note.aversPath}" data-toggle="lightbox" data-gallery="multiimages" data-title="People walking down stairs" class="col-sm-4">
+                            <img th:src="#{notePath} + ${note.aversPath}" class="img-responsive">
+                        </a>
+                        <a th:href="#{notePath} + ${note.reversePath}" data-toggle="lightbox" data-gallery="multiimages" data-title="Man getting wet" class="col-sm-4">
+                            <img th:src="#{notePath} + ${note.reversePath}" class="img-responsive">
+                        </a>
+                    </div>
+                </div>
+            </block>
+        </div>
+    </div>
+
+    <!--<div class="container" th:if="${noteTrue} == true">-->
+        <!--<div class="container row">-->
+            <!--<block th:each="note : ${banknotes}">-->
+                <!--<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="width: 200px; height: 200px;">-->
+                    <!--<div style=" border: black solid 1px; background-color: aqua" >-->
+                        <!--<div class="row item" style="text-align: center">-->
+                            <!--<div class="item" style="width: 80%; height: 80%;">-->
+                                <!--<a  th:href="#{notePath} + ${note.aversPath}" data-toggle="lightbox" data-title="A random title" data-footer="A custom footer text">-->
+                                    <!--<img th:src="#{notePath} + ${note.aversPath}" class="img-responsive">-->
+                                <!--</a>-->
+                            <!--</div>-->
+                            <!--<div class="item" style="width: 80%; height: 80%;">-->
+                                <!--<a  th:href="#{notePath} + ${note.reversePath}" data-toggle="lightbox" data-title="A random title" data-footer="A custom footer text">-->
+                                    <!--<img th:src="#{notePath} + ${note.reversePath}" alt="" class="img-responsive">-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</block>-->
+        <!--</div>-->
+    <!--</div>-->
+
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+<!--&lt;!&ndash;&lt;!&ndash; Include all compiled plugins (below), or include individual files as needed &ndash;&gt;&ndash;&gt;-->
+<!--<script src="js/bootstrap.min.js"></script>-->
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>-->
+
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"crossorigin="anonymous"></script>-->
+
+<script src="//code.jquery.com/jquery.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/4.0.1/ekko-lightbox.min.js"></script>
+
+
+
+</body>
+</html>

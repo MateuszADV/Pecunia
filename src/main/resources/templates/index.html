@@ -23,10 +23,10 @@
 
     <div class="loading-container" style="text-align: center">
         <h3 class="bg-info">Strona główna, będzie krótki opis, tabela kursów walut...</h3>
-
     </div>
     <div class="loading-container" >
         <p><img class="imageNote" th:src="#{notePath} + 'Argentyna/Argentina_1_Peso_11a.jpg'" style="width: 30%; height: 30%"></p>
+        <!--<p><img class="imageNote" src="/images/bank_notes/Argentyna/Argentina_1_Peso_11a.jpg" style="width: 30%; height: 30%"></p>-->
     </div>
 
     <div class="container col-xs-5 col-md-offset-3" style="text-align: center">
@@ -37,11 +37,11 @@
         <span th:text="'Data: ' + ${exchangeRate.effectiveDate}"> </span>
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>waluta</th>
-                    <th>kod</th>
-                    <th>kurs średni</th>
-                </tr>
+            <tr>
+                <th>waluta</th>
+                <th>kod</th>
+                <th>kurs średni</th>
+            </tr>
             </thead>
             <block th:each="rate : ${exchangeRate.rates}">
                 <tr class="bg-primary">

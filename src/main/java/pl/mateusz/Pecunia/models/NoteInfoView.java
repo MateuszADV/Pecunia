@@ -17,11 +17,13 @@ import javax.persistence.Table;
 public class NoteInfoView {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "note_id")
     private Long noteId;
     private String continent;
     @Column(name = "country_en")
     private String countryEn;
+    @Column(name = "country_id")
+    private Long countryId;
     @Column(name = "currency_id")
     private Long currencyId;
     private String cod;

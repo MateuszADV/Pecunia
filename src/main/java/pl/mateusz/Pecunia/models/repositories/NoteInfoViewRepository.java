@@ -17,4 +17,6 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
     @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 ORDER BY note.series, note.denomination ASC")
     List<NoteInfoView> findAllNoteCountry(String country);
 
+    List<NoteInfoView> findAllByCountryId(Long countryId);
+
 }
