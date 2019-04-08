@@ -61,8 +61,8 @@
                     <td th:text="${note.series}"></td>
                     <td th:text="${note.noteDate}"></td>
                     <td th:text="${note.signatureCode}"></td>
-                    <td th:text="${note.priceBuy} + 'zł'"></td>
-                    <td th:text="${note.priceSell} + 'zł'"></td>
+                    <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
+                    <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
                     <td th:text="${note.quantity}"></td>
                     <td th:text="${note.status}"></td>
                     <td th:text="${note.quality}"></td>
