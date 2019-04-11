@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FOR SELL</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+</head>
+<body>
+<div class="container">
+
+    <div th:insert="~{includes/menu :: heder}"></div>
+    <div th:insert="~{includes/menu :: menu}"></div>
+
+    <div>
+        <h2>FOR SELL</h2>
+    </div>
+
+    <div>
+        <block th:each="country : ${countrys}">
+            <a th:href="@{'/for_sell/' + ${country}}">
+                <div class="col-md-2" style="text-align: center; height: 90px">
+                    <span th:text="${country}"></span>
+                    <br>
+                    <img class="flag" th:src="#{flagPath} + ${country} + '.png'">
+                </div>
+            </a>
+        </block>
+    </div>
+    <div class="container-fluid" th:if="${noteForSell} == true">
+        <table class="table table-bordered  table-striped">
+            <tr>
+                <th>Id</th>
+                <!--<th>Kontynent</th>-->
+                <!--<th>Państwo</th>-->
+                <th>kod</th>
+                <!--<th>Waluta</th>-->
+                <th>Nominał</th>
+                <th>Nazwa</th>
+                <th>Seria</th>
+                <th>Data</th>
+                <th>Sig_cod</th>
+                <th>Kupno</th>
+                <th>Sprzedaz </th>
+                <th>Sztuki</th>
+                <th>Status</th>
+                <th>Status</th>
+                <th>Opis</th>
+                <th style="width: 150px">Avers</th>
+                <th style="width: 150px">Revers</th>
+                <th>Edycja</th>
+            </tr>
+            <block th:each="note : ${banknotes}">
+                <tr>
+                    <td th:text="${note.noteId}"></td>
+                    <!--<td th:text="${note.continent}"></td>-->
+                    <!--<td th:text="${note.countryEn}"></td>-->
+                    <td th:text="${note.cod}"></td>
+                    <!--<td th:text="${note.currency}"></td>-->
+                    <td th:text="${note.denomination}"></td>
+                    <td th:text="${note.nameCurrency}"></td>
+                    <td th:text="${note.series}"></td>
+                    <td th:text="${note.noteDate}"></td>
+                    <td th:text="${note.signatureCode}"></td>
+                    <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
+                    <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
+                    <td th:text="${note.quantity}"></td>
+                    <td th:text="${note.status}"></td>
+                    <td th:text="${note.quality}"></td>
+                    <td th:text="${note.description}"></td>
+                    <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
+                    <td><a target="_blank" th:href="#{notePath} + ${note.reversePath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                    <td style="text-align: center">
+                        <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
+                            <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            <br>
+                            <span>EDYTUJ</span>
+                        </a>
+                    </td>
+                </tr>
+            </block>
+
+        </table>
+
+
+    </div>
+
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

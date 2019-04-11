@@ -20,4 +20,7 @@ public interface NoteService {
 
     List<NoteCountryViewDto> CountryFromContinent(String continent);
 
+    List<String> countryNoteForSell();
+    List<NoteInfoViewDto> noteForSell(String country);
+
 }

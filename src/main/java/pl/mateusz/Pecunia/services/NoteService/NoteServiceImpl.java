@@ -56,12 +56,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<NoteInfoViewDto> currencyNoteList(Long currencyId) {
         List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllByCurrencyId(currencyId);
-        List<NoteInfoViewDto> noteInfoViewDtoList = new ArrayList<>();
-
-        for (NoteInfoView noteInfoView : noteInfoViewList) {
-            noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
-        }
-        return noteInfoViewDtoList;
+        return getNoteInfoViewDtos(noteInfoViewList);
     }
 
     @Override
@@ -111,4 +106,27 @@ public class NoteServiceImpl implements NoteService {
         return noteCountryViewDtoList;
     }
 
+    //Banknoty na sprzedaz
+
+    @Override
+    public List<String> countryNoteForSell() {
+        List<String> countyNoteForSell = noteInfoViewRepository.countryNoteForSell();
+
+        return countyNoteForSell;
+    }
+
+    @Override
+    public List<NoteInfoViewDto> noteForSell(String country) {
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(country);
+        return getNoteInfoViewDtos(noteInfoViewList);
+    }
+
+    private List<NoteInfoViewDto> getNoteInfoViewDtos(List<NoteInfoView> noteInfoViewList) {
+        List<NoteInfoViewDto> noteInfoViewDtoList = new ArrayList<>();
+
+        for (NoteInfoView noteInfoView : noteInfoViewList) {
+            noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
+        }
+        return noteInfoViewDtoList;
+    }
 }

@@ -157,8 +157,8 @@
                         <td th:text="${note.nameCurrency}"></td>
                         <td th:text="${note.series}"></td>
                         <td th:text="${note.signatureCode}"></td>
-                        <td th:text="${note.priceBuy} + 'zł'"></td>
-                        <td th:text="${note.priceSell} + 'zł'"></td>
+                        <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
+                        <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
                         <td th:text="${note.quantity}"></td>
                         <td th:text="${note.status}"></td>
                         <td ><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>

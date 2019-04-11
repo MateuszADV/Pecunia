@@ -19,4 +19,10 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
 
     List<NoteInfoView> findAllByCountryId(Long countryId);
 
+    @Query(value = "SELECT DISTINCT(note.countryEn) FROM  NoteInfoView note where note.status = 'FOR SELL'")
+    List<String> countryNoteForSell();
+
+    @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 AND note.status = 'FOR SELL'")
+    List<NoteInfoView> NoteForSell(String country);
+
 }

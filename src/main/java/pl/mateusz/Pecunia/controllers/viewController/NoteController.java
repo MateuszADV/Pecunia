@@ -62,9 +62,9 @@ public class NoteController {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
         modelMap.addAttribute("title","Wybierz państwo");
 
-        for (CountryDto countryDto : countryService.countryDtoList().getCountryDtoList()) {
-            System.out.println(countryDto);
-        }
+//        for (CountryDto countryDto : countryService.countryDtoList().getCountryDtoList()) {
+//            System.out.println(countryDto);
+//        }
 
         return "banknotes";
     }
@@ -196,5 +196,22 @@ public class NoteController {
 
         modelMap.addAttribute("countryFromContinent", continent.replace("_"," "));
         return "continent";
+    }
+
+
+//    Banknoty na sprzedaż
+    @GetMapping(value = {"/Pecunia/for_sell", "/for_sell"})
+    public String getForSell(ModelMap modelMap) {
+        modelMap.addAttribute("countrys",noteService.countryNoteForSell());
+        System.out.println(noteService.countryNoteForSell());
+        return "for_sell";
+    }
+
+    @GetMapping(value = {"/Pecunia/for_sell/{country}","/for_sell/{country}"})
+    public String getNoteForSell(@PathVariable String country, ModelMap modelMap) {
+        modelMap.addAttribute("noteForSell", true);
+        modelMap.addAttribute("banknotes", noteService.noteForSell(country));
+        System.out.println(noteService.noteForSell(country));
+        return "for_sell";
     }
 }
