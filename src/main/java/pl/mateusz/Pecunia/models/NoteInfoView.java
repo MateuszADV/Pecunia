@@ -49,4 +49,5 @@ public class NoteInfoView {
     private String reversePath;
 
     private String series;
+    private String making;
 }

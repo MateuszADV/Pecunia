@@ -23,4 +23,5 @@ public class NoteDto {
     private String aversPath;
     private String reversePath;
     private String series;
+    private String making;
 }

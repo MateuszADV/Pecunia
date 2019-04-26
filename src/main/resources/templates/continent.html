@@ -22,9 +22,21 @@
         <div th:insert="~{includes/menu :: menu}"></div>
     </div>
 
-    <div class="container" th:if="${continentTrue} != true">
+    <!--<div class="container" th:if="${continentTrue} != true">-->
+        <!--<block th:each="con : ${continent}">-->
+            <!--<a th:href="@{'/Pecunia/continent/' + ${con.webContinent}}"><p th:text="${con.namePl}"></p></a>-->
+        <!--</block>-->
+    <!--</div>-->
+
+
+    <div class="container" style="text-align: center" th:if="${continentTrue} != true">
+        <div class="container" style="text-align: center">
+            <h1>Wybierz Kontynent</h1>
+        </div>
         <block th:each="con : ${continent}">
-            <a th:href="@{'/Pecunia/continent/' + ${con.webContinent}}"><p th:text="${con.namePl}"></p></a>
+            <a th:href="@{'/Pecunia/continent/' + ${con.webContinent}}">
+                <img class="imageNote" th:src="#{continentPath} + ${con.webContinent} + '.png'" style="width: 10%; height: 10%; margin: 15px">
+            </a>
         </block>
     </div>
 

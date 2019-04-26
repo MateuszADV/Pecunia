@@ -1,11 +1,14 @@
 package pl.mateusz.Pecunia.controllers.viewController;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.mateusz.Pecunia.models.Country;
+import pl.mateusz.Pecunia.models.dto.CountCountry;
 import pl.mateusz.Pecunia.models.repositories.CodeParamRepository;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
@@ -49,6 +52,8 @@ public class HomeController {
         List<String > codeList = homeService.currencyCode();
 
         modelMap.addAttribute("exchangeRate",exchangeService.exchange(codeList));
+//
+//        System.out.println(countryRepository.CountryOn());
         return "index";
     }
 
@@ -66,4 +71,12 @@ public class HomeController {
 
         return "showJson";
     }
+
+//    @GetMapping("/test")
+//    @ResponseBody
+//    public String getTest() {
+//        List<Country> countCountries = countryRepository.CountryOn();
+//        System.out.println(countCountries);
+//        return "test";
+//    }
 }

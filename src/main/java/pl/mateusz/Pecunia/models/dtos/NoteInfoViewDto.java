@@ -29,4 +29,5 @@ public class NoteInfoViewDto {
     private String reversePath;
 
     private String series;
+    private String making;
 }

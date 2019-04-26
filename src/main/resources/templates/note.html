@@ -70,6 +70,10 @@
                         <td><input class="form-control" type="text" th:field="*{noteDate}" placeholder="Data druku banknotu"></td>
                     </tr>
                     <tr>
+                        <td>Materiał</td>
+                        <td><input class="form-control" type="text" th:field="*{making}" placeholder="Materiał"></td>
+                    </tr>
+                    <tr>
                         <td>Sygnatura</td>
                         <td><input class="form-control" type="number" th:field="*{signatureCode}" placeholder=" Sygnatura 101/102..."></td>
                     </tr>
@@ -124,6 +128,7 @@
                     <th>Nazwa</th>
                     <th>Seria</th>
                     <th>Syg</th>
+                    <th>Materiał</th>
                     <th>Kupno</th>
                     <th>Sprzedaż</th>
                     <th>Sztuki</th>
@@ -138,6 +143,7 @@
                         <td th:text="${note.nameCurrency}"></td>
                         <td th:text="${note.series}"></td>
                         <td th:text="${note.signatureCode}"></td>
+                        <td th:text="${note.making}"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
                         <td th:text="${note.quantity}"></td>
@@ -157,6 +163,7 @@
                         <td th:text="${note.nameCurrency}"></td>
                         <td th:text="${note.series}"></td>
                         <td th:text="${note.signatureCode}"></td>
+                        <td th:text="${note.making}"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
                         <td th:text="${note.quantity}"></td>

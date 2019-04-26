@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.forms.Exchange;
 import pl.mateusz.Pecunia.models.forms.Rates;
-import pl.mateusz.Pecunia.utils.JsonUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;

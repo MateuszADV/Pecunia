@@ -113,9 +113,9 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/showNotes","/showNotes"})
     public String getShowNote(ModelMap modelMap) {
 
-        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllByOrderByCountryEn();
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.noteInColection();
         modelMap.addAttribute("banknotes", noteInfoViewList);
-        modelMap.addAttribute("countryEn", "Wszystkie banknoty");
+        modelMap.addAttribute("status", "Banknoty w kolekcji");
 
         return "showNotes";
     }
@@ -136,14 +136,16 @@ public class NoteController {
 
     @GetMapping(value = {"/Pecunia/banknotes/{countryEn}","/banknotes/{countryEn}"})
     public String postbanknotes(@PathVariable String countryEn, ModelMap modelMap) {
-        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllNoteCountry(countryEn);
-        List<NoteInfoViewDto> noteInfoViewDtoList = new ArrayList<>();
-        for (NoteInfoView noteInfoView : noteInfoViewList) {
-            noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
-        }
+//        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllNoteCountry(countryEn);
+//        List<NoteInfoViewDto> noteInfoViewDtoList = new ArrayList<>();
+//        for (NoteInfoView noteInfoView : noteInfoViewList) {
+//            noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
+//        }
 
-        modelMap.addAttribute("countryEn", noteInfoViewDtoList.get(0).getCountryEn());
-        modelMap.addAttribute("banknotes", noteInfoViewDtoList);
+//        modelMap.addAttribute("countryEn", noteInfoViewDtoList.get(0).getCountryEn());
+        modelMap.addAttribute("countryEn", countryEn);
+//        modelMap.addAttribute("banknotes", noteInfoViewDtoList);
+        modelMap.addAttribute("banknotes", noteService.noteFromCountry(countryEn));
 
         return "showNotes";
     }
@@ -192,7 +194,8 @@ public class NoteController {
         modelMap.addAttribute("continentTrue", true);
 
         modelMap.addAttribute("continent", ContinentEnum.values());
-        modelMap.addAttribute("countrys", noteService.CountryFromContinent(continent.replace("_"," ")));
+//        modelMap.addAttribute("countrys", noteService.CountryFromContinent(continent.replace("_"," ")));
+        modelMap.addAttribute("countrys", noteService.countryInColection(continent.replace("_"," ")));
 
         modelMap.addAttribute("countryFromContinent", continent.replace("_"," "));
         return "continent";
@@ -203,7 +206,7 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/for_sell", "/for_sell"})
     public String getForSell(ModelMap modelMap) {
         modelMap.addAttribute("countrys",noteService.countryNoteForSell());
-        System.out.println(noteService.countryNoteForSell());
+//        System.out.println(noteService.countryNoteForSell());
         return "for_sell";
     }
 
@@ -211,7 +214,49 @@ public class NoteController {
     public String getNoteForSell(@PathVariable String country, ModelMap modelMap) {
         modelMap.addAttribute("noteForSell", true);
         modelMap.addAttribute("banknotes", noteService.noteForSell(country));
-        System.out.println(noteService.noteForSell(country));
+//        System.out.println(noteService.noteForSell(country));
         return "for_sell";
+    }
+
+    @GetMapping(value = {"/Pecunia/all_note_for_sell", "/all_note_for_sell"})
+    public String getAllNoteForSell(ModelMap modelMap) {
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.noteForSell();
+        modelMap.addAttribute("banknotes", noteInfoViewList);
+        modelMap.addAttribute("status", "Banknoty for sell");
+
+        return "showNotes";
+    }
+
+    // Banknoty wyswietlanie bootstrap
+
+    @GetMapping(value = {"/Pecunia/select_continent", "/select_continent"})
+    public String getContinent2(ModelMap modelMap) {
+        modelMap.addAttribute("continentTrue", true);
+        modelMap.addAttribute("continent", ContinentEnum.values());
+        return "view_note";
+    }
+
+    @GetMapping(value = {"/Pecunia/select_country/{continent}", "/select_country/{continent}"})
+    public String getSelectContinent(@PathVariable String continent, ModelMap modelMap) {
+        modelMap.addAttribute("countryTrue", true);
+        modelMap.addAttribute("countrys", noteService.countryInColection(continent.replace("_"," ")));
+        modelMap.addAttribute("countryFromContinent", continent.replace("_"," "));
+        return "view_note";
+    }
+
+    @GetMapping(value = {"/Pecunia/view_note/{countryEn}", "/view_note/{countryEn"})
+    public String getSelectCountry(@PathVariable String countryEn, ModelMap modelMap) {
+        modelMap.addAttribute("noteTrue", true);
+        modelMap.addAttribute("countryEn", countryEn);
+        modelMap.addAttribute("banknotes", noteService.noteFromCountry(countryEn));
+        return "view_note";
+    }
+
+    @GetMapping(value = {"/Pecunia/select_country", "/select_country"})
+    public String getCountryInMyColection( ModelMap modelMap) {
+        modelMap.addAttribute("countryTrue", true);
+        modelMap.addAttribute("countrys", noteCountryViewRepository.countryInMyColection());
+        modelMap.addAttribute("countryFromContinent", "Wszystkie kontynenty");
+        return "view_note";
     }
 }

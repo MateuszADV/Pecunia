@@ -10,11 +10,13 @@ import java.util.List;
 @Repository
 public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long> {
 
-    List<NoteInfoView> findAllByOrderByCountryEn();
+    @Query(value = "SELECT note FROM NoteInfoView  note WHERE note.status = 'KOLEKCJA' ORDER BY note.countryEn")
+    List<NoteInfoView> noteInColection();
+
     List<NoteInfoView> findAllByCurrencyId(Long currencyId);
     NoteInfoView findByNoteId(Long noteId);
 
-    @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 ORDER BY note.series, note.denomination ASC")
+    @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 AND note.status = 'KOLEKCJA' ORDER BY note.series, note.noteDate, note.denomination ASC")
     List<NoteInfoView> findAllNoteCountry(String country);
 
     List<NoteInfoView> findAllByCountryId(Long countryId);
@@ -24,5 +26,8 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
 
     @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 AND note.status = 'FOR SELL'")
     List<NoteInfoView> NoteForSell(String country);
+
+    @Query(value = "SELECT note FROM NoteInfoView  note WHERE note.status = 'FOR SELL' ORDER BY note.countryEn")
+    List<NoteInfoView> noteForSell();
 
 }

@@ -7,6 +7,7 @@ import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
 import pl.mateusz.Pecunia.models.forms.ContinentCountryCurrencyNote;
 
 import java.util.List;
+import java.util.Set;
 
 public interface NoteService {
 
@@ -20,7 +21,11 @@ public interface NoteService {
 
     List<NoteCountryViewDto> CountryFromContinent(String continent);
 
+    List<NoteCountryViewDto> countryInColection(String continent);
+
+    List<NoteInfoViewDto> noteFromCountry(String countryEn);
+
     List<String> countryNoteForSell();
-    List<NoteInfoViewDto> noteForSell(String country);
+    List<NoteInfoViewDto> noteForSell(String countryEn);
 
 }

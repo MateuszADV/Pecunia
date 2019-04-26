@@ -3,6 +3,7 @@ package pl.mateusz.Pecunia.controllers.apiControllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.mateusz.Pecunia.models.dtos.CountryDtoList;
 import pl.mateusz.Pecunia.models.forms.ContinentCountryCurrencysResponse;
 import pl.mateusz.Pecunia.models.forms.ContinentRequest;
 import pl.mateusz.Pecunia.models.forms.ContinentResponse;
@@ -49,6 +50,12 @@ public class ApiCountryControllers {
     public ResponseEntity<ContinentCountryCurrencysResponse> postCurrencysOfWorld(@RequestBody ContinentRequest request) {
 
         return ResponseEntity.ok().body(countryService.continentCountryCurrencysResponse(request));
+    }
+
+    @GetMapping("/allCountry")
+    public ResponseEntity<CountryDtoList> getAllCountry() {
+
+        return ResponseEntity.ok().body(countryService.countryDtoList());
     }
 
 }

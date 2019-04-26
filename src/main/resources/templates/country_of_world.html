@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Państwa</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="container">
+        <div th:insert="~{includes/menu :: heder}"></div>
+        <div th:insert="~{includes/menu :: menu}"></div>
+        <h2>Lista Państw</h2>
+
+
+    </div>
+    <div class="container-fluid" style="margin-bottom: 30px">
+        <div class="container col-xs-12">
+            <table class="table table-bordered table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>kontynent</th>
+                    <th class="col-xs-1">Flaga</th>
+                    <th>Państwo po Angielsku</th>
+                    <th>Państwo po Polsku</th>
+                    <th class="col-md-1">Stolica</th>
+                    <th>Alfa 2</th>
+                    <th>Alfa 3</th>
+                    <th>Kod liczbowy</th>
+                    <th class="col-md-1">Kod ISO</th>
+                    <th>Edytuj</th>
+                </tr>
+                <th:block th:each="country : ${countryList}">
+                <tr>
+                    <td th:text="${country.id}"></td>
+                    <td th:text="${country.continent}"></td>
+                    <td class="col-xs-1"><img class="flagInTable" th:src="#{flagPath} + ${country.countryEn}+'.png'"></td>
+                    <td th:text="${country.countryEn}"></td>
+                    <td th:text="${country.countryPl}"></td>
+                    <td th:text="${country.capitalCity}"></td>
+                    <td th:text="${country.alfa2}"></td>
+                    <td th:text="${country.alfa3}"></td>
+                    <td th:text="${country.numericCode}"></td>
+                    <td th:text="${country.isoCode}"></td>
+                    <td style="text-align: center">
+                        <a th:href="@{'/country/'+${country.countryEn}}">Edytuj
+                            <br>
+                            <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+                </th:block>
+            </table>
+        </div>
+    </div>
+
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</body>
+</html>

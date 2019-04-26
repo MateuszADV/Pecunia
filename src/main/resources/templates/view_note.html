@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BOOTSTRAP</title>
+    <title>View Note</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -16,7 +16,7 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/4.0.1/ekko-lightbox.min.css" rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
-    <script src="/js/jsLightbox.js" defer></script>
+    <script th:src="@{/js/jsLightbox.js}" defer></script>
 
 </head>
 <body>
@@ -24,21 +24,20 @@
     <div class="container">
         <div th:insert="~{includes/menu :: heder}"></div>
         <div th:insert="~{includes/menu :: menu}"></div>
-
-    </div>
-    <div class="container">
-        <h2>BOOTSTRAP TEST</h2>
     </div>
 
-    <div class="container" style="text-align: center" th:if="${continentTrue} != true">
+    <div class="container" style="text-align: center" th:if="${continentTrue} == true">
+        <div style="text-align: center;">
+            <h2>Wybierz kontynent</h2>
+        </div>
         <block th:each="con : ${continent}">
-            <a th:href="@{'/Pecunia/bootstraptest/' + ${con.webContinent}}">
+            <a th:href="@{'/Pecunia/select_country/' + ${con.webContinent}}">
                 <img class="imageNote" th:src="#{continentPath} + ${con.webContinent} + '.png'" style="width: 10%; height: 10%; margin: 15px">
             </a>
         </block>
     </div>
 
-    <div class="container" th:if="${continentTrue} == true">
+    <div class="container" th:if="${countryTrue} == true">
         <div class="container-fluid" style="text-align: center; color: black">
             <h2 th:text="'Kontynent: ' + ${countryFromContinent}"></h2>
             <br>
@@ -46,7 +45,7 @@
         <div class="row">
             <Block th:each="country : ${countrys}">
                 <!--<a th:href="@{'/selectCurrency/' + ${country.id}}">-->
-                <a th:href="@{'/bootstraotest/note/' + ${country.countryEn}}">
+                <a th:href="@{'/Pecunia/view_note/' + ${country.countryEn}}">
                     <div class="col-md-2" style="text-align: center; height: 90px">
                         <span th:text="${country.countryEn}"></span>
                         <br>
@@ -60,28 +59,43 @@
     </div>
 
     <div class="container" th:if="${noteTrue} == true">
+        <div style="text-align: center; margin: 15px">
+            <h2 th:text="${countryEn}"></h2>
+            <img class="flag" th:src="#{flagPath} + ${countryEn}+'.png'" style="height: 10%; width: 10%">
+        </div>
         <div class="container row">
             <block th:each="note : ${banknotes}">
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="width: 25%; height: 350px; margin-bottom: 30px">
-                    <div style=" border: black solid 1px; background-color: aqua; width: 100%; height: 100%" >
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="width: 255px; height: 350px; margin-bottom: 30px">
+                    <div style=" border: black solid 1px; background-color: lightgray; width: 100%; height: 100%" >
                         <div class="row item" style="text-align: center; width: 80%; height: 70%; margin-right: 10%; margin-left: 10%">
                             <div class="item" >
                                 <a  th:href="#{notePath} + ${note.aversPath}" data-toggle="lightbox"
-                                    data-title="A random title"
-                                    data-footer="A custom footer text">
+                                    th:data-title="'Country: ' + ${note.countryEn}"
+                                    th:data-footer="  'COD: ' + ${note.cod}
+                                                    + '<br>'
+                                                    + ${#numbers.formatDecimal(note.denomination,1,0)}
+                                                    + ' ' + ${note.nameCurrency}
+                                                    + '<br>'
+                                                    + ' year: ' +${note.noteDate}">
                                     <img th:src="#{notePath} + ${note.aversPath}" class="img-responsive" >
                                 </a>
                             </div>
                             <div class="item" >
                                 <a  th:href="#{notePath} + ${note.reversePath}" data-toggle="lightbox"
-                                    data-title="A random title"
-                                    data-footer="A custom footer text">
+                                    th:data-title="'Country: ' + ${note.countryEn}"
+                                    th:data-footer="  'COD: ' + ${note.cod}
+                                                    + '<br>'
+                                                    + ${#numbers.formatDecimal(note.denomination,1,0)}
+                                                    + ' ' + ${note.nameCurrency}
+                                                    + '<br>'
+                                                    + ' year: ' +${note.noteDate}">
                                     <img th:src="#{notePath} + ${note.reversePath}" alt="" class="img-responsive">
                                 </a>
                             </div>
                         </div>
                         <div style="margin-left: 10px; margin-right: 10px">
-                            <p>TEST</p>
+                            <p th:text="${#numbers.formatDecimal(note.denomination,1,0)} + ' ' + ${note.nameCurrency}"></p>
+                            <a href="#"><p>DETAILS</p></a>
                         </div>
                     </div>
                 </div>
@@ -101,7 +115,6 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/4.0.1/ekko-lightbox.min.js"></script>
-
 
 
 </body>

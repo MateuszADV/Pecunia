@@ -11,6 +11,7 @@ import pl.mateusz.Pecunia.models.repositories.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -103,7 +104,37 @@ public class NoteServiceImpl implements NoteService {
         for (NoteCountryView noteCountryView : noteCountryViewList) {
             noteCountryViewDtoList.add(new ModelMapper().map(noteCountryView, NoteCountryViewDto.class));
         }
+
         return noteCountryViewDtoList;
+    }
+
+    @Override
+    public List<NoteCountryViewDto> countryInColection(String continent) {
+        Set<NoteCountryView> noteCountryViewList = noteCountryViewRepository.countryListColection(continent);
+        return countryFromContinentSet(noteCountryViewList);
+    }
+
+    private List<NoteCountryViewDto> countryFromContinentSet(Set<NoteCountryView> noteCountryViewList) {
+        List<NoteCountryViewDto> noteCountryViewDtoList = new ArrayList<>();
+
+        for (NoteCountryView noteCountryView : noteCountryViewList) {
+            noteCountryViewDtoList.add(new ModelMapper().map(noteCountryView, NoteCountryViewDto.class));
+            System.out.println(noteCountryView);
+        }
+        return noteCountryViewDtoList;
+    }
+
+
+    @Override
+    public List<NoteInfoViewDto> noteFromCountry(String countryEn) {
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllNoteCountry(countryEn);
+//        List<NoteInfoViewDto> noteInfoViewDtoList = new ArrayList<>();
+//        for (NoteInfoView noteInfoView : noteInfoViewList) {
+//            noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
+//        }
+//
+//        return noteInfoViewDtoList;
+        return getNoteInfoViewDtos(noteInfoViewList);
     }
 
     //Banknoty na sprzedaz
@@ -116,8 +147,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<NoteInfoViewDto> noteForSell(String country) {
-        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(country);
+    public List<NoteInfoViewDto> noteForSell(String countryEn) {
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(countryEn);
         return getNoteInfoViewDtos(noteInfoViewList);
     }
 

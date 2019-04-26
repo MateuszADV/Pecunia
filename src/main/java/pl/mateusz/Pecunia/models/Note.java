@@ -38,6 +38,7 @@ public class Note {
     @Column(name = "reverse_path")
     private String  reversePath;
     private String series;
+    private String making;
 
 
     @ManyToOne
