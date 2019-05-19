@@ -139,7 +139,7 @@
                 </tr>
                 <th:block th:each=" note : ${currencyNoteList}">
                     <tr  th:if="${note.noteId} == ${noteDto.id}" style="background-color: aqua">
-                        <td th:text="${note.denomination}"></td>
+                        <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
                         <td th:text="${note.nameCurrency}"></td>
                         <td th:text="${note.series}"></td>
                         <td th:text="${note.signatureCode}"></td>
@@ -159,7 +159,7 @@
                         </td>
                     </tr>
                     <tr th:if="${note.noteId} != ${noteDto.id}">
-                        <td th:text="${note.denomination}"></td>
+                        <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
                         <td th:text="${note.nameCurrency}"></td>
                         <td th:text="${note.series}"></td>
                         <td th:text="${note.signatureCode}"></td>

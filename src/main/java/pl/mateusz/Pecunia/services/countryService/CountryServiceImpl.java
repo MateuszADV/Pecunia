@@ -18,6 +18,7 @@ import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class CountryServiceImpl implements CountryService {
@@ -34,6 +35,10 @@ public class CountryServiceImpl implements CountryService {
         this.countryRepository = countryRepository;
         this.currencyRepository = currencyRepository;
         this.noteCountryViewRepository = noteCountryViewRepository;
+    }
+
+    public CountryServiceImpl() {
+
     }
 
     @Override
@@ -213,5 +218,46 @@ public class CountryServiceImpl implements CountryService {
         CountryDto countryDto = new ModelMapper().map(country, CountryDto.class);
 
         return countryDto;
+    }
+
+    /**
+     * Metoda sprawdza czhy kod waluty jest prwidłowy
+     */
+
+    @Override
+    public List<String> codeCurrency(List<String> code) {
+        List<String> codeList = new ArrayList<>();
+
+        for (String s : codeLengthCheckList(code)) {
+            if (s != null) {
+                codeList.add(s.toUpperCase());
+            }
+        }
+
+        return codeList;
+    }
+
+    private String codeLengthCheck(String code) {
+        if (code.length() == 3) {
+            return code;
+        }
+        return null;
+    }
+
+    private List<String> codeLengthCheckList(List<String> codeList) {
+        List<String> codeCheckedList = new ArrayList<>();
+
+        for (String s : codeList) {
+            if (BooleanUtils.isTrue(checkCodeInsaidNotNumber(s))) {
+                codeCheckedList.add(codeLengthCheck(s));
+            }
+
+        }
+        return codeCheckedList;
+    }
+
+    private Boolean checkCodeInsaidNotNumber(String code) {
+        Pattern pattern = Pattern.compile("[a-zA-Z]{3}");
+        return pattern.matcher(code).matches();
     }
 }

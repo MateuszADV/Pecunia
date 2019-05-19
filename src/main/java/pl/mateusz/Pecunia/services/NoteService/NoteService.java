@@ -7,7 +7,6 @@ import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
 import pl.mateusz.Pecunia.models.forms.ContinentCountryCurrencyNote;
 
 import java.util.List;
-import java.util.Set;
 
 public interface NoteService {
 

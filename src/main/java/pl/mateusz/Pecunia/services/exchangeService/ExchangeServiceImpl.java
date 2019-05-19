@@ -16,9 +16,13 @@ import java.util.List;
 
 @Service
 public class ExchangeServiceImpl implements ExchangeService {
+
+
+    String url = "http://api.nbp.pl/api/exchangerates/tables/a/last/";
+
     @Override
     public Exchange exchange() {
-        return exchange("http://api.nbp.pl/api/exchangerates/tables/a/last/");
+        return exchange(url);
     }
 
     @Override
@@ -78,4 +82,6 @@ public class ExchangeServiceImpl implements ExchangeService {
         }
         return clientResponse.getEntity(String.class);
     }
+
+
 }

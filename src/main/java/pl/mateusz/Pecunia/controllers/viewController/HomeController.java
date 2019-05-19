@@ -1,14 +1,11 @@
 package pl.mateusz.Pecunia.controllers.viewController;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pl.mateusz.Pecunia.models.Country;
-import pl.mateusz.Pecunia.models.dto.CountCountry;
 import pl.mateusz.Pecunia.models.repositories.CodeParamRepository;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
@@ -17,6 +14,8 @@ import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.services.exchangeService.ExchangeService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -48,12 +47,18 @@ public class HomeController {
     }
 
     @GetMapping(value = {"Pecunia","/"})
-    public String getIndex(ModelMap modelMap) {
-        List<String > codeList = homeService.currencyCode();
+    public String getIndex(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 
-        modelMap.addAttribute("exchangeRate",exchangeService.exchange(codeList));
-//
-//        System.out.println(countryRepository.CountryOn());
+        try {
+            List<String > codeList = homeService.currencyCode();
+            modelMap.addAttribute("exchange", true);
+            System.out.println(codeList);
+            modelMap.addAttribute("exchangeRate",exchangeService.exchange(codeList));
+        }catch (Exception e) {
+            modelMap.addAttribute("exchange", false);
+            modelMap.addAttribute("error", e.getMessage());
+        }
+
         return "index";
     }
 

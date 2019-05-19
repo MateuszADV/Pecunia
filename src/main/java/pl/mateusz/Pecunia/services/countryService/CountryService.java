@@ -24,4 +24,7 @@ public interface CountryService {
     CountryJsonDto countryJson(Long country_id);
 
     CountryDto countryFromId(Long country_id);
+
+    //Spawdzanie poprawności codu waluty
+    List<String> codeCurrency(List<String> code);
 }

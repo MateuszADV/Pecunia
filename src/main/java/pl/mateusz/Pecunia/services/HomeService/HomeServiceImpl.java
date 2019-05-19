@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.CodeParam;
 import pl.mateusz.Pecunia.models.repositories.CodeParamRepository;
+import pl.mateusz.Pecunia.services.countryService.CountryServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,13 @@ import java.util.List;
 public class HomeServiceImpl implements HomeService {
 
     private CodeParamRepository codeParamRepository;
+    private CountryServiceImpl countryServiceImpl;
+
 
     @Autowired
-    public HomeServiceImpl(CodeParamRepository codeParamRepository) {
+    public HomeServiceImpl(CodeParamRepository codeParamRepository, CountryServiceImpl countryServiceImpl) {
         this.codeParamRepository = codeParamRepository;
+        this.countryServiceImpl = countryServiceImpl;
     }
 
     @Override
@@ -28,6 +32,8 @@ public class HomeServiceImpl implements HomeService {
         for (Object code : codeJson.getJSONArray("code")) {
             codelist.add(code.toString());
         }
-        return codelist;
+//        return codelist;
+
+        return countryServiceImpl.codeCurrency(codelist);
     }
 }
