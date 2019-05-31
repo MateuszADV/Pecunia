@@ -248,7 +248,7 @@ public class CountryServiceImpl implements CountryService {
         List<String> codeCheckedList = new ArrayList<>();
 
         for (String s : codeList) {
-            if (BooleanUtils.isTrue(checkCodeInsaidNotNumber(s))) {
+            if ( s != null && BooleanUtils.isTrue(checkCodeInsaidNotNumber(s))) {
                 codeCheckedList.add(codeLengthCheck(s));
             }
 

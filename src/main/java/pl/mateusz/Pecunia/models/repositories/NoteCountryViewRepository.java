@@ -17,7 +17,12 @@ public interface NoteCountryViewRepository extends JpaRepository<NoteCountryView
             "          AND note.countryEn = country.countryEn ORDER BY note.countryEn")
    Set<NoteCountryView> countryListColection (String continent);
 
-    @Query(value = "SELECT cou FROM NoteCountryView cou ORDER BY cou.countryEn")
-    List<NoteCountryView> countryInMyColection();
+//    @Query(value = "SELECT cou FROM NoteCountryView cou ORDER BY cou.countryEn")
+//    List<NoteCountryView> countryInMyColection();
+    @Query(value = "SELECT DISTINCT(cou) FROM NoteCountryView cou, NoteInfoView niv" +
+                   " WHERE niv.status = ?1" +
+                   "   AND cou.countryId = niv.countryId" +
+                   " ORDER BY cou.countryEn")
+    List<NoteCountryView> countryInMyColection(String status);
 
 }

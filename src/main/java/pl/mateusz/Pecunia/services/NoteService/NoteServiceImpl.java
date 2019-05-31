@@ -2,6 +2,7 @@ package pl.mateusz.Pecunia.services.NoteService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.*;
 import pl.mateusz.Pecunia.models.dtos.*;
 import pl.mateusz.Pecunia.models.forms.ContinentCountryCurrencyNote;
@@ -140,15 +141,15 @@ public class NoteServiceImpl implements NoteService {
     //Banknoty na sprzedaz
 
     @Override
-    public List<String> countryNoteForSell() {
-        List<String> countyNoteForSell = noteInfoViewRepository.countryNoteForSell();
+    public List<String> countryNoteForSell(String status) {
+        List<String> countyNoteForSell = noteInfoViewRepository.countryNoteForSell(status);
 
         return countyNoteForSell;
     }
 
     @Override
-    public List<NoteInfoViewDto> noteForSell(String countryEn) {
-        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(countryEn);
+    public List<NoteInfoViewDto> noteForSell(String countryEn, String status) {
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(countryEn, status);
         return getNoteInfoViewDtos(noteInfoViewList);
     }
 

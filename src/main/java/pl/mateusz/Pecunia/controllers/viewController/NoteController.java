@@ -10,10 +10,8 @@ import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.Note;
 import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.NoteInfoView;
-import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.dtos.NoteCountryViewDto;
 import pl.mateusz.Pecunia.models.dtos.NoteDto;
-import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
@@ -205,22 +203,24 @@ public class NoteController {
 //    Banknoty na sprzedaż
     @GetMapping(value = {"/Pecunia/for_sell", "/for_sell"})
     public String getForSell(ModelMap modelMap) {
-        modelMap.addAttribute("countrys",noteService.countryNoteForSell());
+        modelMap.addAttribute("heder", Constans.NOTE_STATUS_FOR_SELL);
+        modelMap.addAttribute("countrys",noteService.countryNoteForSell(Constans.NOTE_STATUS_FOR_SELL));
 //        System.out.println(noteService.countryNoteForSell());
         return "for_sell";
     }
 
     @GetMapping(value = {"/Pecunia/for_sell/{country}","/for_sell/{country}"})
     public String getNoteForSell(@PathVariable String country, ModelMap modelMap) {
+        modelMap.addAttribute("heder", Constans.NOTE_STATUS_FOR_SELL);
         modelMap.addAttribute("noteForSell", true);
-        modelMap.addAttribute("banknotes", noteService.noteForSell(country));
-//        System.out.println(noteService.noteForSell(country));
+        modelMap.addAttribute("banknotes", noteService.noteForSell(country, Constans.NOTE_STATUS_FOR_SELL));
+//        System.out.println(noteService.noteForSell_OrderByCountry(country));
         return "for_sell";
     }
 
     @GetMapping(value = {"/Pecunia/all_note_for_sell", "/all_note_for_sell"})
     public String getAllNoteForSell(ModelMap modelMap) {
-        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.noteForSell();
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.noteForSell_OrderByCountry(Constans.NOTE_STATUS_FOR_SELL);
         modelMap.addAttribute("banknotes", noteInfoViewList);
         modelMap.addAttribute("status", "Banknoty for sell");
 
@@ -255,8 +255,30 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/select_country", "/select_country"})
     public String getCountryInMyColection( ModelMap modelMap) {
         modelMap.addAttribute("countryTrue", true);
-        modelMap.addAttribute("countrys", noteCountryViewRepository.countryInMyColection());
+        modelMap.addAttribute("countrys", noteCountryViewRepository.countryInMyColection(Constans.NOTE_STATUS_KOLEKCJA));
         modelMap.addAttribute("countryFromContinent", "Wszystkie kontynenty");
         return "view_note";
+    }
+
+    /*
+    NOWE BANKNOTY
+     */
+
+    //    Banknoty na sprzedaż
+    @GetMapping(value = {"/Pecunia/new_note", "/new_note"})
+    public String getNewNote(ModelMap modelMap) {
+        modelMap.addAttribute("heder", Constans.NOTE_STATUS_NEW_NOTE);
+        modelMap.addAttribute("countrys",noteService.countryNoteForSell(Constans.NOTE_STATUS_NEW_NOTE));
+
+        return "for_sell";
+    }
+
+    @GetMapping(value = {"/Pecunia/new_note/{country}","/new_note/{country}"})
+    public String getNewNote(@PathVariable String country, ModelMap modelMap) {
+        modelMap.addAttribute("heder", Constans.NOTE_STATUS_NEW_NOTE);
+        modelMap.addAttribute("noteForSell", true);
+        modelMap.addAttribute("banknotes", noteService.noteForSell(country, Constans.NOTE_STATUS_NEW_NOTE));
+//        System.out.println(noteService.noteForSell_OrderByCountry(country));
+        return "for_sell";
     }
 }

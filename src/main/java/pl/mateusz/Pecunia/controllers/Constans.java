@@ -5,4 +5,12 @@ public class Constans {
     public static final String BUTTON_SAVE_CHANGE = "Zapisz zmiany";
     public static final String BUTTON_ADD_COUNTRY = "Dodaj państwo";
     public static final String BUTTON_ADD_CURRENCY = "Dodaj walute";
+
+    /*
+    FINAL NOTES
+     */
+
+    public static final String NOTE_STATUS_FOR_SELL = "FOR SELL";
+    public static final String NOTE_STATUS_NEW_NOTE = "NEW";
+    public static final String NOTE_STATUS_KOLEKCJA = "KOLEKCJA";
 }

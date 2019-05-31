@@ -16,18 +16,21 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
     List<NoteInfoView> findAllByCurrencyId(Long currencyId);
     NoteInfoView findByNoteId(Long noteId);
 
-    @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 AND note.status = 'KOLEKCJA' ORDER BY note.series, note.noteDate, note.denomination ASC")
+    @Query(value = "SELECT note FROM NoteInfoView note " +
+                   " WHERE note.countryEn = ?1 " +
+                   "   AND note.status = 'KOLEKCJA' " +
+                   " ORDER BY note.series, note.noteDate, note.denomination ASC")
     List<NoteInfoView> findAllNoteCountry(String country);
 
     List<NoteInfoView> findAllByCountryId(Long countryId);
 
-    @Query(value = "SELECT DISTINCT(note.countryEn) FROM  NoteInfoView note where note.status = 'FOR SELL'")
-    List<String> countryNoteForSell();
+    @Query(value = "SELECT DISTINCT(note.countryEn) FROM  NoteInfoView note where note.status = ?1")
+    List<String> countryNoteForSell(String status);
 
-    @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 AND note.status = 'FOR SELL'")
-    List<NoteInfoView> NoteForSell(String country);
+    @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 AND note.status = ?2")
+    List<NoteInfoView> NoteForSell(String country, String status);
 
-    @Query(value = "SELECT note FROM NoteInfoView  note WHERE note.status = 'FOR SELL' ORDER BY note.countryEn")
-    List<NoteInfoView> noteForSell();
+    @Query(value = "SELECT note FROM NoteInfoView  note WHERE note.status = ?1 ORDER BY note.countryEn")
+    List<NoteInfoView> noteForSell_OrderByCountry(String status);
 
 }
