@@ -52,7 +52,6 @@ public class HomeController {
         try {
             List<String > codeList = homeService.currencyCode();
             modelMap.addAttribute("exchange", true);
-            System.out.println(codeList);
             modelMap.addAttribute("exchangeRate",exchangeService.exchange(codeList));
         }catch (Exception e) {
             modelMap.addAttribute("exchange", false);
@@ -66,7 +65,7 @@ public class HomeController {
     @GetMapping("/error")
     public String getError() {
 
-        return "<h1>BRAK STRONY BŁĄD 404</h1";
+        return "<h1>BRAK STRONY BŁĄD 404</h1>";
     }
 
     @PostMapping(value = {"/Pecunia/currency/showJson","/currency/showJson"})
