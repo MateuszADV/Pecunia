@@ -244,7 +244,7 @@ public class NoteController {
         return "view_note";
     }
 
-    @GetMapping(value = {"/Pecunia/view_note/{countryEn}", "/view_note/{countryEn"})
+    @GetMapping(value = {"/Pecunia/view_note/{countryEn}", "/view_note/{countryEn}"})
     public String getSelectCountry(@PathVariable String countryEn, ModelMap modelMap) {
         modelMap.addAttribute("noteTrue", true);
         modelMap.addAttribute("countryEn", countryEn);

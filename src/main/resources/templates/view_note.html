@@ -31,7 +31,7 @@
             <h2>Wybierz kontynent</h2>
         </div>
         <block th:each="con : ${continent}">
-            <a th:href="@{'/Pecunia/select_country/' + ${con.webContinent}}">
+            <a th:href="@{'/select_country/' + ${con.webContinent}}">
                 <img class="imageNote" th:src="#{continentPath} + ${con.webContinent} + '.png'" style="width: 10%; height: 10%; margin: 15px">
             </a>
         </block>
@@ -45,7 +45,7 @@
         <div class="row">
             <Block th:each="country : ${countrys}">
                 <!--<a th:href="@{'/selectCurrency/' + ${country.id}}">-->
-                <a th:href="@{'/Pecunia/view_note/' + ${country.countryEn}}">
+                <a th:href="@{'/view_note/' + ${country.countryEn}}">
                     <div class="col-md-2" style="text-align: center; height: 90px">
                         <span th:text="${country.countryEn}"></span>
                         <br>
