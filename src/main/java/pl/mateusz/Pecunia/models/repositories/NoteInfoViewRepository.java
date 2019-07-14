@@ -10,10 +10,16 @@ import java.util.List;
 @Repository
 public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long> {
 
-    @Query(value = "SELECT note FROM NoteInfoView  note WHERE note.status = 'KOLEKCJA' ORDER BY note.countryEn")
+    @Query(value = "SELECT note FROM NoteInfoView  note " +
+                   " WHERE note.status = 'KOLEKCJA' " +
+                   " ORDER BY note.countryEn")
     List<NoteInfoView> noteInColection();
 
+    @Query(value = "SELECT note FROM NoteInfoView  note" +
+                   " WHERE note.currencyId = ?1" +
+                   " ORDER BY note.series, note.denomination")
     List<NoteInfoView> findAllByCurrencyId(Long currencyId);
+
     NoteInfoView findByNoteId(Long noteId);
 
     @Query(value = "SELECT note FROM NoteInfoView note " +
@@ -24,13 +30,19 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
 
     List<NoteInfoView> findAllByCountryId(Long countryId);
 
-    @Query(value = "SELECT DISTINCT(note.countryEn) FROM  NoteInfoView note where note.status = ?1 ORDER BY note.countryEn")
+    @Query(value = "SELECT DISTINCT(note.countryEn) FROM  NoteInfoView note " +
+                   " WHERE note.status = ?1 " +
+                   " ORDER BY note.countryEn")
     List<String> countryNoteForSell(String status);
 
-    @Query(value = "SELECT note FROM NoteInfoView note WHERE note.countryEn = ?1 AND note.status = ?2")
+    @Query(value = "SELECT note FROM NoteInfoView note " +
+                   " WHERE note.countryEn = ?1 " +
+                   "   AND note.status = ?2")
     List<NoteInfoView> NoteForSell(String country, String status);
 
-    @Query(value = "SELECT note FROM NoteInfoView  note WHERE note.status = ?1 ORDER BY note.countryEn")
+    @Query(value = "SELECT note FROM NoteInfoView  note " +
+                   " WHERE note.status = ?1 " +
+                   " ORDER BY note.countryEn")
     List<NoteInfoView> noteForSell_OrderByCountry(String status);
 
 }
