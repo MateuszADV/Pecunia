@@ -134,15 +134,8 @@ public class NoteController {
 
     @GetMapping(value = {"/Pecunia/banknotes/{countryEn}","/banknotes/{countryEn}"})
     public String postbanknotes(@PathVariable String countryEn, ModelMap modelMap) {
-//        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.findAllNoteCountry(countryEn);
-//        List<NoteInfoViewDto> noteInfoViewDtoList = new ArrayList<>();
-//        for (NoteInfoView noteInfoView : noteInfoViewList) {
-//            noteInfoViewDtoList.add(new ModelMapper().map(noteInfoView, NoteInfoViewDto.class));
-//        }
-
-//        modelMap.addAttribute("countryEn", noteInfoViewDtoList.get(0).getCountryEn());
         modelMap.addAttribute("countryEn", countryEn);
-//        modelMap.addAttribute("banknotes", noteInfoViewDtoList);
+        modelMap.addAttribute("countryEn", countryEn);
         modelMap.addAttribute("banknotes", noteService.noteFromCountry(countryEn));
 
         return "showNotes";
@@ -151,7 +144,13 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/noteEdit/{noteId}","/noteEdit/{noteId}"})
     public String getEditNote(@PathVariable Long noteId,
                               ModelMap modelMap) {
-        noteEdit(noteId, modelMap);
+
+        try {
+            noteEdit(noteId, modelMap);
+        }catch (Exception e){
+            modelMap.addAttribute("errorId", noteId);
+            return "error404";
+        }
 
         return "/note";
     }
@@ -200,7 +199,9 @@ public class NoteController {
     }
 
 
-//    Banknoty na sprzedaż
+    /**
+     * Banknoty na sprzedaż
+     */
     @GetMapping(value = {"/Pecunia/for_sell", "/for_sell"})
     public String getForSell(ModelMap modelMap) {
         modelMap.addAttribute("heder", Constans.NOTE_STATUS_FOR_SELL);
@@ -227,7 +228,10 @@ public class NoteController {
         return "showNotes";
     }
 
-    // Banknoty wyswietlanie bootstrap
+    /**
+     * Banknoty wyswietlanie bootstrap
+
+     */
 
     @GetMapping(value = {"/Pecunia/select_continent", "/select_continent"})
     public String getContinent2(ModelMap modelMap) {
@@ -260,7 +264,7 @@ public class NoteController {
         return "view_note";
     }
 
-    /*
+    /**
     NOWE BANKNOTY
      */
 
@@ -281,4 +285,6 @@ public class NoteController {
 //        System.out.println(noteService.noteForSell_OrderByCountry(country));
         return "for_sell";
     }
+
+
 }

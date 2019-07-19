@@ -83,6 +83,7 @@ public class CountryController {
 
         for (Country country : countries) {
             country.setCountryPl(country.getCountryPl());
+//            country.setCountryEn(country.getCountryEn().replace("_"," "));
             countryDtoList.add(new ModelMapper().map(country, CountryDto.class));
         }
 
