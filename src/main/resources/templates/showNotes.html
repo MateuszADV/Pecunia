@@ -56,7 +56,13 @@
                     <!--<td th:text="${note.countryEn}"></td>-->
                     <td th:text="${note.cod}"></td>
                     <!--<td th:text="${note.currency}"></td>-->
-                    <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
+                    <!--<td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>-->
+                    <div th:if="${note.denomination} >= 1">
+                        <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
+                    </div>
+                    <div th:if="${note.denomination} < 1">
+                        <td th:text="${note.denomination}"></td>
+                    </div>
                     <td th:text="${note.nameCurrency}"></td>
                     <td th:text="${note.series}"></td>
                     <td th:text="${note.noteDate}"></td>

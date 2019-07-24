@@ -117,7 +117,7 @@
                 <input class="btn btn-primary" type="submit" th:value="${button}">
             </form>
         </div>
-        <div>
+        <div style="font-size: 12px">
 
                 <center><h2 th:text="'Banknoty: ' + ${countryCurrency.countryEn}"></h2></center>
 
@@ -129,6 +129,7 @@
                     <th>Seria</th>
                     <th>Syg</th>
                     <th>Materiał</th>
+                    <th>Stan</th>
                     <th>Kupno</th>
                     <th>Sprzedaż</th>
                     <th>Sztuki</th>
@@ -139,17 +140,32 @@
                 </tr>
                 <th:block th:each=" note : ${currencyNoteList}">
                     <tr  th:if="${note.noteId} == ${noteDto.id}" style="background-color: aqua">
-                        <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
+                        <div th:if="${note.denomination} > 0">
+                            <!--<td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>-->
+                            <td th:text="${note.denomination}"></td>
+                        </div>
+                        <div th:if="${note.denomination} < 0">
+                            <td th:text="${note.denomination}"></td>
+                        </div>
                         <td th:text="${note.nameCurrency}"></td>
                         <td th:text="${note.series}"></td>
                         <td th:text="${note.signatureCode}"></td>
                         <td th:text="${note.making}"></td>
+                        <td th:text="${note.quality}"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
                         <td th:text="${note.quantity}"></td>
                         <td th:text="${note.status}"></td>
-                        <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
-                        <td><a target="_blank" th:href="#{notePath} + ${note.reversePath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                        <td>
+                            <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
+                                <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">
+                            </a>
+                        </td>
+                        <td>
+                            <a target="_blank" th:href="#{notePath} + ${note.reversePath}">
+                                <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">
+                            </a>
+                        </td>
                         <td style="text-align: center">
                             <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
                                 <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -159,17 +175,31 @@
                         </td>
                     </tr>
                     <tr th:if="${note.noteId} != ${noteDto.id}">
-                        <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
+                        <div th:if="${note.denomination} >= 1">
+                            <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
+                        </div>
+                        <div th:if="${note.denomination} < 1">
+                            <td th:text="${note.denomination}"></td>
+                        </div>
                         <td th:text="${note.nameCurrency}"></td>
                         <td th:text="${note.series}"></td>
                         <td th:text="${note.signatureCode}"></td>
                         <td th:text="${note.making}"></td>
+                        <td th:text="${note.quality}"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
                         <td th:text="${note.quantity}"></td>
                         <td th:text="${note.status}"></td>
-                        <td ><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
-                        <td><a target="_blank" th:href="#{notePath} + ${note.reversePath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                        <td >
+                            <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
+                                <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">
+                            </a>
+                        </td>
+                        <td>
+                            <a target="_blank" th:href="#{notePath} + ${note.reversePath}">
+                                <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">
+                            </a>
+                        </td>
                         <td style="text-align: center">
                             <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
                                 <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
