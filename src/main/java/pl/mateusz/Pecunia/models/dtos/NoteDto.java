@@ -1,8 +1,12 @@
 package pl.mateusz.Pecunia.models.dtos;
 
 import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.sql.Date;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +28,6 @@ public class NoteDto {
     private String reversePath;
     private String series;
     private String making;
+    private Date dateBuyNote;
+    private  String bought;
 }

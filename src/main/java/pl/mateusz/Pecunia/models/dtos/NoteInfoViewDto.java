@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -30,4 +33,6 @@ public class NoteInfoViewDto {
 
     private String series;
     private String making;
+    private Date dateBuyNote;
+    private  String bought;
 }

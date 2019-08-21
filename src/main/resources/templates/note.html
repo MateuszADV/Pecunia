@@ -54,6 +54,14 @@
                     <input type="number" th:name="currencyId" th:value="${currencyId}" style="display: none">
                     <input type="number" th:field="*{id}" style="display: none">
                     <tr>
+                        <td>Data zakupu banknotu</td>
+                        <td><input class="form-control" type="text" th:field="*{dateBuyNote}" placeholder="Data zakupu banknotu"></td>
+                    </tr>
+                    <tr>
+                        <td>Gdzie banknot został kupiony</td>
+                        <td><input class="form-control" type="text" th:field="*{bought}" placeholder="Miejsce zakupu banknotu"></td>
+                    </tr>
+                    <tr>
                         <td>Nominał</td>
                         <td><input class="form-control" type="text" th:field="*{denomination}" placeholder="Nominał banknotu"></td>
                     </tr>

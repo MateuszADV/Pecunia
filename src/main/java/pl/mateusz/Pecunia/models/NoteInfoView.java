@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Date;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,4 +52,7 @@ public class NoteInfoView {
 
     private String series;
     private String making;
+    @Column(name = "date_buy_note")
+    private Date dateBuyNote;
+    private  String bought;
 }

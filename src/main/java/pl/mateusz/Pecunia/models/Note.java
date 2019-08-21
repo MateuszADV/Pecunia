@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,6 +41,9 @@ public class Note {
     private String  reversePath;
     private String series;
     private String making;
+    @Column(name = "date_buy_note")
+    private Date dateBuyNote;
+    private  String bought;
 
 
     @ManyToOne
