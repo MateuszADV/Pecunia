@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.Note;
@@ -21,6 +22,7 @@ import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Controller
@@ -78,9 +80,21 @@ public class NoteController {
     }
 
     @PostMapping(value = {"/Pecunia/addNote","/addNote"})
-    public String postNote(@ModelAttribute("noteDto") NoteDto noteDto,
+    public String postNote(@ModelAttribute("noteDto") @Valid NoteDto noteDto, BindingResult result,
                            @RequestParam("currencyId") Long currencyId,
                            ModelMap modelMap) {
+
+        /**
+         * TYMCZASOWE ROZWIĄZANIE DO SPRAWDANIA POPRAWNOŚCI DATY ZAKUPU BANKNOTU
+         */
+        if (result.hasErrors()) {
+            System.out.println("+++Powinien być wynik RESULT " + result.hasErrors());
+            System.out.println(noteDto.getDateBuyNote());
+            modelMap.addAttribute("data_erorr", "Został podany niepopraw format daty 2000-01-01");
+            modelMap.addAttribute("save", "Zmiany nie zostały zapisane :(");
+            noteEdit(noteDto.getId(), modelMap);
+            return "note";
+        }
 
         if (BooleanUtils.isTrue(noteService.saveNote(noteDto,currencyId))) {
             modelMap.addAttribute("save", "Bnknot został dodany do bazy");

@@ -54,8 +54,9 @@
                     <input type="number" th:name="currencyId" th:value="${currencyId}" style="display: none">
                     <input type="number" th:field="*{id}" style="display: none">
                     <tr>
-                        <td>Data zakupu banknotu</td>
-                        <td><input class="form-control" type="text" th:field="*{dateBuyNote}" placeholder="Data zakupu banknotu"></td>
+                        <td style="width: 30% ">Data zakupu banknotu</td>
+                        <td><input class="form-control" type="text" th:field="*{dateBuyNote}" placeholder="yyyy-mm-dd">
+                            <span th:text="${data_erorr}" style="color: red"></span></td>
                     </tr>
                     <tr>
                         <td>Gdzie banknot został kupiony</td>

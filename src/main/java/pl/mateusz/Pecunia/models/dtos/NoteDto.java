@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
 
@@ -28,6 +30,8 @@ public class NoteDto {
     private String reversePath;
     private String series;
     private String making;
+//    @NotEmpty(message = "Pole nie może byc puste")
+//    @Pattern(regexp = "^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", message = "2000-01-01")
     private Date dateBuyNote;
     private  String bought;
 }

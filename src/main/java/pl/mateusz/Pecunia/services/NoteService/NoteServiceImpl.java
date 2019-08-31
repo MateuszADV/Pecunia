@@ -1,5 +1,6 @@
 package pl.mateusz.Pecunia.services.NoteService;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.controllers.Constans;
