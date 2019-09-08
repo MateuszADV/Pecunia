@@ -35,4 +35,5 @@ public class NoteInfoViewDto {
     private String making;
     private Date dateBuyNote;
     private  String bought;
+    private String statusSell;  //StatusSell odpowiada za to czy dany banknot został wystawiony na sprzedaż
 }

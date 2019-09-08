@@ -43,7 +43,9 @@ public class Note {
     private String making;
     @Column(name = "date_buy_note")
     private Date dateBuyNote;
-    private  String bought;
+    private String bought;
+    @Column(name = "status_sell")
+    private String statusSell;  //StatusSell odpowiada za to czy dany banknot został wystawiony na sprzedaż
 
 
     @ManyToOne

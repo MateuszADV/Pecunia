@@ -47,7 +47,8 @@
                 <tr class="bg-primary">
                     <td th:text="${rate.currency}"></td>
                     <td th:text="${rate.cod}"></td>
-                    <td th:text="${rate.mid} + 'zł'"></td>
+                    <!--<td th:text="${rate.mid} + 'zł'"></td>-->
+                    <td th:text="${#numbers.formatDecimal(rate.mid,1,4)} + 'zł'"></td>
                 </tr>
 
             </block>
