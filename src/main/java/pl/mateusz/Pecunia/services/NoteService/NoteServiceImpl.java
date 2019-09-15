@@ -8,6 +8,7 @@ import pl.mateusz.Pecunia.models.*;
 import pl.mateusz.Pecunia.models.dtos.*;
 import pl.mateusz.Pecunia.models.forms.ContinentCountryCurrencyNote;
 import pl.mateusz.Pecunia.models.forms.CountryCurrencyNote;
+import pl.mateusz.Pecunia.models.forms.ExposedNoteDto;
 import pl.mateusz.Pecunia.models.repositories.*;
 
 import java.util.ArrayList;
@@ -162,4 +163,17 @@ public class NoteServiceImpl implements NoteService {
         }
         return noteInfoViewDtoList;
     }
+
+    @Override
+    public List<ExposedNoteDto> exposedNote(String statusSell) {
+        List<ExposedNoteDto> exposedNoteDtoList = new ArrayList<>();
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.exposedNote(statusSell);
+
+        for (NoteInfoView noteInfoView : noteInfoViewList) {
+            exposedNoteDtoList.add(new ModelMapper().map(noteInfoView, ExposedNoteDto.class));
+        }
+
+        return exposedNoteDtoList;
+    }
+
 }

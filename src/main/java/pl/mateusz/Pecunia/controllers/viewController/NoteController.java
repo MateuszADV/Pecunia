@@ -300,5 +300,12 @@ public class NoteController {
         return "for_sell";
     }
 
+    @GetMapping(value = {"/Pecunia/exposed", "/exposed"})
+    public String getExposedNote(ModelMap modelMap) {
+        modelMap.addAttribute("exposedNote",noteService.exposedNote("OLX"));
+
+        return "exposed";
+    }
+
 
 }

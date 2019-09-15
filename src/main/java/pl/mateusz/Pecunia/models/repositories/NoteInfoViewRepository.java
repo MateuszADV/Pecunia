@@ -45,4 +45,10 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
                    " ORDER BY note.countryEn")
     List<NoteInfoView> noteForSell_OrderByCountry(String status);
 
+
+    @Query(value = "SELECT note FROM NoteInfoView note" +
+                   " WHERE note.statusSell = ?1 " +
+                   " ORDER BY note.countryEn")
+    List<NoteInfoView> exposedNote(String statusSell);
+
 }

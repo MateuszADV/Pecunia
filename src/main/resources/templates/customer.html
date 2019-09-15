@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Państwa</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="container">
+        <div th:insert="~{includes/menu :: heder}"></div>
+        <div th:insert="~{includes/menu :: menu}"></div>
+        <h2>Dodaj Klienta</h2>
+
+    </div>
+    <div class="container">
+        <form th:action="@{/customer}" method="post" th:object="${customerDto}">
+            <table class="table">
+                <tr>
+                    <td>Id Klienta</td>
+                    <td colspan="2" class="last">
+                        <input class="form-control" type="text" th:field="*{uniqueId}" style="font-size: 12px; text-align: center">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Imię</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{name}" placeholder="Imię">
+<!--                        <span th:if="${#fields.hasErrors('continent')}" th:errors="*{continent}" style="color: red"></span>-->
+                    </td>
+                    <td>Nazwisko</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{lastname}" placeholder="Nazwisko">
+                    </td>
+                </tr>
+                <tr>
+                    <td>ADRES</td>
+                </tr>
+                <tr>
+                    <td>Miasto</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{city}" placeholder="Miasto">
+                    </td>
+                    <td>Kod</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{zipCode}" placeholder="kod">
+                    </td>
+                    <td>Ulica</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{street}" placeholder="Ulica">
+                    </td>
+                    <td>Numer</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{number}" placeholder="Numer">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="last" style="font-size: 16px">DANE KONTAKTOWE</td>
+                </tr>
+                <tr>
+                    <td>Telefon</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{phone}" placeholder="+48 123 456 789">
+                    </td>
+                    <td>Mail</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{email}" placeholder="email">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="last" style="font-size: 16px">Pozostałe inormacje</td>
+                </tr>
+                <tr>
+                    <td>Nick</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{nick}" placeholder="Nick">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Notatka</td>
+                    <td colspan="2" class="last">
+                        <textarea class="form-control" th:field="*{descryption}"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" value="Dodaj klienta"></p>
+            <br><br>
+        </form>
+    </div>
+
+
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</body>
+</html>
