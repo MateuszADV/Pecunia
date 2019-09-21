@@ -20,23 +20,32 @@
     <div class="container">
         <div th:insert="~{includes/menu :: heder}"></div>
         <div th:insert="~{includes/menu :: menu}"></div>
-        <h2>Dodaj Klienta</h2>
+        <h2 th:text="${customer}"></h2>
 
     </div>
-    <div class="container">
+
+    <div class="container alert alert-danger" role="alert" th:if="${Error} != null">
+        <h2 th:text="${Error}" style="text-align: center"></h2>
+    </div>
+
+    <div class="container" th:if="${Error} == null">
         <form th:action="@{/customer}" method="post" th:object="${customerDto}">
             <table class="table">
                 <tr>
                     <td>Id Klienta</td>
                     <td colspan="2" class="last">
-                        <input class="form-control" type="text" th:field="*{uniqueId}" style="font-size: 12px; text-align: center">
+                        <input class="form-control" type="text" th:field="*{uniqueId}" style="font-size: 12px; text-align: center" readonly>
+                    </td>
+                    <td>Aktywny</td>
+                    <td>
+                        <input class="form-control" type="text" th:field="*{active}" placeholder="true/false">
                     </td>
 
                 </tr>
                 <tr>
                     <td>Imię</td>
                     <td>
-                        <input class="form-control" type="text" th:field="*{name}" placeholder="Imię">
+                        <input class="form-control" type="text" th:field="*{name}" placeholder="Imię" >
 <!--                        <span th:if="${#fields.hasErrors('continent')}" th:errors="*{continent}" style="color: red"></span>-->
                     </td>
                     <td>Nazwisko</td>
@@ -94,7 +103,7 @@
                     </td>
                 </tr>
             </table>
-            <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" value="Dodaj klienta"></p>
+            <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" th:value="${button}"></p>
             <br><br>
         </form>
     </div>

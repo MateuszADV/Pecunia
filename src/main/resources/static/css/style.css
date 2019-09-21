@@ -45,3 +45,15 @@ body
 {
     margin: 15px;
 }
+
+.stopka
+{
+    background-color: #bfbfbf;
+    position:fixed;
+    bottom:0;
+    min-width:96%;
+    margin-left: 2%;
+    margin-right: 2%;
+    text-align: center;
+    font-size: 20px;
+}

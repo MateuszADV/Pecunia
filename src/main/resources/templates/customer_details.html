@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Państwa</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="container">
+        <div th:insert="~{includes/menu :: heder}"></div>
+        <div th:insert="~{includes/menu :: menu}"></div>
+        <h2>Informacje o kliencie</h2>
+    </div>
+
+    <div class="container" th:if="${Error} != null">
+        <h3 th:text="${Error}" th:class="bg-danger" style="text-align: center"></h3>
+    </div>
+    
+    <div class="container" th:if="${Error} == null">
+<!--        <p th:text="${customerDetails}"></p>-->
+        <p th:text="'ID Klienta - ' + ${customerDetails.uniqueId}"></p>
+        <p th:text="'Active - ' + ${customerDetails.active}"></p>
+        <p th:text="${customerDetails.name} + ' ' + ${customerDetails.lastname}"></p>
+<!--        <p>ADRES</p>-->
+        <p th:text="${customerDetails.zipCode} + ' ' + ${customerDetails.city} + ' ' + ${customerDetails.street} + ' ' + ${customerDetails.number}"></p>
+        <p th:text="'Telefon - ' + ${customerDetails.phone}"></p>
+        <p th:text="'mail - ' + ${customerDetails.email}"></p>
+        <p th:text="'nick - ' + ${customerDetails.nick}"></p>
+        <p th:text="${customerDetails.descryption}"></p>
+
+        <p>
+            <a th:href="@{'/customerEdit/' + ${customerDetails.uniqueId}}" >
+                <span> EDYTUJ DANE</span>
+            </a>
+        </p>
+    </div>
+
+</div>
+<div th:insert="~{includes/menu :: footer}"></div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

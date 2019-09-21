@@ -20,6 +20,7 @@ public class Customer {
     private Long id;
     @Column(name = "unique_id")
     private String uniqueId;
+    private Boolean active;
     private String name;
     private String lastname;
     private String city;

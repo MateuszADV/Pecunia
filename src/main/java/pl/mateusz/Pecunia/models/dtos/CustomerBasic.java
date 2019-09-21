@@ -9,19 +9,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-public class CustomerDto {
+public class CustomerBasic {
 
-    private Long id;
     private String uniqueId;
     private Boolean active;
     private String name;
     private String lastname;
     private String city;
-    private String zipCode;
-    private String street;
-    private String number;
-    private String email;
-    private String nick;
-    private String phone;
-    private String descryption;
 }
