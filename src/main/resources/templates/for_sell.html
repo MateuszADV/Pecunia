@@ -64,7 +64,7 @@
                 <th>Kupno</th>
                 <th>Sprzedaz </th>
                 <th>Sztuki</th>
-                <!--<th>Status</th>-->
+                <th>Status</th>
                 <th>Stan</th>
                 <th>Opis</th>
                 <th style="width: 150px">Avers</th>
@@ -87,7 +87,7 @@
                     <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
                     <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
                     <td th:text="${note.quantity}"></td>
-                    <!--<td th:text="${note.status}"></td>-->
+                    <td th:text="${note.statusSell}"></td>
                     <td th:text="${note.quality}"></td>
                     <td th:text="${note.description}"></td>
                     <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>

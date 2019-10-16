@@ -73,8 +73,16 @@
                     <td th:text="${note.status}"></td>
                     <td th:text="${note.quality}"></td>
                     <td th:text="${note.description}"></td>
-                    <td><a target="_blank" th:href="#{notePath} + ${note.aversPath}"><img class="imageNote" th:src="#{notePath} + ${note.aversPath}"></a></td>
-                    <td><a target="_blank" th:href="#{notePath} + ${note.reversePath}"><img class="imageNote" th:src="#{notePath} + ${note.reversePath}"></a></td>
+                    <td>
+                        <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
+                            <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">
+                        </a>
+                    </td>
+                    <td>
+                        <a target="_blank" th:href="#{notePath} + ${note.reversePath}">
+                            <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">
+                        </a>
+                    </td>
                     <td style="text-align: center">
                         <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
                             <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>

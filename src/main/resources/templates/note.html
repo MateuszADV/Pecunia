@@ -153,11 +153,11 @@
                 </tr>
                 <th:block th:each=" note : ${currencyNoteList}">
                     <tr  th:if="${note.noteId} == ${noteDto.id}" style="background-color: aqua">
-                        <div th:if="${note.denomination} > 0">
-                            <!--<td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>-->
-                            <td th:text="${note.denomination}"></td>
+                        <div th:if="${note.denomination} >= 1">
+                            <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
+<!--                            <td th:text="${note.denomination}"></td>-->
                         </div>
-                        <div th:if="${note.denomination} < 0">
+                        <div th:if="${note.denomination} < 1">
                             <td th:text="${note.denomination}"></td>
                         </div>
                         <td th:text="${note.nameCurrency}"></td>
@@ -206,7 +206,11 @@
                         <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>
                         <td th:text="${#numbers.formatDecimal(note.priceSell,1,2)} + 'zł'"></td>
                         <td th:text="${note.quantity}"></td>
-                        <td th:text="${note.status}"></td>
+                        <td>
+                            <span th:text="${note.status}"></span>
+                            <br>
+                            <span th:text="${note.statusSell}"></span>
+                        </td>
                         <td >
                             <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
                                 <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">

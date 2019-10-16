@@ -74,7 +74,7 @@ public class CustomerControler {
                 .collect(Collectors.toList());
         modelMap.addAttribute("customerBasic", customerBasicList);
 
-        customerBasicList.forEach(System.out::println);
+//        customerBasicList.forEach(System.out::println);
         LOGGER.log(Level.INFO, customerBasicList.toString());
 
 //        Collections.sort(customerBasicList, new Comparator<CustomerBasic>() {
@@ -93,10 +93,10 @@ public class CustomerControler {
     public String getCustomerDetails(@PathVariable String uniqueId,
                                   ModelMap modelMap) {
         Logger LOGGER = Logger.getLogger(Exception.class.toString());
+
         try {
             CustomerDto customerDtoDetails = customerService.customerDtoDetails(uniqueId);
             modelMap.addAttribute("customerDetails", customerDtoDetails);
-            System.out.println(customerDtoDetails);
         }
         catch (Exception e) {
             modelMap.addAttribute("Error", "Podano nieprawidłowy numer klienta");

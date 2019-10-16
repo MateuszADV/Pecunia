@@ -73,7 +73,13 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto customerDtoDetails(String uniqueId) {
         Customer customer = customerRepository.customer(uniqueId);
 
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(customer);
+
         CustomerDto customerDto = new ModelMapper().map(decodeCustomer(customer), CustomerDto.class);
+
+        System.out.println(customerDto);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
         return customerDto;
     }
 }
