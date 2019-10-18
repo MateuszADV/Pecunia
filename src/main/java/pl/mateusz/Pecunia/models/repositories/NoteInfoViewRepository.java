@@ -48,6 +48,7 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
 
     @Query(value = "SELECT note FROM NoteInfoView note" +
                    " WHERE note.statusSell = ?1 " +
+                   "   AND note.status <> 'SOLD'" +
                    " ORDER BY note.countryEn")
     List<NoteInfoView> exposedNote(String statusSell);
 

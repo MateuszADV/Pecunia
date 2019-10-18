@@ -29,6 +29,7 @@
     <div class="container-fluid">
         <table class="table table-bordered  table-striped">
             <tr>
+                <td>Lp</td>
                 <th>Id</th>
                 <!--<th>Kontynent</th>-->
                 <th>Państwo</th>
@@ -49,8 +50,9 @@
                 <th style="width: 150px">Revers</th>
                 <th>Edycja</th>
             </tr>
-            <block th:each="note : ${exposedNote}">
+            <block th:each="note, i : ${exposedNote}">
                 <tr>
+                    <td th:text="${i.count}"></td>
                     <td th:text="${note.noteId}"></td>
                     <!--<td th:text="${note.continent}"></td>-->
                     <td th:text="${note.countryEn}"></td>
