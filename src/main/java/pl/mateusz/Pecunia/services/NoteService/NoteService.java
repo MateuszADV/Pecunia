@@ -25,8 +25,11 @@ public interface NoteService {
 
     List<NoteInfoViewDto> noteFromCountry(String countryEn);
 
-    List<String> countryNoteForSell(String status);
+    List<String> countryNoteList(String status);
+    List<String> countryNoteList(String status, String statusSell);
+
     List<NoteInfoViewDto> noteForSell(String countryEn, String status);
+    List<NoteInfoViewDto> noteForSell(String countryEn, String status, String statusSell);
 
     List<ExposedNoteDto> exposedNote(String statusSell);
 

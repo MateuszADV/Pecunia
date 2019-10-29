@@ -15,6 +15,8 @@ public class Constans {
     public static final String NOTE_STATUS_FOR_SELL = "FOR SELL";
     public static final String NOTE_STATUS_NEW_NOTE = "NEW";
     public static final String NOTE_STATUS_KOLEKCJA = "KOLEKCJA";
+    public static final String NOTE_STATUS_SOLD = "SOLD";
+    public static final String NOTE_STATUS_OLX = "OLX";
 
 
     /**

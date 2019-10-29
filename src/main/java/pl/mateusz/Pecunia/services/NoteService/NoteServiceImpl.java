@@ -1,9 +1,7 @@
 package pl.mateusz.Pecunia.services.NoteService;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.*;
 import pl.mateusz.Pecunia.models.dtos.*;
 import pl.mateusz.Pecunia.models.forms.ContinentCountryCurrencyNote;
@@ -143,14 +141,26 @@ public class NoteServiceImpl implements NoteService {
     //Banknoty na sprzedaz
 
     @Override
-    public List<String> countryNoteForSell(String status) {
-        List<String> countyNoteForSell = noteInfoViewRepository.countryNoteForSell(status);
+    public List<String> countryNoteList(String status) {
+        List<String> countyNoteForSell = noteInfoViewRepository.countryNoteList(status);
+
+        return countyNoteForSell;
+    }
+    @Override
+    public List<String> countryNoteList(String status, String statusSell) {
+        List<String> countyNoteForSell = noteInfoViewRepository.countryNoteList(status, statusSell);
 
         return countyNoteForSell;
     }
 
     @Override
     public List<NoteInfoViewDto> noteForSell(String countryEn, String status) {
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(countryEn, status);
+        return getNoteInfoViewDtos(noteInfoViewList);
+    }
+
+    @Override
+    public List<NoteInfoViewDto> noteForSell(String countryEn, String status, String statusSell) {
         List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(countryEn, status);
         return getNoteInfoViewDtos(noteInfoViewList);
     }

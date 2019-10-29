@@ -13,6 +13,8 @@ import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.NoteInfoView;
 import pl.mateusz.Pecunia.models.dtos.NoteCountryViewDto;
 import pl.mateusz.Pecunia.models.dtos.NoteDto;
+import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
+import pl.mateusz.Pecunia.models.forms.ExposedNoteDto;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
@@ -219,7 +221,7 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/for_sell", "/for_sell"})
     public String getForSell(ModelMap modelMap) {
         modelMap.addAttribute("heder", Constans.NOTE_STATUS_FOR_SELL);
-        modelMap.addAttribute("countrys",noteService.countryNoteForSell(Constans.NOTE_STATUS_FOR_SELL));
+        modelMap.addAttribute("countrys",noteService.countryNoteList(Constans.NOTE_STATUS_FOR_SELL));
 //        System.out.println(noteService.countryNoteForSell());
         return "for_sell";
     }
@@ -286,7 +288,7 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/new_note", "/new_note"})
     public String getNewNote(ModelMap modelMap) {
         modelMap.addAttribute("heder", Constans.NOTE_STATUS_NEW_NOTE);
-        modelMap.addAttribute("countrys",noteService.countryNoteForSell(Constans.NOTE_STATUS_NEW_NOTE));
+        modelMap.addAttribute("countrys",noteService.countryNoteList(Constans.NOTE_STATUS_NEW_NOTE));
 
         return "for_sell";
     }
@@ -300,12 +302,57 @@ public class NoteController {
         return "for_sell";
     }
 
-    @GetMapping(value = {"/Pecunia/exposed", "/exposed"})
-    public String getExposedNote(ModelMap modelMap) {
-        modelMap.addAttribute("exposedNote",noteService.exposedNote("OLX"));
+    /**
+     * Wystawione banknoty
+     */
+    @GetMapping(value = {"/Pecunia/exposed_country", "/exposed_country"})
+    public String getExposedCountry(ModelMap modelMap) {
+        //TODO Poprwić zeby były wyświetlane państwa z których są wystawione bankoty
+        modelMap.addAttribute("heder", Constans.NOTE_STATUS_OLX);
+        modelMap.addAttribute("countrys",noteService.countryNoteList(Constans.NOTE_STATUS_FOR_SELL, Constans.NOTE_STATUS_OLX));
+//        System.out.println(noteService.countryNoteForSell());
+        return "for_sell";
+    }
 
+    @GetMapping(value = {"/Pecunia/exposed/{country}","/exposed/{country}"})
+    public String getExposedNotes(@PathVariable String country, ModelMap modelMap) {
+        List<NoteInfoViewDto> noteInfoViewDtoList = noteService.noteForSell(country, Constans.NOTE_STATUS_FOR_SELL, Constans.NOTE_STATUS_OLX);
+        modelMap.addAttribute("exposedNote", noteInfoViewDtoList);
+        modelMap.addAttribute("notesOnSell", noteInfoViewDtoList.size());
+//        System.out.println(noteService.noteForSell_OrderByCountry(country));
         return "exposed";
     }
+
+    @GetMapping(value = {"/Pecunia/exposed", "/exposed"})
+    public String getExposedNote(ModelMap modelMap) {
+        List<ExposedNoteDto> exposedNoteDtoList = noteService.exposedNote("OLX");
+        modelMap.addAttribute("exposedNote",exposedNoteDtoList);
+        modelMap.addAttribute("notesOnSell" ,exposedNoteDtoList.size());
+        System.out.println("ILOść banknotów w sprzedaży: " + exposedNoteDtoList.size());
+        return "exposed";
+    }
+
+    /**
+     * Wyswitla państwa i banknoty które zostały sprzedane
+     */
+
+    @GetMapping(value = {"/Pecunia/sold", "/sold"})
+    public String getForSeld(ModelMap modelMap) {
+        modelMap.addAttribute("heder", Constans.NOTE_STATUS_SOLD);
+        modelMap.addAttribute("countrys",noteService.countryNoteList(Constans.NOTE_STATUS_SOLD));
+//        System.out.println(noteService.countryNoteForSell());
+        return "for_sell";
+    }
+
+    @GetMapping(value = {"/Pecunia/sold/{country}","/sold/{country}"})
+    public String getNoteSold(@PathVariable String country, ModelMap modelMap) {
+        modelMap.addAttribute("heder", Constans.NOTE_STATUS_SOLD);
+        modelMap.addAttribute("noteForSell", true);
+        modelMap.addAttribute("banknotes", noteService.noteForSell(country, Constans.NOTE_STATUS_SOLD));
+//        System.out.println(noteService.noteForSell_OrderByCountry(country));
+        return "for_sell";
+    }
+
 
 
 }

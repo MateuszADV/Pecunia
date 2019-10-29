@@ -33,12 +33,24 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
     @Query(value = "SELECT DISTINCT(note.countryEn) FROM  NoteInfoView note " +
                    " WHERE note.status = ?1 " +
                    " ORDER BY note.countryEn")
-    List<String> countryNoteForSell(String status);
+    List<String> countryNoteList(String status);
+
+    @Query(value = "SELECT DISTINCT(note.countryEn) FROM  NoteInfoView note " +
+            " WHERE note.status = ?1 " +
+            "   AND note.statusSell = ?2" +
+            " ORDER BY note.countryEn")
+    List<String> countryNoteList(String status, String statusSell);
 
     @Query(value = "SELECT note FROM NoteInfoView note " +
                    " WHERE note.countryEn = ?1 " +
                    "   AND note.status = ?2")
     List<NoteInfoView> NoteForSell(String country, String status);
+
+    @Query(value = "SELECT note FROM NoteInfoView note " +
+            " WHERE note.countryEn = ?1 " +
+            "   AND note.status = ?2" +
+            "   AND note.statusSell = ?3")
+    List<NoteInfoView> NoteForSell(String country, String status, String statusSell);
 
     @Query(value = "SELECT note FROM NoteInfoView  note " +
                    " WHERE note.status = ?1 " +
@@ -51,5 +63,6 @@ public interface NoteInfoViewRepository extends JpaRepository<NoteInfoView, Long
                    "   AND note.status <> 'SOLD'" +
                    " ORDER BY note.countryEn")
     List<NoteInfoView> exposedNote(String statusSell);
+
 
 }

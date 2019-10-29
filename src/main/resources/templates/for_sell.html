@@ -47,6 +47,31 @@
             </a>
         </block>
     </div>
+
+    <div th:if="${heder} == 'SOLD'">
+        <block th:each="country : ${countrys}">
+            <a th:href="@{'/sold/' + ${country}}">
+                <div class="col-md-2" style="text-align: center; height: 90px">
+                    <span th:text="${country}"></span>
+                    <br>
+                    <img class="flag" th:src="#{flagPath} + ${country} + '.png'">
+                </div>
+            </a>
+        </block>
+    </div>
+
+    <div th:if="${heder} == 'OLX'">
+        <block th:each="country : ${countrys}">
+            <a th:href="@{'/exposed/' + ${country}}">
+                <div class="col-md-2" style="text-align: center; height: 90px">
+                    <span th:text="${country}"></span>
+                    <br>
+                    <img class="flag" th:src="#{flagPath} + ${country} + '.png'">
+                </div>
+            </a>
+        </block>
+    </div>
+
     <div class="container-fluid" th:if="${noteForSell} == true">
         <table class="table table-bordered  table-striped">
             <tr>
