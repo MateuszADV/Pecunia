@@ -25,7 +25,66 @@
     </div>
 
     <div class="container">
-        <p th:text="${customerDetails.name}"></p>
+        <p th:text="${customerDetails.uniqueId}"></p>
+        <p th:text="${customerDetails.name} + ' ' + ${customerDetails.lastname}"></p>
+        <p th:text="${customerDetails.zipCode} + ' ' + ${customerDetails.city}"></p>
+    </div>
+    <div class="container">
+        <form th:action="@{/order}" method="post" th:object="${orderDto}">
+            <input class="form-control" type="number" th:field="*{id}" style="display: none">
+            <table class="table ">
+                <tr>
+                    <th>
+                        <span>numer zamówienia</span>
+                        <input class="form-control" type="text" th:field="*{orderNumber}">
+                    </th>
+                    <th>
+                        <span>Data zamówienia</span>
+                        <input class="form-control" type="text" th:field="*{dateOrder}" placeholder="yyyy-mm-dd" >
+                    </th>
+                    <th>
+                        <span>Aktywne</span>
+                        <br>
+                        <select th:field="*{active}">
+                            <option th:value="true" th:text="'true'"></option>
+                            <option th:value="false" th:text="'false'"></option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <span>Rodzaj wysyłki</span>
+                        <br>
+                        <select  th:field="*{shipmentType}">
+                            <block th:each = "deliver : ${delivery}">
+                                <option th:value="${deliver.nameDB}" th:text="${deliver.namePL}"></option>
+                            </block>
+                        </select>
+                    </th>
+                    <th>
+                        <span>Numer przesyłki</span>
+                        <input class="form-control" type="text" th:field="*{trackingNumber}">
+                    </th>
+                    <th>
+                        <span>Koszty wysyłki</span>
+                        <input class="form-control" type="number" th:field="*{shippingCosts}">
+                    </th>
+                    <th>
+                        <span>Data wysyłki</span>
+                        <input class="form-control" type="text" th:field="*{dateSend}" placeholder="yyyy-mm-dd" >
+                    </th>
+                </tr>
+            </table>
+            <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" value="dodaj zamówienie"></p>
+
+        </form>
+
+        <div>
+           <br>
+           <br>
+           <br>
+           <br>
+        </div>
     </div>
 
 

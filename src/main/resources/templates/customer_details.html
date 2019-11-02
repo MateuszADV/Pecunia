@@ -45,7 +45,32 @@
             </a>
         </p>
     </div>
-
+    <div class="container">
+        <table class="table">
+            <tr>
+                <th>Lp.</th>
+                <th>Numer zamówienia</th>
+                <th>Data zamówienia</th>
+                <th>Data wysyłki</th>
+                <th>Edytuj</th>
+                <th>INFO</th>
+            </tr>
+        <block th:each="order,i : ${orderList}">
+           <tr>
+               <td th:text="${i.count}"></td>
+               <td th:text="${order.orderNumber}"></td>
+               <td th:text="${order.dateOrder}"></td>
+               <td th:text="${order.dateSend}"></td>
+               <th>
+                   <a th:href="@{'/order/' + ${order.id}}">
+                       <span>Edytuj</span>
+                   </a>
+               </th>
+               <td>DETAILS ORDER</td>
+           </tr>
+        </block>
+        </table>
+    </div>
 </div>
 <div th:insert="~{includes/menu :: footer}"></div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
