@@ -54,7 +54,11 @@
                         <span th:text="${customer.lastname}"></span>
                        </a>
                    </td>
-                   <td th:text="${customer.name}"></td>
+                   <td>
+                       <a th:href="@{'/customerDetails/' + ${customer.uniqueId}}" >
+                           <span th:text="${customer.name}"></span>
+                       </a>
+                   </td>
                    <td th:text="${customer.city}"></td>
                </a>
 <!--               <td th:text="${customer.active}"></td>-->

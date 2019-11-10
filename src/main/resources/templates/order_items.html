@@ -37,7 +37,7 @@
                 <th>Data zamówienia</th>
                 <th>Data wysyłki</th>
                 <th>Actywne</th>
-                <th>INFO</th>
+<!--                <th>INFO</th>-->
             </tr>
             <block th:each="order,i : ${orderList}">
                 <tr>
@@ -46,14 +46,70 @@
                     <td th:text="${order.dateOrder}"></td>
                     <td th:text="${order.dateSend}"></td>
                     <td th:text="${order.active}"></td>
-                    <td>DETAILS ORDER</td>
+<!--                    <td>DETAILS ORDER</td>-->
                 </tr>
             </block>
         </table>
     </div>
 
 
+
+    <div class="container" th:if="${order_item_add} == true">
+        <form th:action="@{/order_item}" method="post">
+            <p>id banknotu</p>
+            <input type="number" th:name="noteId">
+            <div th:if="${orderItems} != true">
+                <input class="form-control" type="text" value="0" th:name="sellFinal" style="display: none">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Dodaj">
+
+            <div class="container container-fluid" th:if="${orderItems} == true">
+                <h3>Elemeny zamówienia</h3>
+                <table class="table">
+                    <tr>
+                        <th>Lp</th>
+                        <th>Id</th>
+                        <td>Państwo</td>
+                        <th>Kod</th>
+                        <th>Nominał</th>
+                        <th>Waluta</th>
+                        <th>Materiał</th>
+                        <th>Kupno</th>
+                        <th>Sprzedaż</th>
+                        <th>Finalna Cena</th>
+                        <th>ilość</th>
+                    </tr>
+                    <block th:each="item, i : ${orderItemList}">
+                        <tr>
+                            <td th:text="${i.count}"></td>
+                            <td th:text="${item.noteId}"></td>
+                            <td th:text="${item.countryEn}"></td>
+                            <td th:text="${item.cod}"></td>
+                            <td th:text="${item.denomination}"></td>
+                            <td th:text="${item.currencyName}"></td>
+                            <td th:text="${item.making}"></td>
+                            <td th:text="${#numbers.formatDecimal(item.priceBuy,1,2)} + 'zł'"></td>
+                            <td th:text="${#numbers.formatDecimal(item.priceSell,1,2)} + 'zł'"></td>
+                            <td>
+                                <input class="form-control" type="text" th:value="${item.priceSellFinal}" name="sellFinal">
+                            </td>
+<!--                            <td>-->
+<!--                                <input class="form-control" type="text" name="sellFinal">-->
+<!--                            </td>-->
+                            <td>
+                                <input class="form-control" type="number">
+                            </td>
+                        </tr>
+                    </block>
+
+                </table>
+            </div>
+        </form>
+
+    </div>
+
 </div>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

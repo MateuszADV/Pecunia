@@ -54,6 +54,7 @@
                 <th>Data wysyłki</th>
                 <th>Edytuj</th>
                 <th>INFO</th>
+                <th>element zamówienia</th>
             </tr>
         <block th:each="order,i : ${orderList}">
            <tr>
@@ -67,10 +68,21 @@
                    </a>
                </th>
                <td>DETAILS ORDER</td>
+               <td>
+                   <div th:if="${order.active} == true">
+                       <a th:href="@{'/order_items_add/' + ${order.id}}">
+                           <span>Dodaj elementy zamówienia</span>
+                       </a>
+                   </div>
+                   <div th:if="${order.active} == false"}>
+                       <span>Zamówienie zakończone</span>
+                   </div>
+               </td>
            </tr>
         </block>
         </table>
     </div>
+
 </div>
 <div th:insert="~{includes/menu :: footer}"></div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

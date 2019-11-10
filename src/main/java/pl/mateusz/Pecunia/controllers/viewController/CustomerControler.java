@@ -24,13 +24,13 @@ public class CustomerControler {
 
     private CustomerService customerService;
     private CustomerRepository customerRepository;
-
-
+    private OrderUtils orderUtils;
 
     @Autowired
-    public CustomerControler(CustomerService customerService, CustomerRepository customerRepository) {
+    public CustomerControler(CustomerService customerService, CustomerRepository customerRepository, OrderUtils orderUtils) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
+        this.orderUtils = orderUtils;
     }
 
     @GetMapping(value = {"/Pecunia/customer", "/customer"})

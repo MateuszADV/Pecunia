@@ -10,6 +10,7 @@ import pl.mateusz.Pecunia.models.Customer;
 import pl.mateusz.Pecunia.models.Order;
 import pl.mateusz.Pecunia.models.dtos.CustomerDto;
 import pl.mateusz.Pecunia.models.dtos.OrderDto;
+import pl.mateusz.Pecunia.models.dtos.OrderItemDto;
 import pl.mateusz.Pecunia.models.forms.enums.DeliveryEnum;
 import pl.mateusz.Pecunia.models.repositories.CustomerRepository;
 import pl.mateusz.Pecunia.models.repositories.OrderRepository;
@@ -26,9 +27,9 @@ import java.util.logging.Logger;
 @Controller
 public class OrderControler {
 
-    CustomerService customerService;
-    OrderUtils orderUtils;
-    OrderRepository orderRepository;
+    private CustomerService customerService;
+    private OrderUtils orderUtils;
+    private OrderRepository orderRepository;
 
     @Autowired
     public OrderControler(CustomerService customerService, OrderUtils orderUtils, OrderRepository orderRepository) {
@@ -56,8 +57,8 @@ public class OrderControler {
         //TODO Zrobić poprawki kodu zoptymalizować
 
         Logger LOGGER = Logger.getLogger(CustomerDto.class.toString());
-        CustomerDto customerDto = orderUtils.customerDto();
-        modelMap.addAttribute("customerDetails",orderUtils.customerDto());
+        CustomerDto customerDto = orderUtils.getCustomerDto();
+        modelMap.addAttribute("customerDetails",orderUtils.getCustomerDto());
 
         Order order = new ModelMapper().map(orderDto, Order.class);
         Customer customer = new ModelMapper().map(customerDto, Customer.class);
@@ -89,6 +90,9 @@ public class OrderControler {
         }
 
         modelMap.addAttribute("orderList" ,orderDtoList);
+
+        System.out.println("czyszczenie listy");
+        orderUtils.clearOrderDtoList();
         return "customer_Details";
     }
 
@@ -102,7 +106,61 @@ public class OrderControler {
         OrderDto orderDto = new ModelMapper().map(order, OrderDto.class);
         modelMap.addAttribute("orderDto", orderDto);
         modelMap.addAttribute("delivery", DeliveryEnum.values());
+
+        System.out.println("czyszczenie listy");
+        orderUtils.clearOrderDtoList();
         return "order";
 
+    }
+
+    @GetMapping (value = {"/Pecunia/order_items_add/{orderId}", "/order_items_add/{orderId}"})
+    public String getOrderItemAdd(@PathVariable Long orderId, ModelMap modelMap) {
+
+        Order order = orderRepository.order(orderId);
+        CustomerDto customerDto = orderUtils.customerDto(order.getCustomer().getUniqueId());
+
+        modelMap.addAttribute("customerDetails",customerDto);
+        modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList(orderId));
+        modelMap.addAttribute("order_item_add", true);
+        return "order_items";
+    }
+
+    @PostMapping (value = {"/Pecunia/order_item", "/order_item"})
+    public String postOrderItem(@RequestParam(value = "noteId") Long noteId,
+                                @RequestParam(value = "sellFinal") String sellFinal,
+                                ModelMap modelMap) {
+
+        System.out.println("Powinien być id Banknotu: " + noteId);
+        modelMap.addAttribute("customerDetails",orderUtils.getCustomerDto());
+        modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList());
+        modelMap.addAttribute("order_item_add", true);
+
+        orderUtils.getOrderItems(noteId);
+
+        System.out.println("ELEMENTY ZAMÓWIENIA");
+        for (OrderItemDto orderItemDto : orderUtils.getOrderItems().getOrderItemDtos()) {
+            System.out.println(orderItemDto);
+        }
+
+        System.out.println("CENA FINALNA: " + sellFinal);
+
+        String[] priceSellFinal = sellFinal.split(",");
+        if (orderUtils.getOrderItems().getOrderItemDtos().size() == 1) {
+            priceSellFinal[0] = orderUtils.getOrderItems().getOrderItemDtos().get(0).getPriceSell().toString();
+        }
+        for (String s : priceSellFinal) {
+            System.out.println(priceSellFinal.length + "  -  " + s);
+        }
+        for (OrderItemDto orderItemDto : orderUtils.getOrderItems().getOrderItemDtos()) {
+            if (orderUtils.getOrderItems().getOrderItemDtos().indexOf(orderItemDto) == priceSellFinal.length) {
+                break;
+            }
+            orderItemDto.setPriceSellFinal(Double.valueOf(priceSellFinal[orderUtils.getOrderItems().getOrderItemDtos().indexOf(orderItemDto)]));
+        }
+
+        modelMap.addAttribute("orderItems", true);
+        modelMap.addAttribute("orderItemList", orderUtils.getOrderItems().getOrderItemDtos());
+
+        return "order_items";
     }
 }
