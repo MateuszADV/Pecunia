@@ -1,10 +1,12 @@
 package pl.mateusz.Pecunia.services.OrderService;
 
-import org.springframework.stereotype.Service;
-import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
+
+import pl.mateusz.Pecunia.models.Order;
 import pl.mateusz.Pecunia.models.dtos.OrderItemDto;
 
-@Service
+import java.util.List;
+
 public interface OrderService {
-    OrderItemDto orderItemDto(NoteInfoViewDto noteInfoViewDto);
+
+    void seveOrderItems(Order order, List<OrderItemDto> orderItemDto);
 }

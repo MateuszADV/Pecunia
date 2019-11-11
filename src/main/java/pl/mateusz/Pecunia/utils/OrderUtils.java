@@ -62,9 +62,7 @@ public class OrderUtils {
         if (noteId != null) {
             try {
                 NoteInfoView noteInfoView = noteInfoViewRepository.findByNoteId(noteId);
-
                 NoteInfoViewDto noteInfoViewDto = new ModelMapper().map(noteInfoView, NoteInfoViewDto.class);
-
                 orderItemDtoList.add(orderItemDto(noteInfoViewDto));
                 orderItems.setOrderItemDtos(orderItemDtoList);
 
@@ -73,8 +71,6 @@ public class OrderUtils {
                 return orderItems;
             }
         }
-
-
         return orderItems;
     }
 
@@ -96,6 +92,7 @@ public class OrderUtils {
         orderItemDto.setPriceSell(noteInfoViewDto.getPriceSell());
         orderItemDto.setPriceSellFinal(noteInfoViewDto.getPriceSell());
         orderItemDto.setMaking(noteInfoViewDto.getMaking());
+        orderItemDto.setQuantity(1);
         orderItemDto.setAversPath(noteInfoViewDto.getAversPath());
         orderItemDto.setReversePath(noteInfoViewDto.getReversePath());
 
