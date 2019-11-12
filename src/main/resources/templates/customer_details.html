@@ -67,7 +67,11 @@
                        <span>Edytuj</span>
                    </a>
                </th>
-               <td>DETAILS ORDER</td>
+               <td>
+                   <a th:href="@{'/order_details/' + ${order.id}}">
+                       <span>Wyswietl zamówienie</span>
+                   </a>
+               </td>
                <td>
                    <div th:if="${order.active} == true">
                        <a th:href="@{'/order_items_add/' + ${order.id}}">

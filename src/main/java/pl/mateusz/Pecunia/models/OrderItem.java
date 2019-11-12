@@ -34,6 +34,7 @@ public class OrderItem {
     private Double priceSellFinal;
     private Integer quantity;
     private String making;
+    private String quality;
     private String description;
     @Column(name = "avers_path")
     private String aversPath;

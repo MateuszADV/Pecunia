@@ -8,6 +8,7 @@ import pl.mateusz.Pecunia.models.OrderItem;
 import pl.mateusz.Pecunia.models.dtos.OrderItemDto;
 import pl.mateusz.Pecunia.models.repositories.OrderItemRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,12 +28,26 @@ public class OrderServiceImpl implements OrderService {
             saveSaveOrderItem(order,itemDto);
         }
 
+        System.out.println("ZAPIS DO BAZY \n" +
+                "ILOść ZAPISANYCH ELEMENTów: " + orderItemDto.size());
+
+    }
+
+    @Override
+    public List<OrderItemDto> getOrderDetails(Long orderId) {
+        List<OrderItem> orderItemList = orderItemRepository.orderItemsList(orderId);
+        List<OrderItemDto> orderItemDtoList = new ArrayList<>();
+
+        for (OrderItem orderItem : orderItemList) {
+            orderItemDtoList.add(new ModelMapper().map(orderItem, OrderItemDto.class));
+        }
+        return orderItemDtoList;
     }
 
     private void saveSaveOrderItem(Order order, OrderItemDto orderItemDto) {
         OrderItem orderItem = new ModelMapper().map(orderItemDto, OrderItem.class);
         orderItem.setOrder(order);
-//        orderItemRepository.save(orderItem);
-        System.out.println("ZAPIS DO BAZY");
+        orderItemRepository.save(orderItem);
+
     }
 }

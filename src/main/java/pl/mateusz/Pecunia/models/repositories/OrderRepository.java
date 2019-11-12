@@ -16,7 +16,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> OrderList(Long customerId);
 
     @Query(value = "SELECT ord FROM Order ord " +
-            " WHERE ord.customer.uniqueId = ?1")
+            " WHERE ord.customer.uniqueId = ?1" +
+            " ORDER BY ord.orderNumber")
     List<Order> OrderList(String  uniqueId);
 
     @Query(value = "SELECT ord FROM Order ord" +

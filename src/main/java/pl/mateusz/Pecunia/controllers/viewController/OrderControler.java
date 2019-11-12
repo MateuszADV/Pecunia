@@ -194,8 +194,25 @@ public class OrderControler {
         Order order = new ModelMapper().map(orderUtils.getOrderDtoList().get(0), Order.class);
 
         orderService.seveOrderItems(order, orderUtils.getOrderItemDtoList());
-        System.out.println(order.getOrderNumber());
 
+        return "order_items";
+    }
+
+    @GetMapping(value = {"/Pecunia/order_details/{orderId}", "/order_details/{orderId}"})
+    public String getOrderDetails(@PathVariable Long orderId, ModelMap modelMap) {
+        List<OrderItemDto> orderItemDto = orderService.getOrderDetails(orderId);
+
+        modelMap.addAttribute("customerDetails",orderUtils.getCustomerDto());
+        modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList(orderId));
+        modelMap.addAttribute("orderDetails", true);
+        modelMap.addAttribute("saveOrder" ,true);
+        modelMap.addAttribute("orderItemList", orderItemDto);
+
+        Double total = (orderItemDto.stream()
+                .mapToDouble(s -> s.getPriceSellFinal() * s.getQuantity())
+                .sum());
+
+        modelMap.addAttribute("totalSumOrder", total);
 
         return "order_items";
     }

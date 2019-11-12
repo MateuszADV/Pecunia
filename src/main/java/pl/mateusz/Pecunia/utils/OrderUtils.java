@@ -91,8 +91,10 @@ public class OrderUtils {
         orderItemDto.setPriceBuy(noteInfoViewDto.getPriceBuy());
         orderItemDto.setPriceSell(noteInfoViewDto.getPriceSell());
         orderItemDto.setPriceSellFinal(noteInfoViewDto.getPriceSell());
+        orderItemDto.setQuality(noteInfoViewDto.getQuality());
         orderItemDto.setMaking(noteInfoViewDto.getMaking());
         orderItemDto.setQuantity(1);
+        orderItemDto.setDescription(noteInfoViewDto.getDescription());
         orderItemDto.setAversPath(noteInfoViewDto.getAversPath());
         orderItemDto.setReversePath(noteInfoViewDto.getReversePath());
 

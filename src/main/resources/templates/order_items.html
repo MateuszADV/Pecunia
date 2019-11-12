@@ -129,6 +129,56 @@
 
     </div>
 
+    <div class="container" th:if="${orderDetails} == true">
+        <table class="table">
+            <tr>
+                <th>Lp</th>
+                <th>Id</th>
+                <td>Państwo</td>
+                <th>Kod</th>
+                <th>Nominał</th>
+                <th>Waluta</th>
+                <th>Materiał</th>
+                <th>Cena</th>
+                <th>ilość</th>
+                <th>suma</th>
+            </tr>
+            <block th:each="item, i : ${orderItemList}">
+                <tr>
+                    <td th:text="${i.count}"></td>
+                    <td th:text="${item.noteId}"></td>
+                    <td th:text="${item.countryEn}"></td>
+                    <td th:text="${item.cod}"></td>
+                    <td th:text="${item.denomination}" style="text-align: right"></td>
+                    <td th:text="${item.currencyName}"></td>
+                    <td th:text="${item.making}"></td>
+                    <td th:text="${#numbers.formatDecimal(item.priceSellFinal,1,2)} + 'zł'" style="text-align: right"></td>
+                    <td th:text="${item.quantity} + ' szt'"></td>
+                    <td th:text="${#numbers.formatDecimal(item.priceSellFinal * item.quantity,1,2)} + 'zł'"></td>
+                </tr>
+            </block>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td style="text-align: right">
+                    TOTAL
+                </td>
+                <td th:text="${#numbers.formatDecimal(totalSumOrder,1,2)} + 'zł'" style="background: aqua"></td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td style="text-align: center">
+                    <div th:if="${saveOrder} != true">
+                        <a th:href="@{'/save_order/'}">
+                            <button type="button" class="btn btn-success">Zapisz zamówienie</button>
+                        </a>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+
+        </table>
+    </div>
+
 </div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

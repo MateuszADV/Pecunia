@@ -9,4 +9,6 @@ import java.util.List;
 public interface OrderService {
 
     void seveOrderItems(Order order, List<OrderItemDto> orderItemDto);
+
+    List<OrderItemDto> getOrderDetails(Long orderId);
 }

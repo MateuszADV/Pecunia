@@ -19,6 +19,7 @@ public class OrderItemDto {
     private Double priceSell;
     private Double priceSellFinal;
     private Integer quantity;
+    private String quality;
     private String making;
     private String description;
     private String aversPath;
