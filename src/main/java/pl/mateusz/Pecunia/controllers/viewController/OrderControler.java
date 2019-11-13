@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Controller
 public class OrderControler {
@@ -213,6 +214,31 @@ public class OrderControler {
                 .sum());
 
         modelMap.addAttribute("totalSumOrder", total);
+
+        return "order_items";
+    }
+
+    @GetMapping(value = {"/Pecunia/delete_item/{noteId}", "/delete_item/{noteId}"})
+    public String getDeleteItem(@PathVariable Long noteId, ModelMap modelMap) {
+        modelMap.addAttribute("customerDetails",orderUtils.getCustomerDto());
+        modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList());
+        modelMap.addAttribute("order_item_add", true);
+
+        modelMap.addAttribute("orderItems", true);
+
+        List<OrderItemDto> orderItemDtoList = orderUtils.getOrderItems().getOrderItemDtos();
+
+        orderItemDtoList = orderItemDtoList.stream()
+                .filter(s -> !s.getNoteId().equals(noteId))
+//                .map(s -> !s.getNoteId().equals(noteId))
+                .collect(Collectors.toList());
+//                .forEach(System.out::println);
+
+        orderItemDtoList.forEach(System.out::println);
+        orderUtils.getOrderItems().setOrderItemDtos(orderItemDtoList);
+        modelMap.addAttribute("orderItemList", orderUtils.getOrderItems().getOrderItemDtos());
+
+        System.out.println("ID banknotu do usunięcia z lity: " + noteId);
 
         return "order_items";
     }
