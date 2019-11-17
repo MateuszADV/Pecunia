@@ -101,4 +101,12 @@ public class OrderUtils {
         return orderItemDto;
     }
 
+    public OrderItems orderItems(List<OrderItemDto> orderItemDtoList1) {
+        System.out.println(orderItemDtoList1.size());
+        orderItemDtoList.clear();
+        for (OrderItemDto orderItemDto : orderItemDtoList1) {
+            orderItemDtoList.add(orderItemDto);
+        }
+        return orderItems;
+    }
 }

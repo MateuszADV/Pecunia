@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.models.Customer;
 import pl.mateusz.Pecunia.models.Order;
+import pl.mateusz.Pecunia.models.OrderItem;
 import pl.mateusz.Pecunia.models.dtos.CustomerDto;
 import pl.mateusz.Pecunia.models.dtos.OrderDto;
 import pl.mateusz.Pecunia.models.dtos.OrderItemDto;
@@ -123,12 +124,38 @@ public class OrderControler {
 
     @GetMapping (value = {"/Pecunia/order_items_add/{orderId}", "/order_items_add/{orderId}"})
     public String getOrderItemAdd(@PathVariable Long orderId, ModelMap modelMap) {
-
         Order order = orderRepository.order(orderId);
         CustomerDto customerDto = orderUtils.customerDto(order.getCustomer().getUniqueId());
 
+        /**
+         * Start
+         */
+        modelMap.addAttribute("orderItems", true);
+        List<OrderItemDto> orderItemDto = orderService.getOrderDetails(orderId);
+        modelMap.addAttribute("orderItemList", orderItemDto);
+        orderUtils.getOrderDtoList(orderId);
+        modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList());
+        orderUtils.orderItems(orderItemDto);
+
+        Double total = (orderItemDto.stream()
+                .mapToDouble(s -> s.getPriceSellFinal() * s.getQuantity())
+                .sum());
+        modelMap.addAttribute("totalSumOrder", total);
+
+        if (orderItemDto.isEmpty()) {
+            System.out.println("powinna być zawartośćlisty: " + orderItemDto);
+            System.out.println(orderItemDto);
+            modelMap.addAttribute("orderItems", false);
+        }
+
+
+
+        /**
+         * koniec
+         */
+
+
         modelMap.addAttribute("customerDetails",customerDto);
-        modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList(orderId));
         modelMap.addAttribute("order_item_add", true);
         return "order_items";
     }
@@ -138,36 +165,40 @@ public class OrderControler {
                                 @RequestParam(value = "sellFinal") String sellFinal,
                                 @RequestParam(value = "sellQuantity") String sellQuantity,
                                 ModelMap modelMap) {
+        System.out.println("CENA FINALNA: " + sellFinal + " ??????????????????????????????");
+
 
         //TODO ZOPTYMALIZOWAĆ, ZREDUKOWAĆ KOD DO BARDZIEJ ELEGANCKIEJ FORMY
         modelMap.addAttribute("customerDetails",orderUtils.getCustomerDto());
         modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList());
         modelMap.addAttribute("order_item_add", true);
 
+        List<OrderItemDto> orderItemDtoList = orderUtils.getOrderItems().getOrderItemDtos();
+
         updatePriceSellFinal(noteId, sellFinal, sellQuantity);
 
         modelMap.addAttribute("orderItems", true);
         modelMap.addAttribute("orderItemList", orderUtils.getOrderItems().getOrderItemDtos());
 
+        Double total = (orderItemDtoList.stream()
+                .mapToDouble(s -> s.getPriceSellFinal() * s.getQuantity())
+                .sum());
+        modelMap.addAttribute("totalSumOrder", total);
+
         return "order_items";
     }
 
-    private void updatePriceSellFinal(@RequestParam("noteId") Long noteId,
-                                      @RequestParam("sellFinal") String sellFinal,
-                                      @RequestParam("sellQuantity") String sellQuantity) {
+    private void updatePriceSellFinal(Long noteId, String sellFinal, String sellQuantity) {
         orderUtils.getOrderItems(noteId);
-
-        System.out.println("CENA FINALNA: " + sellFinal);
 
         String[] priceSellFinal = sellFinal.split(",");
         String[] sellQuantityFinal = sellQuantity.split(",");
 
-        System.out.println("ILOść elementów tablicy: " + priceSellFinal.length + "zawartość tablicy: " + priceSellFinal[0]);
+            if (orderUtils.getOrderItems().getOrderItemDtos().size() == 1 && sellFinal == "0") {
+                priceSellFinal[0] = orderUtils.getOrderItems().getOrderItemDtos().get(0).getPriceSell().toString();
+                sellQuantityFinal[0] = orderUtils.getOrderItems().getOrderItemDtos().get(0).getQuantity().toString();
+            }
 
-        if (orderUtils.getOrderItems().getOrderItemDtos().size() == 1 && sellFinal == "0") {
-            priceSellFinal[0] = orderUtils.getOrderItems().getOrderItemDtos().get(0).getPriceSell().toString();
-            sellQuantityFinal[0] = orderUtils.getOrderItems().getOrderItemDtos().get(0).getQuantity().toString();
-        }
         for (OrderItemDto orderItemDto : orderUtils.getOrderItems().getOrderItemDtos()) {
             if (orderUtils.getOrderItems().getOrderItemDtos().indexOf(orderItemDto) == priceSellFinal.length) {
                 break;
@@ -195,6 +226,12 @@ public class OrderControler {
         Order order = new ModelMapper().map(orderUtils.getOrderDtoList().get(0), Order.class);
 
         orderService.seveOrderItems(order, orderUtils.getOrderItemDtoList());
+
+        Double total = (orderUtils.getOrderItemDtoList().stream()
+                .mapToDouble(s -> s.getPriceSellFinal() * s.getQuantity())
+                .sum());
+
+        modelMap.addAttribute("totalSumOrder", total);
 
         return "order_items";
     }
@@ -235,10 +272,15 @@ public class OrderControler {
 //                .forEach(System.out::println);
 
         orderItemDtoList.forEach(System.out::println);
-        orderUtils.getOrderItems().setOrderItemDtos(orderItemDtoList);
+//        orderUtils.getOrderItems().setOrderItemDtos(orderItemDtoList);
+        orderUtils.orderItems(orderItemDtoList);
         modelMap.addAttribute("orderItemList", orderUtils.getOrderItems().getOrderItemDtos());
 
-        System.out.println("ID banknotu do usunięcia z lity: " + noteId);
+        Double total = (orderItemDtoList.stream()
+                .mapToDouble(s -> s.getPriceSellFinal() * s.getQuantity())
+                .sum());
+        modelMap.addAttribute("totalSumOrder", total);
+
 
         return "order_items";
     }

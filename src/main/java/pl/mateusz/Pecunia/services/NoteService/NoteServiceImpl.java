@@ -161,7 +161,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<NoteInfoViewDto> noteForSell(String countryEn, String status, String statusSell) {
-        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(countryEn, status);
+        List<NoteInfoView> noteInfoViewList = noteInfoViewRepository.NoteForSell(countryEn, status, statusSell);
         return getNoteInfoViewDtos(noteInfoViewList);
     }
 

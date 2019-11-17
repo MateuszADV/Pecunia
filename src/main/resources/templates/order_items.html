@@ -98,9 +98,6 @@
                             <td>
                                 <input class="form-control" type="text" th:value="${item.priceSellFinal}" name="sellFinal">
                             </td>
-<!--                            <td>-->
-<!--                                <input class="form-control" type="text" name="sellFinal">-->
-<!--                            </td>-->
                             <td>
                                 <input class="form-control" type="number" th:value="${item.quantity}" name="sellQuantity">
                             </td>
@@ -117,7 +114,7 @@
                         <td style="text-align: right">
                             podsumowanie zamówienia
                         </td>
-                        <td></td>
+                        <td th:text="${#numbers.formatDecimal(totalSumOrder,1,2)} + 'zł'" style="background: aqua"></td>
                     </tr>
                     <tr>
                         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
