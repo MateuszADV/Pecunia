@@ -51,16 +51,18 @@
                 <th>Lp.</th>
                 <th>Numer zamówienia</th>
                 <th>Data zamówienia</th>
+                <th>Wysyłka/rezerwacja</th>
                 <th>Data wysyłki</th>
                 <th>Edytuj</th>
                 <th>INFO</th>
                 <th>element zamówienia</th>
             </tr>
         <block th:each="order,i : ${orderList}">
-           <tr>
+           <tr th:if="${order.shipmentType} == 'reservation'" style="color: red" >
                <td th:text="${i.count}"></td>
                <td th:text="${order.orderNumber}"></td>
                <td th:text="${order.dateOrder}"></td>
+               <td th:text="${order.shipmentType}"></td>
                <td th:text="${order.dateSend}"></td>
                <th>
                    <a th:href="@{'/order/' + ${order.id}}">
@@ -83,6 +85,33 @@
                    </div>
                </td>
            </tr>
+            <tr th:if="${order.shipmentType} != 'reservation'" style="color: black">
+                <td th:text="${i.count}"></td>
+                <td th:text="${order.orderNumber}"></td>
+                <td th:text="${order.dateOrder}"></td>
+                <td th:text="${order.shipmentType}"></td>
+                <td th:text="${order.dateSend}"></td>
+                <th>
+                    <a th:href="@{'/order/' + ${order.id}}">
+                        <span>Edytuj</span>
+                    </a>
+                </th>
+                <td>
+                    <a th:href="@{'/order_details/' + ${order.id}}">
+                        <span>Wyswietl zamówienie</span>
+                    </a>
+                </td>
+                <td>
+                    <div th:if="${order.active} == true">
+                        <a th:href="@{'/order_items_add/' + ${order.id}}">
+                            <span>Dodaj elementy zamówienia</span>
+                        </a>
+                    </div>
+                    <div th:if="${order.active} == false"}>
+                        <span>Zamówienie zakończone</span>
+                    </div>
+                </td>
+            </tr>
         </block>
         </table>
     </div>

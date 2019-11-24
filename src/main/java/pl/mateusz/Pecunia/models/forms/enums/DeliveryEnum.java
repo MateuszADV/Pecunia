@@ -6,7 +6,9 @@ import lombok.Getter;
 public enum DeliveryEnum {
     ECONOMIC("List polecony ekonomiczny", "economic"),
     PRIORITY("List polecony Priorytet", "priority"),
-    PERSONAL("Odbiór osobisty", "personal");
+    PERSONAL("Odbiór osobisty", "personal"),
+    RESERVATION("Rezerwacja", "reservation"),
+    TEST("Test", "test");
 
     private String namePL;
     private String nameDB;

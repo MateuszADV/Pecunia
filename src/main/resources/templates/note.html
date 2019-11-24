@@ -80,7 +80,14 @@
                     </tr>
                     <tr>
                         <td>Materiał</td>
-                        <td><input class="form-control" type="text" th:field="*{making}" placeholder="Materiał"></td>
+<!--                        <td><input class="form-control" type="text" th:field="*{making}" placeholder="Materiał"></td>-->
+                        <td>
+                            <select  th:field="*{making}">
+                                <block th:each = "makin : ${making}">
+                                    <option th:value="${makin.namePl}" th:text="${makin.namePl}"></option>
+                                </block>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td>Sygnatura</td>
@@ -104,11 +111,25 @@
                     </tr>
                     <tr>
                         <td>Kolekja/Sprzedaż</td>
-                        <td><input class="form-control" type="text" th:field="*{status}" placeholder="K/S"></td>
+                        <td>
+                            <select  th:field="*{status}">
+                                <block th:each = "stat : ${status}">
+                                    <option th:value="${stat.name}" th:text="${stat.name}"></option>
+                                </block>
+                            </select>
+                        </td>
+<!--                        <td><input class="form-control" type="text" th:field="*{status}" placeholder="K/S"></td>-->
                     </tr>
                     <tr>
                         <td>W sprzedaży</td>
-                        <td><input class="form-control" type="text" th:field="*{statusSell}" placeholder="OLX, allegro, ..."></td>
+                        <td>
+                            <select  th:field="*{statusSell}">
+                                <block th:each = "statSell : ${statusSell}">
+                                    <option th:value="${statSell.name}" th:text="${statSell.name}"></option>
+                                </block>
+                            </select>
+                        </td>
+<!--                        <td><input class="form-control" type="text" th:field="*{statusSell}" placeholder="OLX, allegro, ..."></td>-->
                     </tr>
                     <tr>
                         <td>Opisu</td>
@@ -116,7 +137,14 @@
                     </tr>
                     <tr>
                         <td>Typ obrazka</td>
-                        <td><input class="form-control" type="text" th:field="*{imgType}" placeholder="skan/foto/www/LOC"></td>
+<!--                        <td><input class="form-control" type="text" th:field="*{imgType}" placeholder="skan/foto/www/LOC"></td>-->
+                        <td>
+                            <select  th:field="*{imgType}">
+                                <block th:each = "img : ${imgType}">
+                                    <option th:value="${img.namePl}" th:text="${img.namePl}"></option>
+                                </block>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td>Avers</td>

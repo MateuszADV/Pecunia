@@ -15,7 +15,7 @@ import pl.mateusz.Pecunia.models.dtos.NoteCountryViewDto;
 import pl.mateusz.Pecunia.models.dtos.NoteDto;
 import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
 import pl.mateusz.Pecunia.models.forms.ExposedNoteDto;
-import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
+import pl.mateusz.Pecunia.models.forms.enums.*;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteInfoViewRepository;
@@ -85,7 +85,6 @@ public class NoteController {
     public String postNote(@ModelAttribute("noteDto") @Valid NoteDto noteDto, BindingResult result,
                            @RequestParam("currencyId") Long currencyId,
                            ModelMap modelMap) {
-
         /**
          * TYMCZASOWE ROZWIĄZANIE DO SPRAWDANIA POPRAWNOŚCI DATY ZAKUPU BANKNOTU
          */
@@ -94,6 +93,8 @@ public class NoteController {
             System.out.println(noteDto.getDateBuyNote());
             modelMap.addAttribute("data_erorr", "Został podany niepopraw format daty 2000-01-01");
             modelMap.addAttribute("save", "Zmiany nie zostały zapisane :(");
+
+            EnumForm(modelMap);
             noteEdit(noteDto.getId(), modelMap);
             return "note";
         }
@@ -107,8 +108,16 @@ public class NoteController {
             modelMap.addAttribute("statusSave", false);
         }
 
+        EnumForm(modelMap);
         NoteModelMap(currencyId, modelMap);
         return "note";
+    }
+
+    private void EnumForm(ModelMap modelMap) {
+        modelMap.addAttribute("status", StatusEnum.values());
+        modelMap.addAttribute("statusSell", StatusSellEnum.values());
+        modelMap.addAttribute("making", MakingEnum.values());
+        modelMap.addAttribute("imgType", ImgTypeEnum.values());
     }
 
     private void NoteModelMap(@RequestParam("currencyId") Long currencyId, ModelMap modelMap) {
@@ -116,6 +125,8 @@ public class NoteController {
         modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
         modelMap.addAttribute("currencyId", currencyId);
         modelMap.addAttribute("noteDto", new NoteDto());
+
+        EnumForm(modelMap);
     }
 
     @GetMapping(value = {"Pecunia/quality","/quality"})
@@ -168,6 +179,7 @@ public class NoteController {
             return "error404";
         }
 
+        EnumForm(modelMap);
         return "/note";
     }
 
@@ -277,6 +289,8 @@ public class NoteController {
         modelMap.addAttribute("countryTrue", true);
         modelMap.addAttribute("countrys", noteCountryViewRepository.countryInMyColection(Constans.NOTE_STATUS_KOLEKCJA));
         modelMap.addAttribute("countryFromContinent", "Wszystkie kontynenty");
+
+
         return "view_note";
     }
 
