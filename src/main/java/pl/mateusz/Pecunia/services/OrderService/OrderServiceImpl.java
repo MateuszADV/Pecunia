@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.Order;
 import pl.mateusz.Pecunia.models.OrderItem;
 import pl.mateusz.Pecunia.models.dtos.OrderItemDto;
+import pl.mateusz.Pecunia.models.forms.Orders;
 import pl.mateusz.Pecunia.models.repositories.OrderItemRepository;
+import pl.mateusz.Pecunia.models.repositories.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,12 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private OrderItemRepository orderItemRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderItemRepository orderItemRepository) {
+    public OrderServiceImpl(OrderItemRepository orderItemRepository, OrderRepository orderRepository) {
         this.orderItemRepository = orderItemRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -49,5 +53,13 @@ public class OrderServiceImpl implements OrderService {
         orderItem.setOrder(order);
         orderItemRepository.save(orderItem);
 
+    }
+
+    @Override
+    public Orders orderItems(long orderId) {
+        Order order = orderRepository.order(orderId);
+        Orders orders = new ModelMapper().map(order, Orders.class);
+
+        return orders;
     }
 }

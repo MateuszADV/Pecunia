@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Customer</title>
@@ -29,8 +29,8 @@
     </div>
 
     <div class="container" th:if="${Error} == null">
-        <form th:action="@{/customer}" method="post" th:object="${customerDto}">
-            <input class="form-control" type="text" th:field="*{id}" style="font-size: 12px; text-align: center" readonly>
+        <form th:action="@{/customer/add}" method="post" th:object="${customerDto}">
+            <input class="form-control" type="text" th:field="*{id}" style="font-size: 12px; text-align: center; display: none" readonly>
             <table class="table">
                 <tr>
                     <td>Id Klienta</td>
@@ -41,7 +41,6 @@
                     <td>
                         <input class="form-control" type="text" th:field="*{active}" placeholder="true/false">
                     </td>
-
                 </tr>
                 <tr>
                     <td>Imię</td>

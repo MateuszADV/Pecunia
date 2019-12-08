@@ -4,13 +4,17 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.Customer;
-import pl.mateusz.Pecunia.models.dtos.CustomerBasic;
+import pl.mateusz.Pecunia.models.Order;
+import pl.mateusz.Pecunia.models.dtos.CustomerBasicDto;
 import pl.mateusz.Pecunia.models.dtos.CustomerDto;
+import pl.mateusz.Pecunia.models.forms.CustomerOrders;
+import pl.mateusz.Pecunia.models.forms.Orders;
 import pl.mateusz.Pecunia.models.repositories.CustomerRepository;
 import pl.mateusz.Pecunia.utils.Base64Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -59,11 +63,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerBasic> customerBasicList(List<Customer> customerList) {
-        List<CustomerBasic> customerBasicList = new ArrayList<>();
+    public Customer saveCustomer(CustomerDto customerDto) {
+        CustomerDto customerDtoencode = encodeCustomer(customerDto);
+        Customer customer = new ModelMapper().map(customerDtoencode, Customer.class);
+        customerRepository.save(customer);
+
+        return customer;
+    }
+
+    @Override
+    public List<CustomerBasicDto> customerBasicList(List<Customer> customerList) {
+        List<CustomerBasicDto> customerBasicList = new ArrayList<>();
 
         for (Customer customer : customerList) {
-            customerBasicList.add(new ModelMapper().map(decodeCustomer(customer), CustomerBasic.class));
+            customerBasicList.add(new ModelMapper().map(decodeCustomer(customer), CustomerBasicDto.class));
         }
 
         return customerBasicList;
@@ -77,4 +90,38 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerDto;
     }
+
+    @Override
+    public List<CustomerBasicDto> getCustomerBassicList() {
+        List<Customer> customerList = customerRepository.customerList();
+        List<CustomerBasicDto> customerBasicDtoList = new ArrayList<>();
+
+        for (Customer customer : customerList) {
+            customerBasicDtoList.add(new ModelMapper().map(decodeCustomer(customer), CustomerBasicDto.class));
+        }
+        return customerBasicDtoList;
+    }
+
+    @Override
+    public CustomerOrders customerOrders(String uniqueId) {
+        Customer customer = customerRepository.customer(uniqueId);
+
+        if(customer == null) {
+            return null;
+        }
+        CustomerOrders customerOrders = new ModelMapper().map(decodeCustomer(customer), CustomerOrders.class);
+        return customerOrders;
+    }
+
+    @Override
+    public List<CustomerBasicDto> findCustomer(String name) {
+        List<CustomerBasicDto> customerBasicDtoList;
+        customerBasicDtoList = getCustomerBassicList().stream()
+                .filter(s -> s.getName().toLowerCase().contains(name.toLowerCase())
+                        || s.getLastname().toLowerCase().contains(name.toLowerCase()))
+//                .sorted((o1, o2) -> o1.getLastname().compareToIgnoreCase(o2.getLastname()))
+                .collect(Collectors.toList());
+        return customerBasicDtoList;
+    }
+
 }

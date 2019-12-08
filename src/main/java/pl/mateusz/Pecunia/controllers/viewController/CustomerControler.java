@@ -7,7 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.Customer;
-import pl.mateusz.Pecunia.models.dtos.CustomerBasic;
+import pl.mateusz.Pecunia.models.dtos.CustomerBasicDto;
 import pl.mateusz.Pecunia.models.dtos.CustomerDto;
 import pl.mateusz.Pecunia.models.repositories.CustomerRepository;
 import pl.mateusz.Pecunia.services.customerService.CustomerService;
@@ -48,16 +48,11 @@ public class CustomerControler {
         modelMap.addAttribute("customerDto", customerDto);
     }
 
-    @PostMapping(value = {"/Pecunia/customer", "/customer"})
-    public String postCustomer(@ModelAttribute("customerDto") CustomerDto customerDto, ModelMap modelMap) {
+    @PostMapping(value = {"/Pecunia/customer/add", "/customer/add"})
+    public String postCustomerSave(@ModelAttribute("customerDto") CustomerDto customerDto, ModelMap modelMap) {
         Logger LOGGER = Logger.getLogger(CustomerDto.class.toString());
-
-        customerDto = customerService.encodeCustomer(customerDto);
-        Customer customer = new ModelMapper().map(customerDto, Customer.class);
-        customerRepository.save(customer);
-
-        modelMap.addAttribute("customerDetails",customerService.decodeCustomer(customer) );
-
+        Customer customer = customerService.saveCustomer(customerDto);
+        modelMap.addAttribute("customerDetails", customerService.decodeCustomer(customer));
         LOGGER.log(Level.INFO, customerDto.toString());
 
 //        newCustomer(modelMap);
@@ -66,29 +61,10 @@ public class CustomerControler {
 
     @GetMapping(value = {"/Pecunia/customerList", "/customerList"})
     public String getCustomerList(ModelMap modelMap) {
-        Logger LOGGER = Logger.getLogger(CustomerDto.class.toString());
-
-        List<Customer> customerList = customerRepository.customerList();
-        List<CustomerBasic> customerBasicList = customerService.customerBasicList(customerList);
-        customerBasicList = customerBasicList.stream()
-//                .filter(s -> s.getActive().equals(true))
-//                .filter(s -> s.getLastname().toLowerCase().contains("ła".toLowerCase()))
-                .sorted((o1, o2) -> o1.getLastname().compareToIgnoreCase(o2.getLastname()))
-                .collect(Collectors.toList());
-        modelMap.addAttribute("customerBasic", customerBasicList);
-
-//        customerBasicList.forEach(System.out::println);
-        LOGGER.log(Level.INFO, customerBasicList.toString());
-
-//        Collections.sort(customerBasicList, new Comparator<CustomerBasic>() {
-//            @Override
-//            public int compare(CustomerBasic o1, CustomerBasic o2) {
-//                return o1.getLastname().compareToIgnoreCase(o2.getLastname());
-//            }
-//        });//
-//        System.out.println("\n\n Powinno byćposortowane według nazwiska");
-//        customerBasicList.forEach(System.out::println);
-
+        Logger LOGGER = Logger.getLogger(CustomerBasicDto.class.toString());
+        List<CustomerBasicDto> customerBasicDtoList = customerService.getCustomerBassicList();
+        modelMap.addAttribute("customerBasic", customerBasicDtoList);
+        LOGGER.log(Level.INFO, customerBasicDtoList.toString());
         return "customer_basic";
     }
 
@@ -96,7 +72,6 @@ public class CustomerControler {
     public String getCustomerDetails(@PathVariable String uniqueId,
                                   ModelMap modelMap) {
         Logger LOGGER = Logger.getLogger(Exception.class.toString());
-
         try {
             CustomerDto customerDtoDetails = customerService.customerDtoDetails(uniqueId);
             modelMap.addAttribute("customerDetails", customerDtoDetails);
@@ -128,24 +103,11 @@ public class CustomerControler {
     }
 
     @PostMapping(value = {"/Pecunia/searchCustomer", "/searchCustomer"})
-    public String postSearchCustomer(@RequestParam(value = "searchCustomer") String searchCustomer, ModelMap modelMap) {
-
+    public String postSearchCustomer(@RequestParam(value = "nameCustomer") String nameCustomer, ModelMap modelMap) {
         Logger LOGGER = Logger.getLogger(String.class.toString());
-
-        List<Customer> customerList = customerRepository.customerList();
-        List<CustomerBasic> customerBasicList = customerService.customerBasicList(customerList);
-        customerBasicList = customerBasicList.stream()
-//                .filter(s -> s.getActive().equals(true))
-                .filter(s -> s.getLastname().toLowerCase().contains(searchCustomer.toLowerCase())
-                        || s.getName().toLowerCase().contains(searchCustomer.toLowerCase()))
-                .sorted((o1, o2) -> o1.getLastname().compareToIgnoreCase(o2.getLastname()))
-                .collect(Collectors.toList());
+        List<CustomerBasicDto> customerBasicList = customerService.findCustomer(nameCustomer);
         modelMap.addAttribute("customerBasic", customerBasicList);
-
-        customerBasicList.forEach(System.out::println);
         LOGGER.log(Level.INFO, customerBasicList.toString());
-        System.out.println(searchCustomer);
-
         return "customer_basic";
     }
 

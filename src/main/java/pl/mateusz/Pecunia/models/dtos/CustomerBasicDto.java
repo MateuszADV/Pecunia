@@ -9,7 +9,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-public class CustomerBasic {
+public class CustomerBasicDto {
 
     private String uniqueId;
     private Boolean active;

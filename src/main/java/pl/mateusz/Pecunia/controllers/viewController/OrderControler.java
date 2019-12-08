@@ -255,8 +255,10 @@ public class OrderControler {
         return "order_items";
     }
 
-    @GetMapping(value = {"/Pecunia/delete_item/{noteId}", "/delete_item/{noteId}"})
-    public String getDeleteItem(@PathVariable Long noteId, ModelMap modelMap) {
+//    @GetMapping(value = {"/Pecunia/delete_item/{noteId}", "/delete_item/{noteId}"})
+//    public String getDeleteItem(@PathVariable Long noteId, ModelMap modelMap) {
+    @GetMapping(value = {"/Pecunia/delete_item/", "/delete_item/"})
+    public String getDeleteItem(@RequestParam Long noteId, ModelMap modelMap) {
         modelMap.addAttribute("customerDetails",orderUtils.getCustomerDto());
         modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList());
         modelMap.addAttribute("order_item_add", true);
