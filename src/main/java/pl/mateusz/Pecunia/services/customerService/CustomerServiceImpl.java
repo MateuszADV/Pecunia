@@ -95,10 +95,13 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerBasicDto> getCustomerBassicList() {
         List<Customer> customerList = customerRepository.customerList();
         List<CustomerBasicDto> customerBasicDtoList = new ArrayList<>();
-
         for (Customer customer : customerList) {
             customerBasicDtoList.add(new ModelMapper().map(decodeCustomer(customer), CustomerBasicDto.class));
         }
+        customerBasicDtoList = customerBasicDtoList.stream()
+                .sorted((o1, o2) -> o1.getLastname().compareToIgnoreCase(o2.getLastname()))
+                .collect(Collectors.toList());
+
         return customerBasicDtoList;
     }
 

@@ -1,15 +1,19 @@
 package pl.mateusz.Pecunia.controllers.viewController;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.mateusz.Pecunia.models.Order;
 import pl.mateusz.Pecunia.models.repositories.CodeParamRepository;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
+import pl.mateusz.Pecunia.models.repositories.OrderRepository;
 import pl.mateusz.Pecunia.services.HomeService.HomeService;
+import pl.mateusz.Pecunia.services.OrderService.OrderService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.services.exchangeService.ExchangeService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
@@ -29,15 +33,18 @@ public class HomeController {
     private CodeParamRepository codeParamRepository;
     private HomeService homeService;
 
-    public HomeController(CountryService countryService, CountryRepository countryRepository,
-                          CurrencyRepository currencyRepository, ExchangeService exchangeService,
-                          CodeParamRepository codeParamRepository, HomeService homeService) {
+    private OrderService orderService;
+    private OrderRepository orderRepository;
+
+    public HomeController(CountryService countryService, CountryRepository countryRepository, CurrencyRepository currencyRepository, ExchangeService exchangeService, CodeParamRepository codeParamRepository, HomeService homeService, OrderService orderService, OrderRepository orderRepository) {
         this.countryService = countryService;
         this.countryRepository = countryRepository;
         this.currencyRepository = currencyRepository;
         this.exchangeService = exchangeService;
         this.codeParamRepository = codeParamRepository;
         this.homeService = homeService;
+        this.orderService = orderService;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping("/login")
@@ -57,6 +64,9 @@ public class HomeController {
             modelMap.addAttribute("exchange", false);
             modelMap.addAttribute("error", e.getMessage());
         }
+
+//        System.out.println(orderService.getlastNumberOrder());
+//        System.out.println(orderService.lastOrder().getOrderNumber());
 
         return "index";
     }

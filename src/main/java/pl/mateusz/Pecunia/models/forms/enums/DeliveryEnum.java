@@ -8,6 +8,7 @@ public enum DeliveryEnum {
     PRIORITY("List polecony Priorytet", "priority"),
     PERSONAL("Odbiór osobisty", "personal"),
     RESERVATION("Rezerwacja", "reservation"),
+    RESERVATION_CANCELED("Anulowanie rezerwacji", "canceled"),
     TEST("Test", "test");
 
     private String namePL;

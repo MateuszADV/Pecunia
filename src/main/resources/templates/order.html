@@ -50,6 +50,10 @@
                             <option th:value="false" th:text="'false'"></option>
                         </select>
                     </th>
+                    <th>
+                        <span>przelew/gotówka</span>
+                        <input class="form-control" type="text" th:field="*{cash}" placeholder="przelew/gotówka">
+                    </th>
                 </tr>
                 <tr>
                     <th>
@@ -72,6 +76,12 @@
                     <th>
                         <span>Data wysyłki</span>
                         <input class="form-control" type="text" th:field="*{dateSend}" placeholder="yyyy-mm-dd" >
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2" class="last">
+                        <span>Opis zamówienia</span>
+                        <textarea class="form-control" th:field="*{description}" placeholder="opis zamówienia"></textarea>
                     </th>
                 </tr>
             </table>

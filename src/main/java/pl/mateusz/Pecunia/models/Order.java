@@ -33,6 +33,10 @@ public class Order {
     @Column(name = "shipping_costs")
     private Double shippingCosts;
 
+    private Double cash;
+    private String description;
+
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

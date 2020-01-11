@@ -14,4 +14,8 @@ public interface OrderService {
     List<OrderItemDto> getOrderDetails(Long orderId);
 
     Orders orderItems(long orderId);
+
+    String getLastNumberOrder();
+    String nextNumberOrder(String lastNumberOrder);
+
 }

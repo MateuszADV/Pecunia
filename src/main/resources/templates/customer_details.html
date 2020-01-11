@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Klient</title>
@@ -33,7 +33,8 @@
         <p th:text="'Active - ' + ${customerDetails.active}"></p>
         <p th:text="${customerDetails.name} + ' ' + ${customerDetails.lastname}"></p>
 <!--        <p>ADRES</p>-->
-        <p th:text="${customerDetails.zipCode} + ' ' + ${customerDetails.city} + ' ' + ${customerDetails.street} + ' ' + ${customerDetails.number}"></p>
+        <p th:text="${customerDetails.zipCode} + ' ' + ${customerDetails.city}"></p>
+        <p th:text ="'ul. ' + ${customerDetails.street} + ' ' + ${customerDetails.number}"></p>
         <p th:text="'Telefon - ' + ${customerDetails.phone}"></p>
         <p th:text="'mail - ' + ${customerDetails.email}"></p>
         <p th:text="'nick - ' + ${customerDetails.nick}"></p>

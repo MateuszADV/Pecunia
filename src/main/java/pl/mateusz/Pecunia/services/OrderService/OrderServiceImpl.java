@@ -10,8 +10,9 @@ import pl.mateusz.Pecunia.models.forms.Orders;
 import pl.mateusz.Pecunia.models.repositories.OrderItemRepository;
 import pl.mateusz.Pecunia.models.repositories.OrderRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.regex.Pattern;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,6 +26,9 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository = orderRepository;
     }
 
+    public OrderServiceImpl() {
+    }
+
     @Override
     public void seveOrderItems(Order order, List<OrderItemDto> orderItemDto) {
 
@@ -34,7 +38,6 @@ public class OrderServiceImpl implements OrderService {
 
         System.out.println("ZAPIS DO BAZY \n" +
                 "ILOść ZAPISANYCH ELEMENTów: " + orderItemDto.size());
-
     }
 
     @Override
@@ -61,5 +64,90 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = new ModelMapper().map(order, Orders.class);
 
         return orders;
+    }
+
+    @Override
+    public String nextNumberOrder(String lastNumberOrder) {
+
+        if (checkLastNumberOrder(lastNumberOrder)) {
+            Map<String, String> elements = elementsOfNumberOrder(lastNumberOrder);
+            return dateOrderAndNextNumberOrder(elements.get("year"), elements.get("month"), elements.get("orderYear"), elements.get("orderTotal"));
+        } else {
+            String rok = String.valueOf(LocalDate.now().getYear());
+            String miesiac = String.valueOf(LocalDate.now().getMonthValue());
+            if (miesiac.length() == 1) {
+                miesiac = "0" + miesiac;
+            }
+
+            return rok + "/" + miesiac + "/00000/00000";
+        }
+    }
+
+    @Override
+    public String getLastNumberOrder() {
+        String lastNumberOrder = orderRepository.lastNumberOrder();
+        return lastNumberOrder;
+    }
+
+    public Boolean checkLastNumberOrder(String lastNumberOrder) {
+        Pattern pattern = Pattern.compile("\\d{4}/\\d{2}/\\d{3,5}/\\d{3,5}");
+        if (pattern.matcher(lastNumberOrder).matches()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Map<String, String> elementsOfNumberOrder(String lastNumberOrder) {
+        Map<String, String> elementsOrderMap = new LinkedHashMap<>();
+        String[] elementsOrder = lastNumberOrder.split("/");
+
+        elementsOrderMap.put("year", elementsOrder[0]);
+        elementsOrderMap.put("month", elementsOrder[1]);
+        elementsOrderMap.put("orderYear", elementsOrder[2]);
+        elementsOrderMap.put("orderTotal", elementsOrder[3]);
+
+        return elementsOrderMap;
+    }
+
+    public String nextNumber(String lastNumber) {
+        Integer lengthNumber = lastNumber.length();
+
+        try {
+            Integer numberOrder = Integer.valueOf(lastNumber);
+            lastNumber = String.valueOf(++numberOrder);
+            while (lengthNumber > lastNumber.length()) {
+                lastNumber = "0"+lastNumber;
+            }
+            return lastNumber;
+        }catch (Exception e) {
+            return "00000";
+        }
+    }
+
+    public String dateOrderAndNextNumberOrder(String year, String month, String orderYear, String orderTotal) {
+
+        String rok = String.valueOf(LocalDate.now().getYear());
+        String miesiac = String.valueOf(LocalDate.now().getMonthValue());
+        if (miesiac.length() == 1) {
+            miesiac = "0" + miesiac;
+        }
+
+        if (!year.equals(rok)) {
+            year = rok;
+            month = miesiac;
+            orderYear = "001";
+            orderTotal = nextNumber(orderTotal);
+            return year + "/" + month + "/" + orderYear + "/" + orderTotal;
+        }
+        if (!month.equals(miesiac) || month.equals(miesiac)) {
+            month = miesiac;
+            orderYear = nextNumber(orderYear);
+            orderTotal = nextNumber(orderTotal);
+            return year + "/" + month + "/" + orderYear + "/" + orderTotal;
+        }
+
+        String dataOrder = String.format("%s/%s", year, month);
+
+        return dataOrder;
     }
 }

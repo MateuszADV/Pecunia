@@ -50,9 +50,11 @@ public class OrderControler {
     @GetMapping (value = {"/Pecunia/add_order/{uniqueId}", "/add_order/{uniqueId}"})
     public String getAddOrder(@PathVariable String  uniqueId, ModelMap modelMap) {
         CustomerDto customerDto = orderUtils.customerDto(uniqueId);
+        String lastNumberOrder = orderService.getLastNumberOrder();
         OrderDto orderDto = new OrderDto();
         orderDto.setDateOrder(LocalDate.now());
         orderDto.setDateSend(LocalDate.now());
+        orderDto.setOrderNumber(orderService.nextNumberOrder(lastNumberOrder));
         modelMap.addAttribute("customerDetails", customerDto);
         modelMap.addAttribute("orderDto", orderDto);
         modelMap.addAttribute("delivery", DeliveryEnum.values());
@@ -64,6 +66,8 @@ public class OrderControler {
     public String postCustomer(@ModelAttribute("orderDto") OrderDto orderDto,
                                ModelMap modelMap) {
         //TODO Zrobić poprawki kodu zoptymalizować
+
+        System.out.println("POWINN BYć KASA :" + orderDto.getCash());
 
         Logger LOGGER = Logger.getLogger(CustomerDto.class.toString());
         CustomerDto customerDto = orderUtils.getCustomerDto();

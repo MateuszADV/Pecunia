@@ -21,4 +21,7 @@ public class OrderDto {
     private String trackingNumber;
     private String shipmentType;
     private Double shippingCosts;
+
+    private Double cash;
+    private String description;
 }
