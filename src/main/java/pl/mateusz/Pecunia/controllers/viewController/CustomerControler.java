@@ -7,13 +7,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.Customer;
+import pl.mateusz.Pecunia.models.Order;
 import pl.mateusz.Pecunia.models.dtos.CustomerBasicDto;
 import pl.mateusz.Pecunia.models.dtos.CustomerDto;
+import pl.mateusz.Pecunia.models.dtos.OrderDto;
 import pl.mateusz.Pecunia.models.repositories.CustomerRepository;
+import pl.mateusz.Pecunia.models.repositories.OrderRepository;
 import pl.mateusz.Pecunia.services.customerService.CustomerService;
 import pl.mateusz.Pecunia.utils.Base64Utils;
 import pl.mateusz.Pecunia.utils.OrderUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,12 +29,13 @@ public class CustomerControler {
     private CustomerService customerService;
     private CustomerRepository customerRepository;
     private OrderUtils orderUtils;
+    private OrderRepository orderRepository;
 
-    @Autowired
-    public CustomerControler(CustomerService customerService, CustomerRepository customerRepository, OrderUtils orderUtils) {
+    public CustomerControler(CustomerService customerService, CustomerRepository customerRepository, OrderUtils orderUtils, OrderRepository orderRepository) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
         this.orderUtils = orderUtils;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping(value = {"/Pecunia/customer", "/customer"})
@@ -72,14 +77,24 @@ public class CustomerControler {
     public String getCustomerDetails(@PathVariable String uniqueId,
                                   ModelMap modelMap) {
         Logger LOGGER = Logger.getLogger(Exception.class.toString());
+        List<Order> orderList = orderRepository.OrderList(uniqueId);
+        List<OrderDto> orderDtoList = new ArrayList<>();
         try {
             CustomerDto customerDtoDetails = customerService.customerDtoDetails(uniqueId);
             modelMap.addAttribute("customerDetails", customerDtoDetails);
+
+            for (Order order : orderList) {
+                orderDtoList.add(new ModelMapper().map(order, OrderDto.class));
+            }
+
+            modelMap.addAttribute("orderList" ,orderDtoList);
         }
         catch (Exception e) {
             modelMap.addAttribute("Error", "Podano nieprawidłowy numer klienta");
             LOGGER.log(Level.WARNING, e.toString());
         }
+
+        System.out.println(orderDtoList);
 
         return "customer_details";
     }

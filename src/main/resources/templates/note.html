@@ -201,16 +201,40 @@
                             <br>
                             <span th:text="${note.statusSell}"></span>
                         </td>
-                        <td>
-                            <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
-                                <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">
-                            </a>
-                        </td>
-                        <td>
-                            <a target="_blank" th:href="#{notePath} + ${note.reversePath}">
-                                <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">
-                            </a>
-                        </td>
+<!--                        <td>-->
+<!--                            <a target="_blank" th:href="#{notePath} + ${note.aversPath}">-->
+<!--                                <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <a target="_blank" th:href="#{notePath} + ${note.reversePath}">-->
+<!--                                <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">-->
+<!--                            </a>-->
+<!--                        </td>-->
+                        <div th:if="*{#strings.length(note.aversPath) < 100}">
+                            <td>
+                                <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
+                                    <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">
+                                </a>
+                            </td>
+                            <td>
+                                <a target="_blank" th:href="#{notePath} + ${note.reversePath}">
+                                    <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">
+                                </a>
+                            </td>
+                        </div>
+                        <div th:if="*{#strings.length(note.aversPath) > 100}">
+                            <td>
+                                <a target="_blank" th:href="${note.aversPath}">
+                                    <img class="imageNote" th:src="${note.aversPath}">
+                                </a>
+                            </td>
+                            <td>
+                                <a target="_blank" th:href="${note.reversePath}">
+                                    <img class="imageNote" th:src="${note.reversePath}">
+                                </a>
+                            </td>
+                        </div>
                         <td style="text-align: center">
                             <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
                                 <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -239,16 +263,40 @@
                             <br>
                             <span th:text="${note.statusSell}"></span>
                         </td>
-                        <td >
-                            <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
-                                <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">
-                            </a>
-                        </td>
-                        <td>
-                            <a target="_blank" th:href="#{notePath} + ${note.reversePath}">
-                                <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">
-                            </a>
-                        </td>
+<!--                        <td >-->
+<!--                            <a target="_blank" th:href="#{notePath} + ${note.aversPath}">-->
+<!--                                <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <a target="_blank" th:href="#{notePath} + ${note.reversePath}">-->
+<!--                                <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">-->
+<!--                            </a>-->
+<!--                        </td>-->
+                        <div th:if="*{#strings.length(note.aversPath) < 100}">
+                            <td>
+                                <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
+                                    <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">
+                                </a>
+                            </td>
+                            <td>
+                                <a target="_blank" th:href="#{notePath} + ${note.reversePath}">
+                                    <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">
+                                </a>
+                            </td>
+                        </div>
+                        <div th:if="*{#strings.length(note.aversPath) > 100}">
+                            <td>
+                                <a target="_blank" th:href="${note.aversPath}">
+                                    <img class="imageNote" th:src="${note.aversPath}">
+                                </a>
+                            </td>
+                            <td>
+                                <a target="_blank" th:href="${note.reversePath}">
+                                    <img class="imageNote" th:src="${note.reversePath}">
+                                </a>
+                            </td>
+                        </div>
                         <td style="text-align: center">
                             <a th:href="@{'/noteEdit/' + ${note.noteId}}" >
                                 <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
