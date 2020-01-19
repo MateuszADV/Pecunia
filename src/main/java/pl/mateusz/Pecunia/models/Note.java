@@ -47,7 +47,6 @@ public class Note {
     @Column(name = "status_sell")
     private String statusSell;  //StatusSell odpowiada za to czy dany banknot został wystawiony na sprzedaż
 
-
     @ManyToOne
     @JoinColumn(name = "currency_id")
     private Currency currency;
