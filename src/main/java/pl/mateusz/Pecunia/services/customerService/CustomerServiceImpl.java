@@ -121,7 +121,8 @@ public class CustomerServiceImpl implements CustomerService {
         List<CustomerBasicDto> customerBasicDtoList;
         customerBasicDtoList = getCustomerBassicList().stream()
                 .filter(s -> s.getName().toLowerCase().contains(name.toLowerCase())
-                        || s.getLastname().toLowerCase().contains(name.toLowerCase()))
+                        || s.getLastname().toLowerCase().contains(name.toLowerCase())
+                        || s.getPhone().contains(name))
 //                .sorted((o1, o2) -> o1.getLastname().compareToIgnoreCase(o2.getLastname()))
                 .collect(Collectors.toList());
         return customerBasicDtoList;

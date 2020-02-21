@@ -34,8 +34,15 @@
                     <input type="text" th:name="edit" th:value="${edit}" style="display: none">
                     <tr>
                         <td>Kontynent (region)</td>
-                        <td><input class="form-control" type="text" th:field="*{continent}" placeholder="Kontynent (region)">
-                            <span th:if="${#fields.hasErrors('continent')}" th:errors="*{continent}" style="color: red"></span>
+                        <td>
+                            <select  th:field="*{continent}">
+                                <block th:each = "continent : ${continents}">
+                                    <option th:value="${continent.namePl}" th:text="${continent.namePl}"></option>
+                                </block>
+                            </select>
+
+<!--                            <input class="form-control" type="text" th:field="*{continent}" placeholder="Kontynent (region)">-->
+<!--                            <span th:if="${#fields.hasErrors('continent')}" th:errors="*{continent}" style="color: red"></span>-->
                         </td>
                     </tr>
                     <tr>

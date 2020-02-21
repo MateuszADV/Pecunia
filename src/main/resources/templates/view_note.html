@@ -68,30 +68,6 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="width: 255px; height: 390px; margin-bottom: 30px">
                     <div style=" border: black solid 1px; background-color: lightgray; width: 100%; height: 100%" >
                         <div class="row item" style="text-align: center; width: 80%; height: 60%; margin-right: 10%; margin-left: 10%">
-<!--                            <div class="item" >-->
-<!--                                <a  th:href="#{notePath} + ${note.aversPath}" data-toggle="lightbox"-->
-<!--                                    th:data-title="'Country: ' + ${note.countryEn}"-->
-<!--                                    th:data-footer="  'COD: ' + ${note.cod}-->
-<!--                                                    + '<br>'-->
-<!--                                                    + ${#numbers.formatDecimal(note.denomination,1,0)}-->
-<!--                                                    + ' ' + ${note.nameCurrency}-->
-<!--                                                    + '<br>'-->
-<!--                                                    + ' year: ' +${note.noteDate}">-->
-<!--                                    <img th:src="#{notePath} + ${note.aversPath}" class="img-responsive" >-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="item" >-->
-<!--                                <a  th:href="#{notePath} + ${note.reversePath}" data-toggle="lightbox"-->
-<!--                                    th:data-title="'Country: ' + ${note.countryEn}"-->
-<!--                                    th:data-footer="  'COD: ' + ${note.cod}-->
-<!--                                                    + '<br>'-->
-<!--                                                    + ${#numbers.formatDecimal(note.denomination,1,0)}-->
-<!--                                                    + ' ' + ${note.nameCurrency}-->
-<!--                                                    + '<br>'-->
-<!--                                                    + ' year: ' +${note.noteDate}">-->
-<!--                                    <img th:src="#{notePath} + ${note.reversePath}" alt="" class="img-responsive">-->
-<!--                                </a>-->
-<!--                            </div>-->
                             <div class="item" th:if="*{#strings.length(note.aversPath) < 100}" >
                                 <a  th:href="#{notePath} + ${note.aversPath}" data-toggle="lightbox"
                                     th:data-title="'Country: ' + ${note.countryEn}"

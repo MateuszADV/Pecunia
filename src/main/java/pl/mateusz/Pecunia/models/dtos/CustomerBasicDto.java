@@ -16,4 +16,6 @@ public class CustomerBasicDto {
     private String name;
     private String lastname;
     private String city;
+
+    private String phone;
 }

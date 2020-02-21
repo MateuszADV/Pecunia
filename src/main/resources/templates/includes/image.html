@@ -1,0 +1,26 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="image_note">
+    <div th:if="*{#strings.length(note.aversPath) < 100}">
+        <td>
+            <a target="_blank" th:href="#{notePath} + ${note.aversPath}">
+                <img class="imageNote" th:src="#{notePath} + ${note.aversPath}">
+            </a>
+        </td>
+        <td>
+            <a target="_blank" th:href="#{notePath} + ${note.reversePath}">
+                <img class="imageNote" th:src="#{notePath} + ${note.reversePath}">
+            </a>
+        </td>
+    </div>
+    <div th:if="*{#strings.length(note.aversPath) > 100}">
+        <td>
+            <a target="_blank" th:href="${note.aversPath}">
+                <img class="imageNote" th:src="${note.aversPath}">
+            </a>
+        </td>
+        <td>
+            <a target="_blank" th:href="${note.reversePath}">
+                <img class="imageNote" th:src="${note.reversePath}">
+            </a>
+        </td>
+    </div>
+</div>

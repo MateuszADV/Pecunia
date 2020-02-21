@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
+import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.services.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.Currency;
@@ -38,6 +39,7 @@ public class CountryController {
         modelMap.addAttribute("countryDto", new CountryDto());
         modelMap.addAttribute("edit", false);
         modelMap.addAttribute("button", Constans.BUTTON_ADD_COUNTRY);
+        modelMap.addAttribute("continents", ContinentEnum.values());
         return countryList(modelMap);
     }
 
@@ -47,23 +49,29 @@ public class CountryController {
                               ModelMap modelMap) {
 
         Country countryFind = countryRepository.findByCountryEn(countryDto.getCountryEn());
+        modelMap.addAttribute("continents", ContinentEnum.values());
+        System.out.println("powinien BYc Zestaw banknotów: " +countryDto.getContinent());
+        System.out.println(countryDto.getContinent().equals(ContinentEnum.SET_NOTES.getNamePl()));
 
-        if (result.hasErrors()) {
-            modelMap.addAttribute("error", "Wypełnij poprawnie pole");
-            modelMap.addAttribute("button", Constans.BUTTON_ADD_COUNTRY);
-            return countryList(modelMap);
-        }
-        if (countryFind != null && edit != true) {
-            modelMap.addAttribute("countryExist", true);
-            modelMap.addAttribute("countryInfo", "Państwo które chcez dodać już jest w bazie");
-            modelMap.addAttribute("button", Constans.BUTTON_ADD_COUNTRY);
-            modelMap.addAttribute("country", new Country());
-            return countryList(modelMap);
+        if (!countryDto.getContinent().equals(ContinentEnum.SET_NOTES.getNamePl())) {
+            if (result.hasErrors()) {
+                modelMap.addAttribute("error", "Wypełnij poprawnie pole");
+                modelMap.addAttribute("button", Constans.BUTTON_ADD_COUNTRY);
+                return countryList(modelMap);
+            }
+            if (countryFind != null && edit != true) {
+                modelMap.addAttribute("countryExist", true);
+                modelMap.addAttribute("countryInfo", "Państwo które chcez dodać już jest w bazie");
+                modelMap.addAttribute("button", Constans.BUTTON_ADD_COUNTRY);
+                modelMap.addAttribute("country", new Country());
+                return countryList(modelMap);
+            }
         }
 
         Country country = (new ModelMapper().map(countryDto, Country.class));
 
-        countryRepository.save(country);
+//        countryRepository.save(country);
+        System.out.println(countryDto);
         return "redirect:/country";
     }
 
