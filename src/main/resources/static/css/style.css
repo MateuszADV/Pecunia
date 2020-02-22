@@ -57,3 +57,7 @@ body
     text-align: center;
     font-size: 20px;
 }
+.margin-footer
+{
+    margin-block-end: 50px
+}
