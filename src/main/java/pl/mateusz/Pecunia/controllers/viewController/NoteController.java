@@ -321,7 +321,6 @@ public class NoteController {
      */
     @GetMapping(value = {"/Pecunia/exposed_country", "/exposed_country"})
     public String getExposedCountry(ModelMap modelMap) {
-        //TODO Poprwić zeby były wyświetlane państwa z których są wystawione bankoty
         modelMap.addAttribute("heder", Constans.NOTE_STATUS_OLX);
         modelMap.addAttribute("countrys",noteService.countryNoteList(Constans.NOTE_STATUS_FOR_SELL, Constans.NOTE_STATUS_OLX));
 //        System.out.println(noteService.countryNoteForSell());

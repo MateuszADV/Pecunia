@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum StatusEnum {
     KOLEKCJA("KOLEKCJA"),
     FOR_SELL("FOR SELL"),
+    EXPIRED("FOR SELL, EXPIRED"),
     SOLD("SOLD"),
     NEW("NEW");
 
