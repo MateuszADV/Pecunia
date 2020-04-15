@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Banknoty</title>
@@ -194,6 +194,7 @@
 
             <table class="table table-bordered">
                 <tr>
+                    <th>ID</th>
                     <th>Nominał</th>
                     <th>Nazwa</th>
                     <th>Seria</th>
@@ -210,6 +211,7 @@
                 </tr>
                 <th:block th:each=" note : ${currencyNoteList}">
                     <tr  th:if="${note.noteId} == ${noteDto.id}" style="background-color: aqua">
+                        <td th:text="${note.noteId}"></td>
                         <div th:if="${note.denomination} >= 1">
                             <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
 <!--                            <td th:text="${note.denomination}"></td>-->
@@ -276,6 +278,7 @@
                         </td>
                     </tr>
                     <tr th:if="${note.noteId} != ${noteDto.id}">
+                        <td th:text="${note.noteId}"></td>
                         <div th:if="${note.denomination} >= 1">
                             <td th:text="${#numbers.formatDecimal(note.denomination,1,0)}"></td>
                         </div>
