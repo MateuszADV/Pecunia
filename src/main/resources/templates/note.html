@@ -16,7 +16,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
 </head>
 <body>
-<div class="container">
+<div class="container margin-footer">
 
     <div th:insert="~{includes/menu :: heder}"></div>
     <div th:insert="~{includes/menu :: menu}"></div>
@@ -322,7 +322,7 @@
             </table>
         </div>
 
-        <div>
+        <div class="marginFromBTN">
             <form th:action="@{/note/showJson}" method="post">
                 <input type="text" th:name="countryId" th:value="${countryCurrency.countryId}" style="display: none">
                 <input class="btn btn-primary" th:target="_blank" type="submit" value="Wyświtl Json">
@@ -331,7 +331,7 @@
 
 </div>
 
-
+<div class="panel-footer stopka" th:fragment="footer">STOPKA TEST PECUNIA 2019</div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

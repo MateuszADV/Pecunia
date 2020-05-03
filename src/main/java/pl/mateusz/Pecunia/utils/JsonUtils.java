@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class JsonUtils {
 
-
-
     public static String gsonPretty(Object object) {
 
 

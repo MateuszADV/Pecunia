@@ -1,13 +1,20 @@
 package pl.mateusz.Pecunia.controllers.viewController;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pl.mateusz.Pecunia.models.Order;
+import pl.mateusz.Pecunia.models.CodeParam;
+import pl.mateusz.Pecunia.models.forms.GoldRate;
+import pl.mateusz.Pecunia.models.forms.enums.WeightEnum;
 import pl.mateusz.Pecunia.models.repositories.CodeParamRepository;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
@@ -18,8 +25,12 @@ import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.services.exchangeService.ExchangeService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 
+import javax.persistence.JoinColumn;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -57,7 +68,7 @@ public class HomeController {
     public String getIndex(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            List<String > codeList = homeService.currencyCode();
+            List<String> codeList = homeService.currencyCode();
             modelMap.addAttribute("exchange", true);
             modelMap.addAttribute("exchangeRate",exchangeService.exchange(codeList));
         }catch (Exception e) {
@@ -93,4 +104,121 @@ public class HomeController {
 //        System.out.println(countCountries);
 //        return "test";
 //    }
+
+    @GetMapping(value = {"/Pecunia/cod_currency", "/cod_currency"})
+    public String getCodCurrency(ModelMap modelMap) {
+        CodeParam codeParam = codeParamRepository.findByWebName("index");
+        System.out.println(codeParam);
+
+        JSONObject codeJson = new JSONObject(codeParam.getParameters());
+        System.out.println(codeJson);
+
+        List<String> code = Arrays.asList("GBP","USD","JPY","CAD","EUR");
+        System.out.println(code);
+        JSONArray jsonArray = new JSONArray(code);
+        System.out.println(jsonArray);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        System.out.println(jsonObject);
+
+        CodeParam codeParam1 = new CodeParam();
+        codeParam1.setWebName("TEST");
+        codeParam1.setParameters(jsonObject.toString());
+
+        System.out.println("****************************************");
+        System.out.println(codeParam1);
+        System.out.println("*****************************************");
+
+
+        List<CodeParam> codeParamList = codeParamRepository.findAll();
+        for (CodeParam param : codeParamList) {
+           param.setParameters(homeService.code(homeService.gatParameterList(param)));
+        }
+
+        modelMap.addAttribute("codeParam", codeParamList);
+
+
+        String codes = "GBP,EUR,CAD,EGP,USD";
+        List<String> codesList = new ArrayList<>();
+        codesList.addAll(Arrays.asList(codes.split(",")));
+        System.out.println("+++++++++++++++++++++++++++++++++++\n" +
+                codesList +
+                "\n++++++++++++++++++++++++++++++++++");
+
+//        codeParamRepository.save(codeParam1);
+
+        return "cod_currency";
+    }
+
+    /**
+     * pobieranie korsu złota
+     */
+    @GetMapping(value = {"/Pecunia/gold", "/gold"})
+    public String getGold(ModelMap modelMap) {
+        String exchangeRate = jsonString("https://api.nbp.pl/api/cenyzlota/?format=json");
+
+        GoldRate goldRate = new GoldRate();
+
+        JSONArray jsonArray = new JSONArray();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            List<GoldRate> goldRates = (List<GoldRate>) mapper.readValue(exchangeRate, List.class);
+            System.out.println(goldRates);
+            jsonArray.put(goldRates);
+            goldRate.setDataRate(jsonArray.getJSONArray(0).getJSONObject(0).getString("data"));
+            goldRate.setPriceForGram(jsonArray.getJSONArray(0).getJSONObject(0).getDouble("cena"));
+            goldRate.setPriceForOunce(goldRate.getPriceForGram() * WeightEnum.OUNCE.getWeight());
+            System.out.println(goldRate);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        modelMap.addAttribute("gold", goldRate);
+
+        return "cod_currency";
+    }
+
+    @GetMapping(value = {"/Pecunia/goldList", "/goldlist"})
+    public String getGoldList(ModelMap modelMap) {
+        String exchangeRate = jsonString("https://api.nbp.pl/api/cenyzlota/last/255/?format=json");
+        JSONArray jsonArray = new JSONArray();
+        ObjectMapper mapper = new ObjectMapper();
+        List<GoldRate> goldRateList = new ArrayList<>();
+
+        try {
+            List<GoldRate> goldRates = (List<GoldRate>) mapper.readValue(exchangeRate, List.class);
+            System.out.println(goldRates);
+            System.out.println(goldRates.size());
+            jsonArray.put(goldRates);
+
+            JSONObject jsonObject = new JSONObject();
+            for (Object o : jsonArray.getJSONArray(0)) {
+                GoldRate goldRate1 = new GoldRate();
+                jsonObject.put("gold", o);
+                goldRate1.setDataRate(jsonObject.getJSONObject("gold").getString("data"));
+                goldRate1.setPriceForGram(jsonObject.getJSONObject("gold").getDouble("cena"));
+                goldRate1.setPriceForOunce(goldRate1.getPriceForGram() * WeightEnum.OUNCE.getWeight());
+
+                goldRateList.add(goldRate1);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        goldRateList.forEach(System.out::println);
+        return "cod_currency";
+    }
+
+
+    private String jsonString(String url) {
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+        ClientResponse clientResponse = webResource.accept("application/json").get(ClientResponse.class);
+
+        if(clientResponse.getStatus() !=200){
+            throw new RuntimeException("Błąd pobrania... " + clientResponse.getStatus());
+        }
+        return clientResponse.getEntity(String.class);
+    }
+
 }

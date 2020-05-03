@@ -26,14 +26,35 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public List<String> currencyCode() {
         CodeParam codeParam = codeParamRepository.findByWebName("index");
+        List<String> codelist = gatParameterList(codeParam);
+//        return codelist;
+
+//        System.out.println("*******************************");
+//        System.out.println(codeParam);
+//        System.out.println(codeJson);
+//        System.out.println(codelist);
+//        System.out.println("*******************************");
+
+        return countryServiceImpl.codeCurrency(codelist);
+    }
+
+    @Override
+    public List<String> gatParameterList(CodeParam codeParam) {
         JSONObject codeJson = new JSONObject(codeParam.getParameters());
 
         List<String > codelist = new ArrayList<>();
         for (Object code : codeJson.getJSONArray("code")) {
             codelist.add(code.toString());
         }
-//        return codelist;
+        return codelist;
+    }
 
-        return countryServiceImpl.codeCurrency(codelist);
+    @Override
+    public String code(List<String> codeList) {
+        String cod = "";
+        for (String s : codeList) {
+            cod += s+",";
+        }
+        return cod;
     }
 }
