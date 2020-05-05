@@ -31,30 +31,53 @@
     </div>
 
     <div th:if="${exchange} == true" class="container col-xs-5 col-md-offset-3" style="text-align: center">
-        <span th:text="'Tablela ' + ${exchangeRate.table}"></span>
-        <br>
-        <span th:text="'nr: ' + ${exchangeRate.no}"> </span>
-        <br>
-        <span th:text="'Data: ' + ${exchangeRate.effectiveDate}"> </span>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>waluta</th>
-                <th>kod</th>
-                <th>kurs średni</th>
-            </tr>
-            </thead>
-            <block th:each="rate : ${exchangeRate.rates}">
-                <tr class="bg-primary">
-                    <td th:text="${rate.currency}"></td>
-                    <td th:text="${rate.cod}"></td>
-                    <!--<td th:text="${rate.mid} + 'zł'"></td>-->
-                    <td th:text="${#numbers.formatDecimal(rate.mid,1,4)} + 'zł'"></td>
+        <div>
+            <span th:text="'Tablela ' + ${exchangeRate.table}"></span>
+            <br>
+            <span th:text="'nr: ' + ${exchangeRate.no}"> </span>
+            <br>
+            <span th:text="'Data: ' + ${exchangeRate.effectiveDate}"> </span>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>waluta</th>
+                    <th>kod</th>
+                    <th>kurs średni</th>
                 </tr>
+                </thead>
+                <block th:each="rate : ${exchangeRate.rates}">
+                    <tr class="bg-primary">
+                        <td th:text="${rate.currency}"></td>
+                        <td th:text="${rate.cod}"></td>
+                        <!--<td th:text="${rate.mid} + 'zł'"></td>-->
+                        <td th:text="${#numbers.formatDecimal(rate.mid,1,4)} + 'zł'"></td>
+                    </tr>
 
-            </block>
-        </table>
+                </block>
+            </table>
 
+        </div>
+        <div th:if="${goldList} != null"  style="margin-bottom: 100px">
+            <h2>KURS ZŁOTA</h2>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Lp</th>
+                    <th>Data</th>
+                    <th>zł/gram</th>
+                    <th>zł/uncje</th>
+                    <th>Zmiana</th>
+                </tr>
+                <tr th:each="gold, i : ${goldList}">
+                    <td th:text="${i.count}"></td>
+                    <td th:text="${gold.getDataRate()}"></td>
+                    <td th:text="${#numbers.formatDecimal(gold.getPriceForGram(),1,2)} + 'zł'"></td>
+                    <td th:text="${#numbers.formatDecimal(gold.getPriceForOunce(),1,4)} + 'zł'"></td>
+                    <td th:if="${gold.getChange() > 0 }" th:text="${#numbers.formatDecimal(gold.getChange(),1,4)} + '%'" style="text-align: right; color: green"></td>
+                    <td th:if="${gold.getChange() < 0 }" th:text="${#numbers.formatDecimal(gold.getChange(),1,4)} + '%'" style="text-align: right; color: red"></td>
+                </tr>
+            </table>
+
+        </div>
     </div>
 
     <div th:if="${exchange} != true" class="loading-container" style="text-align: center">

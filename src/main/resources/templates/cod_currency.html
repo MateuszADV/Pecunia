@@ -19,12 +19,38 @@
     <div th:insert="~{includes/menu :: heder}"></div>
     <div th:insert="~{includes/menu :: menu}"></div>
 
-    <div class="container col-xs-5 col-md-offset-3" style="margin-top: 50px; margin-bottom: 100px">
+
+    <div class="container col-xs-7 col-md-offset-2" style="margin-top: 50px; margin-bottom: 100px">
+        <div>
+            <form th:action="@{/code_param/add}" method="post" th:object="${codeParamDto}">
+                <table class="table table-bordered">
+                    <input type="number" th:field="*{id}" style="display: none">
+                    <tr>
+                        <td>
+                            <p>Nazwa</p>
+                            <input class="form-control" type="text" th:field="*{webName}" placeholder="Nazwa parametru" >
+                        </td>
+                        <td>
+                            <p>Parametr</p>
+                            <input class="form-control" type="text" th:field="*{parameters}" placeholder="parametr/y">
+                        </td>
+                        <td>
+                            <p>Opis</p>
+                            <textarea class="form-control" th:field="*{description}"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <p class=""><input class="btn btn-primary pull-right pull-center"  type="submit" th:value="${button}"></p>
+                <br><br>
+            </form>
+        </div>
+
         <table class="table table-bordered">
             <tr>
                 <th>Id</th>
                 <th>Nazwa</th>
                 <th>Parametry</th>
+                <th>Opis</th>
                 <th>Edytuj</th>
             </tr>
             <block th:each="cod : ${codeParam}">
@@ -32,15 +58,39 @@
                     <td th:text="${cod.id}"></td>
                     <td th:text="${cod.webName}"></td>
                     <td th:text="${cod.parameters}"></td>
-                    <td>EDIT</td>
+                    <td th:text="${cod.description}"</td>
+                    <td style="text-align: center">
+                        <a th:href="@{'/code_param/edit/' + ${cod.id}}" >
+                            <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            <br>
+                            <span>Edytuj</span>
+                        </a>
+                    </td>
                 </tr>
             </block>
         </table>
 
-        <div th:if="${gold} != null"  style="margin-bottom: 100px">
-            <span th:text="'Data - ' + ${gold.getDataRate()}"></span><br>
-            <span th:text="'Cena za gram - ' + ${#numbers.formatDecimal(gold.getPriceForGram(),1,2)} + 'zł'"></span><br>
-            <span th:text="'Cena za uncje - ' + ${#numbers.formatDecimal(gold.getPriceForOunce(),1,2)} + 'zł'"></span>
+        <div th:if="${goldList} != null"  style="margin-bottom: 100px">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Lp</th>
+                    <th>Data</th>
+                    <th>zł/gram</th>
+                    <th>zł/uncje</th>
+                    <th>Zmiana</th>
+                </tr>
+                <tr th:each="gold, i : ${goldList}">
+                    <td th:text="${i.count}"></td>
+                    <td th:text="${gold.getDataRate()}"></td>
+                    <td th:text="${#numbers.formatDecimal(gold.getPriceForGram(),1,2)} + 'zł'"></td>
+                    <td th:text="${#numbers.formatDecimal(gold.getPriceForOunce(),1,4)} + 'zł'"></td>
+                    <td th:if="${gold.getChange() > 0 }" th:text="${#numbers.formatDecimal(gold.getChange(),1,4)} + '%'" style="text-align: right; color: green"></td>
+                    <td th:if="${gold.getChange() < 0 }" th:text="${#numbers.formatDecimal(gold.getChange(),1,4)} + '%'" style="text-align: right; color: red"></td>
+                </tr>
+            </table>
+<!--            <span th:text="'Data - ' + ${gold.getDataRate()}"></span><br>-->
+<!--            <span th:text="'Cena za gram - ' + ${#numbers.formatDecimal(gold.getPriceForGram(),1,2)} + 'zł'"></span><br>-->
+<!--            <span th:text="'Cena za uncje - ' + ${#numbers.formatDecimal(gold.getPriceForOunce(),1,2)} + 'zł'"></span>-->
 
             <!--        <td th:text="${#numbers.formatDecimal(note.priceBuy,1,2)} + 'zł'"></td>-->
 

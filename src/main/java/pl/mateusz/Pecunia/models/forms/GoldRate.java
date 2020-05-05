@@ -13,4 +13,5 @@ public class GoldRate {
     String dataRate;
     Double priceForGram;
     Double priceForOunce;
+    Double change;
 }

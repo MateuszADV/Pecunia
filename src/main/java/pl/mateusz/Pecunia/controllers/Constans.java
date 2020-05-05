@@ -26,4 +26,11 @@ public class Constans {
     public static final String BUTTON_ADD_CUSTOMER = "Dodaj klienta";
     public static final String NEW_CUSTOMER = "Nowy klient";
     public static final String EDIT_CUSTOMER_DATE = "Edycja danych klienta";
+
+    /**
+     * codeParameters
+     *
+     */
+
+    public static final String BUTTON_ADD_PARAMETER = "Dodaj parametr";
 }

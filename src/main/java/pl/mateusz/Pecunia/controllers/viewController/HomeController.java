@@ -6,13 +6,13 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.CodeParam;
+import pl.mateusz.Pecunia.models.dtos.CodeParamDto;
 import pl.mateusz.Pecunia.models.forms.GoldRate;
 import pl.mateusz.Pecunia.models.forms.enums.WeightEnum;
 import pl.mateusz.Pecunia.models.repositories.CodeParamRepository;
@@ -76,6 +76,10 @@ public class HomeController {
             modelMap.addAttribute("error", e.getMessage());
         }
 
+        modelMap.addAttribute("goldList", exchangeService.goldRate());
+//        System.out.println("Powinien byćwynik jakiś tam");
+//        System.out.println(exchangeService.goldRate());
+
 //        System.out.println(orderService.getlastNumberOrder());
 //        System.out.println(orderService.lastOrder().getOrderNumber());
 
@@ -108,43 +112,39 @@ public class HomeController {
     @GetMapping(value = {"/Pecunia/cod_currency", "/cod_currency"})
     public String getCodCurrency(ModelMap modelMap) {
         CodeParam codeParam = codeParamRepository.findByWebName("index");
-        System.out.println(codeParam);
+//        System.out.println(codeParam);
+//
+//        JSONObject codeJson = new JSONObject(codeParam.getParameters());
+//        System.out.println(codeJson);
+//
+//        List<String> code = Arrays.asList("GBP","USD","JPY","CAD","EUR");
+//        System.out.println(code);
+//        JSONArray jsonArray = new JSONArray(code);
+//        System.out.println(jsonArray);
+//
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("code", code);
+//        System.out.println(jsonObject);
+//
+//        CodeParam codeParam1 = new CodeParam();
+//        codeParam1.setWebName("TEST");
+//        codeParam1.setParameters(jsonObject.toString());
+//
+//        System.out.println("****************************************");
+//        System.out.println(codeParam1);
+//        System.out.println("*****************************************");
 
-        JSONObject codeJson = new JSONObject(codeParam.getParameters());
-        System.out.println(codeJson);
+//
+//        String codes = "GBP,EUR,CAD,EGP,USD";
+//        List<String> codesList = new ArrayList<>();
+//        codesList.addAll(Arrays.asList(codes.split(",")));
+//        System.out.println("+++++++++++++++++++++++++++++++++++\n" +
+//                codesList +
+//                "\n++++++++++++++++++++++++++++++++++");
 
-        List<String> code = Arrays.asList("GBP","USD","JPY","CAD","EUR");
-        System.out.println(code);
-        JSONArray jsonArray = new JSONArray(code);
-        System.out.println(jsonArray);
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", code);
-        System.out.println(jsonObject);
-
-        CodeParam codeParam1 = new CodeParam();
-        codeParam1.setWebName("TEST");
-        codeParam1.setParameters(jsonObject.toString());
-
-        System.out.println("****************************************");
-        System.out.println(codeParam1);
-        System.out.println("*****************************************");
-
-
-        List<CodeParam> codeParamList = codeParamRepository.findAll();
-        for (CodeParam param : codeParamList) {
-           param.setParameters(homeService.code(homeService.gatParameterList(param)));
-        }
-
-        modelMap.addAttribute("codeParam", codeParamList);
-
-
-        String codes = "GBP,EUR,CAD,EGP,USD";
-        List<String> codesList = new ArrayList<>();
-        codesList.addAll(Arrays.asList(codes.split(",")));
-        System.out.println("+++++++++++++++++++++++++++++++++++\n" +
-                codesList +
-                "\n++++++++++++++++++++++++++++++++++");
+        codeParamList(modelMap);
+        modelMap.addAttribute("codeParamDto", new CodeParamDto());
+        modelMap.addAttribute("button", Constans.BUTTON_ADD_PARAMETER);
 
 //        codeParamRepository.save(codeParam1);
 
@@ -159,55 +159,52 @@ public class HomeController {
         String exchangeRate = jsonString("https://api.nbp.pl/api/cenyzlota/?format=json");
 
         GoldRate goldRate = new GoldRate();
-
         JSONArray jsonArray = new JSONArray();
         ObjectMapper mapper = new ObjectMapper();
         try {
             List<GoldRate> goldRates = (List<GoldRate>) mapper.readValue(exchangeRate, List.class);
-            System.out.println(goldRates);
             jsonArray.put(goldRates);
             goldRate.setDataRate(jsonArray.getJSONArray(0).getJSONObject(0).getString("data"));
             goldRate.setPriceForGram(jsonArray.getJSONArray(0).getJSONObject(0).getDouble("cena"));
             goldRate.setPriceForOunce(goldRate.getPriceForGram() * WeightEnum.OUNCE.getWeight());
-            System.out.println(goldRate);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        modelMap.addAttribute("gold", goldRate);
+//        modelMap.addAttribute("gold", goldRate);
 
         return "cod_currency";
     }
 
-    @GetMapping(value = {"/Pecunia/goldList", "/goldlist"})
-    public String getGoldList(ModelMap modelMap) {
-        String exchangeRate = jsonString("https://api.nbp.pl/api/cenyzlota/last/255/?format=json");
-        JSONArray jsonArray = new JSONArray();
-        ObjectMapper mapper = new ObjectMapper();
-        List<GoldRate> goldRateList = new ArrayList<>();
-
-        try {
-            List<GoldRate> goldRates = (List<GoldRate>) mapper.readValue(exchangeRate, List.class);
-            System.out.println(goldRates);
-            System.out.println(goldRates.size());
-            jsonArray.put(goldRates);
-
-            JSONObject jsonObject = new JSONObject();
-            for (Object o : jsonArray.getJSONArray(0)) {
-                GoldRate goldRate1 = new GoldRate();
-                jsonObject.put("gold", o);
-                goldRate1.setDataRate(jsonObject.getJSONObject("gold").getString("data"));
-                goldRate1.setPriceForGram(jsonObject.getJSONObject("gold").getDouble("cena"));
-                goldRate1.setPriceForOunce(goldRate1.getPriceForGram() * WeightEnum.OUNCE.getWeight());
-
-                goldRateList.add(goldRate1);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        goldRateList.forEach(System.out::println);
-        return "cod_currency";
-    }
+//    @GetMapping(value = {"/Pecunia/goldList", "/goldlist"})
+//    public String getGoldList(ModelMap modelMap) {
+//        String exchangeRate = jsonString("https://api.nbp.pl/api/cenyzlota/last/11/?format=json");
+//        JSONArray jsonArray = new JSONArray();
+//        ObjectMapper mapper = new ObjectMapper();
+//        List<GoldRate> goldRateList = new ArrayList<>();
+//
+//        try {
+//            List<GoldRate> goldRates = (List<GoldRate>) mapper.readValue(exchangeRate, List.class);
+//            System.out.println(goldRates);
+//            System.out.println(goldRates.size());
+//            jsonArray.put(goldRates);
+//
+//            JSONObject jsonObject = new JSONObject();
+//            for (Object o : jsonArray.getJSONArray(0)) {
+//                GoldRate goldRate1 = new GoldRate();
+//                jsonObject.put("gold", o);
+//                goldRate1.setDataRate(jsonObject.getJSONObject("gold").getString("data"));
+//                goldRate1.setPriceForGram(jsonObject.getJSONObject("gold").getDouble("cena"));
+//                goldRate1.setPriceForOunce(goldRate1.getPriceForGram() * WeightEnum.OUNCE.getWeight());
+//
+//                goldRateList.add(goldRate1);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        modelMap.addAttribute("goldList", exchangeService.goldRate());
+//        return "cod_currency";
+//    }
 
 
     private String jsonString(String url) {
@@ -220,5 +217,18 @@ public class HomeController {
         }
         return clientResponse.getEntity(String.class);
     }
+
+//    private List<GoldRate> changeRate(List<GoldRate> goldRateList) {
+//
+//        Double changeRate;
+//        for (int i = 1; i < goldRateList.size(); i++ ) {
+//            changeRate = ((goldRateList.get(i).getPriceForGram() - goldRateList.get(i-1).getPriceForGram()) / goldRateList.get(i-1).getPriceForGram());
+//            goldRateList.get(i).setChange(changeRate * 100);
+//        }
+//        goldRateList.remove(0);
+//
+//        System.out.println(goldRateList.size());
+//        return goldRateList;
+//    }
 
 }
