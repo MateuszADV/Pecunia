@@ -19,5 +19,5 @@ public class CodeParam {
     @Column(name = "web_name")
     private String webName;
     private String parameters;
-    private String description;
+    private String description;  //opis danych parametrów
 }
