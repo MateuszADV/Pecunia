@@ -9,11 +9,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.forms.Exchange;
-import pl.mateusz.Pecunia.models.forms.GoldRate;
+import pl.mateusz.Pecunia.models.GoldRate;
 import pl.mateusz.Pecunia.models.forms.Rates;
 import pl.mateusz.Pecunia.models.forms.enums.WeightEnum;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,15 +85,15 @@ public class ExchangeServiceImpl implements ExchangeService {
 
         try {
             List<GoldRate> goldRates = (List<GoldRate>) mapper.readValue(exchangeRate, List.class);
-            System.out.println(goldRates);
-            System.out.println(goldRates.size());
+//            System.out.println(goldRates);
+//            System.out.println(goldRates.size());
             jsonArray.put(goldRates);
 
             JSONObject jsonObject = new JSONObject();
             for (Object o : jsonArray.getJSONArray(0)) {
                 GoldRate goldRate1 = new GoldRate();
                 jsonObject.put("gold", o);
-                goldRate1.setDataRate(jsonObject.getJSONObject("gold").getString("data"));
+                goldRate1.setDataRate(Date.valueOf(jsonObject.getJSONObject("gold").getString("data")));
                 goldRate1.setPriceForGram(jsonObject.getJSONObject("gold").getDouble("cena"));
                 goldRate1.setPriceForOunce(goldRate1.getPriceForGram() * WeightEnum.OUNCE.getWeight());
 
@@ -115,7 +116,7 @@ public class ExchangeServiceImpl implements ExchangeService {
         }
         goldRateList.remove(0);
 
-        System.out.println(goldRateList.size());
+//        System.out.println(goldRateList.size());
         return goldRateList;
     }
 

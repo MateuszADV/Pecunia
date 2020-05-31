@@ -15,6 +15,7 @@ import pl.mateusz.Pecunia.models.dtos.OrderDto;
 import pl.mateusz.Pecunia.models.dtos.OrderItemDto;
 import pl.mateusz.Pecunia.models.forms.enums.DeliveryEnum;
 import pl.mateusz.Pecunia.models.repositories.CustomerRepository;
+import pl.mateusz.Pecunia.models.repositories.OrderItemRepository;
 import pl.mateusz.Pecunia.models.repositories.OrderRepository;
 import pl.mateusz.Pecunia.services.OrderService.OrderService;
 import pl.mateusz.Pecunia.services.customerService.CustomerService;
@@ -36,16 +37,16 @@ public class OrderControler {
     private CustomerService customerService;
     private OrderUtils orderUtils;
     private OrderRepository orderRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
-    public OrderControler(OrderService orderService, CustomerService customerService, OrderUtils orderUtils, OrderRepository orderRepository) {
+    public OrderControler(OrderService orderService, CustomerService customerService, OrderUtils orderUtils, OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
         this.orderService = orderService;
         this.customerService = customerService;
         this.orderUtils = orderUtils;
         this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
     }
-
-
 
     @GetMapping (value = {"/Pecunia/add_order/{uniqueId}", "/add_order/{uniqueId}"})
     public String getAddOrder(@PathVariable String  uniqueId, ModelMap modelMap) {
@@ -119,6 +120,7 @@ public class OrderControler {
         OrderDto orderDto = new ModelMapper().map(order, OrderDto.class);
         modelMap.addAttribute("orderDto", orderDto);
         modelMap.addAttribute("delivery", DeliveryEnum.values());
+
 
         System.out.println("czyszczenie listy");
         orderUtils.clearOrderDtoList();
@@ -274,13 +276,23 @@ public class OrderControler {
 
         List<OrderItemDto> orderItemDtoList = orderUtils.getOrderItems().getOrderItemDtos();
 
+        for (OrderItemDto orderItemDto : orderItemDtoList) {
+            if (orderItemDto.getNoteId().equals(noteId) && !orderItemDto.getId().equals(null)) {
+                System.out.println("usuniety element");
+                System.out.println(orderItemDto.getId());
+                OrderItem orderItem = new ModelMapper().map(orderItemDto, OrderItem.class);
+//                orderItemRepository.deleteOrderItem(orderItem.getId());
+//                orderItemRepository.deleteById(orderItem.getId());      // Działa usuwanie z bazy tymczasowe zakomentowanie
+                System.out.println(orderItem.getId());
+            }
+        }
+
         orderItemDtoList = orderItemDtoList.stream()
                 .filter(s -> !s.getNoteId().equals(noteId))
 //                .map(s -> !s.getNoteId().equals(noteId))
                 .collect(Collectors.toList());
 //                .forEach(System.out::println);
 
-        orderItemDtoList.forEach(System.out::println);
 //        orderUtils.getOrderItems().setOrderItemDtos(orderItemDtoList);
         orderUtils.orderItems(orderItemDtoList);
         modelMap.addAttribute("orderItemList", orderUtils.getOrderItems().getOrderItemDtos());
@@ -290,6 +302,9 @@ public class OrderControler {
                 .sum());
         modelMap.addAttribute("totalSumOrder", total);
 
+        for (OrderItemDto orderItemDto : orderUtils.getOrderItems().getOrderItemDtos()) {
+            System.out.println(orderItemDto);
+        }
 
         return "order_items";
     }

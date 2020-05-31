@@ -1,7 +1,7 @@
 package pl.mateusz.Pecunia.services.exchangeService;
 
 import pl.mateusz.Pecunia.models.forms.Exchange;
-import pl.mateusz.Pecunia.models.forms.GoldRate;
+import pl.mateusz.Pecunia.models.GoldRate;
 
 import java.util.List;
 

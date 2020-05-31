@@ -14,4 +14,10 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
                    " WHERE items.order.id = ?1" +
                    " ORDER BY items.countryEn")
     List<OrderItem> orderItemsList(Long orderId);
+
+    @Query(value = "DELETE FROM OrderItem items WHERE items.id = ?1")
+    OrderItem deleteOrderItem(Long itemId);
+
+
+    void deleteById(Long itemId);
 }

@@ -7,28 +7,26 @@ import com.sun.jersey.api.client.WebResource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.CodeParam;
 import pl.mateusz.Pecunia.models.dtos.CodeParamDto;
-import pl.mateusz.Pecunia.models.forms.GoldRate;
+import pl.mateusz.Pecunia.models.GoldRate;
 import pl.mateusz.Pecunia.models.forms.enums.WeightEnum;
-import pl.mateusz.Pecunia.models.repositories.CodeParamRepository;
-import pl.mateusz.Pecunia.models.repositories.CountryRepository;
-import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
-import pl.mateusz.Pecunia.models.repositories.OrderRepository;
+import pl.mateusz.Pecunia.models.repositories.*;
 import pl.mateusz.Pecunia.services.HomeService.HomeService;
 import pl.mateusz.Pecunia.services.OrderService.OrderService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.services.exchangeService.ExchangeService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 
-import javax.persistence.JoinColumn;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,8 +44,10 @@ public class HomeController {
 
     private OrderService orderService;
     private OrderRepository orderRepository;
+    private GoldRateRepository goldRateRepository;
 
-    public HomeController(CountryService countryService, CountryRepository countryRepository, CurrencyRepository currencyRepository, ExchangeService exchangeService, CodeParamRepository codeParamRepository, HomeService homeService, OrderService orderService, OrderRepository orderRepository) {
+    @Autowired
+    public HomeController(CountryService countryService, CountryRepository countryRepository, CurrencyRepository currencyRepository, ExchangeService exchangeService, CodeParamRepository codeParamRepository, HomeService homeService, OrderService orderService, OrderRepository orderRepository, GoldRateRepository goldRateRepository) {
         this.countryService = countryService;
         this.countryRepository = countryRepository;
         this.currencyRepository = currencyRepository;
@@ -56,6 +56,7 @@ public class HomeController {
         this.homeService = homeService;
         this.orderService = orderService;
         this.orderRepository = orderRepository;
+        this.goldRateRepository = goldRateRepository;
     }
 
     @GetMapping("/login")
@@ -77,6 +78,10 @@ public class HomeController {
         }
 
         modelMap.addAttribute("goldList", exchangeService.goldRate());
+//        for (GoldRate goldRate : exchangeService.goldRate()) {
+//            goldRateRepository.save(goldRate);
+//        }
+
 //        System.out.println("Powinien byćwynik jakiś tam");
 //        System.out.println(exchangeService.goldRate());
 
@@ -154,27 +159,30 @@ public class HomeController {
     /**
      * pobieranie korsu złota
      */
-    @GetMapping(value = {"/Pecunia/gold", "/gold"})
-    public String getGold(ModelMap modelMap) {
-        String exchangeRate = jsonString("https://api.nbp.pl/api/cenyzlota/?format=json");
-
-        GoldRate goldRate = new GoldRate();
-        JSONArray jsonArray = new JSONArray();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            List<GoldRate> goldRates = (List<GoldRate>) mapper.readValue(exchangeRate, List.class);
-            jsonArray.put(goldRates);
-            goldRate.setDataRate(jsonArray.getJSONArray(0).getJSONObject(0).getString("data"));
-            goldRate.setPriceForGram(jsonArray.getJSONArray(0).getJSONObject(0).getDouble("cena"));
-            goldRate.setPriceForOunce(goldRate.getPriceForGram() * WeightEnum.OUNCE.getWeight());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-//        modelMap.addAttribute("gold", goldRate);
-
-        return "cod_currency";
-    }
+//    @GetMapping(value = {"/Pecunia/gold", "/gold"})
+//    public String getGold(ModelMap modelMap) {
+//        String exchangeRate = jsonString("https://api.nbp.pl/api/cenyzlota/?format=json");
+//        Date goldRateDate;
+//
+//
+//        GoldRate goldRate = new GoldRate();
+//        JSONArray jsonArray = new JSONArray();
+//        ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            List<GoldRate> goldRates = (List<GoldRate>) mapper.readValue(exchangeRate, List.class);
+//            jsonArray.put(goldRates);
+//            goldRateDate = Date.valueOf(jsonArray.getJSONArray(0).getJSONObject(0).getString("data"));
+//            goldRate.setDataRate(goldRateDate);
+//            goldRate.setPriceForGram(jsonArray.getJSONArray(0).getJSONObject(0).getDouble("cena"));
+//            goldRate.setPriceForOunce(goldRate.getPriceForGram() * WeightEnum.OUNCE.getWeight());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+////        modelMap.addAttribute("gold", goldRate);
+//
+//        return "cod_currency";
+//    }
 
 //    @GetMapping(value = {"/Pecunia/goldList", "/goldlist"})
 //    public String getGoldList(ModelMap modelMap) {
@@ -207,16 +215,16 @@ public class HomeController {
 //    }
 
 
-    private String jsonString(String url) {
-        Client client = Client.create();
-        WebResource webResource = client.resource(url);
-        ClientResponse clientResponse = webResource.accept("application/json").get(ClientResponse.class);
-
-        if(clientResponse.getStatus() !=200){
-            throw new RuntimeException("Błąd pobrania... " + clientResponse.getStatus());
-        }
-        return clientResponse.getEntity(String.class);
-    }
+//    private String jsonString(String url) {
+//        Client client = Client.create();
+//        WebResource webResource = client.resource(url);
+//        ClientResponse clientResponse = webResource.accept("application/json").get(ClientResponse.class);
+//
+//        if(clientResponse.getStatus() !=200){
+//            throw new RuntimeException("Błąd pobrania... " + clientResponse.getStatus());
+//        }
+//        return clientResponse.getEntity(String.class);
+//    }
 
 //    private List<GoldRate> changeRate(List<GoldRate> goldRateList) {
 //
