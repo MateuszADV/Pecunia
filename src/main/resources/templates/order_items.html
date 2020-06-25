@@ -106,7 +106,7 @@
                             </td>
                             <td th:text="${#numbers.formatDecimal(item.priceSellFinal * item.quantity,1,2)} + 'zł'"></td>
                             <td>
-                                <form action="/delete_item/">
+                                <form action="/Pecunia/delete_item/">
                                     <input type="hidden" name="noteId" th:value="${item.getNoteId()}">
                                     <button class="btn btn-sm btn-danger" type="submit">delete</button>
                                 </form>

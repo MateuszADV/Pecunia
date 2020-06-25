@@ -79,6 +79,7 @@ public class CountryController {
     public String getCountryEn(@PathVariable String countryEn, ModelMap modelMap) {
         Country country = countryRepository.findByCountryEn(countryEn);
         CountryDto countryDto = (new ModelMapper().map(country, CountryDto.class));
+        modelMap.addAttribute("continents", ContinentEnum.values());
         modelMap.addAttribute("countryDto", countryDto);
         modelMap.addAttribute("edit", true);
         modelMap.addAttribute("button", Constans.BUTTON_SAVE_CHANGE);
