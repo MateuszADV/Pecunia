@@ -80,6 +80,7 @@ public class CustomerControler {
         List<Order> orderList = orderRepository.OrderList(uniqueId);
         List<OrderDto> orderDtoList = new ArrayList<>();
         try {
+
             CustomerDto customerDtoDetails = customerService.customerDtoDetails(uniqueId);
             modelMap.addAttribute("customerDetails", customerDtoDetails);
 

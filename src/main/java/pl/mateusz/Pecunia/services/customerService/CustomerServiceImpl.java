@@ -85,7 +85,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto customerDtoDetails(String uniqueId) {
         Customer customer = customerRepository.customer(uniqueId);
-
         CustomerDto customerDto = new ModelMapper().map(decodeCustomer(customer), CustomerDto.class);
 
         return customerDto;

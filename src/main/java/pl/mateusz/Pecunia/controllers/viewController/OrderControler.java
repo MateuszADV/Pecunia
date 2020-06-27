@@ -244,23 +244,35 @@ public class OrderControler {
 
     @GetMapping(value = {"/Pecunia/order_details/{orderId}", "/order_details/{orderId}"})
     public String getOrderDetails(@PathVariable Long orderId, ModelMap modelMap) {
-        List<OrderItemDto> orderItemDto = orderService.getOrderDetails(orderId);
+        try {
+            List<OrderItemDto> orderItemDto = orderService.getOrderDetails(orderId);
 
-        modelMap.addAttribute("customerDetails",orderUtils.getCustomerDto());
-        modelMap.addAttribute("orderList" ,orderUtils.getOrderDtoList(orderId));
-        modelMap.addAttribute("orderDetails", true);
-        modelMap.addAttribute("saveOrder" ,true);
-        modelMap.addAttribute("orderItemList", orderItemDto);
+            CustomerDto customerDto = customerService.customerDtoDetails(orderRepository.order(orderId).getCustomer().getUniqueId());
+            modelMap.addAttribute("customerDetails", customerDto);
+//            if (orderUtils.getCustomerDto() == null) {
+//                String customerUniqueId = orderRepository.order(orderId).getCustomer().getUniqueId();
+//                customerDto = orderUtils.customerDto(customerUniqueId);
+//                modelMap.addAttribute("customerDetails", customerDto);
+//                System.out.println("Powinny być dane klienta!!!\n" + customerDto);
+//            }
+            modelMap.addAttribute("orderList", orderUtils.getOrderDtoList(orderId));
+            modelMap.addAttribute("orderDetails", true);
+            modelMap.addAttribute("saveOrder", true);
+            modelMap.addAttribute("orderItemList", orderItemDto);
 
-        Double total = (orderItemDto.stream()
-                .mapToDouble(s -> s.getPriceSellFinal() * s.getQuantity())
-                .sum());
+            Double total = (orderItemDto.stream()
+                    .mapToDouble(s -> s.getPriceSellFinal() * s.getQuantity())
+                    .sum());
 
-        modelMap.addAttribute("totalSumOrder", total);
-
-        System.out.println("Powinien być numer Zamówienia: " + orderId);
-
-        return "order_items";
+            modelMap.addAttribute("totalSumOrder", total);
+//            System.out.println("Powinien być numer Zamówienia: " + orderId);
+            System.out.println("POWINNY BYC DANE KLIENTA!!!!!!!!!\n" + customerDto);
+            return "order_items";
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            modelMap.addAttribute("errorid", e.getMessage());
+            return "error404";
+        }
     }
 
 //    @GetMapping(value = {"/Pecunia/delete_item/{noteId}", "/delete_item/{noteId}"})
