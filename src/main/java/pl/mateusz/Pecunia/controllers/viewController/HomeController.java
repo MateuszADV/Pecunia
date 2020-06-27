@@ -158,6 +158,7 @@ public class HomeController {
 
     /**
      * pobieranie korsu złota
+     * test test
      */
 //    @GetMapping(value = {"/Pecunia/gold", "/gold"})
 //    public String getGold(ModelMap modelMap) {
