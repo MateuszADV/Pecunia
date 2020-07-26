@@ -162,8 +162,11 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/banknotes/{countryEn}","/banknotes/{countryEn}"})
     public String postbanknotes(@PathVariable String countryEn, ModelMap modelMap) {
         modelMap.addAttribute("countryEn", countryEn);
-        modelMap.addAttribute("countryEn", countryEn);
         modelMap.addAttribute("banknotes", noteService.noteFromCountry(countryEn));
+
+        System.out.println("!!!!!!ROZMIAR TABLICY !!!!!!!!!!!!" + noteInfoViewRepository.noteInfoSeries(countryEn).size());
+        noteInfoViewRepository.noteInfoSeries(countryEn).forEach(System.out::println);
+
 
         return "showNotes";
     }
