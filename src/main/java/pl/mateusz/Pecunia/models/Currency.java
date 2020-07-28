@@ -31,6 +31,8 @@ public class Currency {
     private int active;
     private String description;
 
+    private String pattern;     //Okrerśla rodzaj pieniąza NOTE/COIN
+
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
