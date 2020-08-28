@@ -11,10 +11,17 @@ import org.springframework.stereotype.Service;
 import pl.mateusz.Pecunia.models.forms.Exchange;
 import pl.mateusz.Pecunia.models.GoldRate;
 import pl.mateusz.Pecunia.models.forms.Rates;
+import pl.mateusz.Pecunia.models.forms.enums.GoldApiCodeEnum;
 import pl.mateusz.Pecunia.models.forms.enums.WeightEnum;
+import pl.mateusz.Pecunia.models.forms.goldApi.GoldApi;
+import pl.mateusz.Pecunia.models.forms.metal.DataSet;
+import pl.mateusz.Pecunia.models.forms.metal.MetalPrice;
+import pl.mateusz.Pecunia.utils.JsonUtils;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,13 +130,128 @@ public class ExchangeServiceImpl implements ExchangeService {
     private String jsonString(String url) {
         Client client = Client.create();
         WebResource webResource = client.resource(url);
-        ClientResponse clientResponse = webResource.accept("application/json").get(ClientResponse.class);
+        ClientResponse clientResponse = webResource.accept("application/json")
+                .get(ClientResponse.class);
 
         if(clientResponse.getStatus() !=200){
+            System.out.println( "Cos poszło ni tak!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             throw new RuntimeException("Błąd pobrania... " + clientResponse.getStatus());
         }
+
+        client.destroy();
         return clientResponse.getEntity(String.class);
     }
 
 
+    /*
+    Test cen metali
+     */
+
+    @Override
+    public DataSet dataSet(String url, Integer limit) {
+        String url1 = url + "limit=" + limit;
+        DataSet dataSet = new DataSet();
+        MetalPrice metalPrice = new MetalPrice();
+        try {
+            String dataSet1 = jsonString("https://www.quandl.com/api/v3/datasets/LBMA/SILVER.json?api_key=GU7pHR2TyK6qrZs7FsgH&limit=2");
+//            System.out.println(dataSet1);
+            JSONObject jsonObject = new JSONObject(dataSet1);
+
+            metalPrice.setId(jsonObject.getJSONObject("dataset").getLong("id"));
+            metalPrice.setDataSetCode(jsonObject.getJSONObject("dataset").getString("dataset_code"));
+            metalPrice.setDataBaseCode(jsonObject.getJSONObject("dataset").getString("database_code"));
+            metalPrice.setName((jsonObject.getJSONObject("dataset").getString("name")));
+            metalPrice.setDescription(jsonObject.getJSONObject("dataset").getString("description"));
+            metalPrice.setRefreshedAt(jsonObject.getJSONObject("dataset").getString("refreshed_at"));
+            metalPrice.setNewestAvailableDate(jsonObject.getJSONObject("dataset").getString("newest_available_date"));
+            metalPrice.setOldestAvailableDate(jsonObject.getJSONObject("dataset").getString("oldest_available_date"));
+
+            List<String> columnNames = new ArrayList<>();
+            for (Object o : jsonObject.getJSONObject("dataset").getJSONArray("column_names")) {
+                columnNames.add(o.toString());
+            }
+            metalPrice.setColumnNames(columnNames);
+            metalPrice.setFrequency(jsonObject.getJSONObject("dataset").getString("frequency"));
+            metalPrice.setType(jsonObject.getJSONObject("dataset").getString("type"));
+            metalPrice.setPremium(jsonObject.getJSONObject("dataset").getBoolean("premium"));
+
+
+
+            System.out.println(JsonUtils.gsonPretty(metalPrice));
+        }catch (Exception e) {
+            System.out.println("błąd!!!!!!!!!!" + e.getMessage());
+        }
+
+//        System.out.println(metalPrice);
+
+
+        dataSet.setMetalPrice(metalPrice);
+        return new DataSet();
+    }
+
+    private String jsonStringApi(String url) {
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+        ClientResponse clientResponse = webResource.accept("application/json")
+                .header("x-access-token", "goldapi-onpitykebb6fuy-io")
+                .get(ClientResponse.class);
+
+        if(clientResponse.getStatus() !=200){
+            System.out.println( "Cos poszło ni tak!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            throw new RuntimeException("Błąd pobrania... " + clientResponse.getStatus());
+        }
+
+        client.destroy();
+        return clientResponse.getEntity(String.class);
+    }
+
+    @Override
+    public GoldApi metalPrice(String metal, String currency) {
+
+        try {
+            String metalPrice = jsonStringApi("https://www.goldapi.io/api/" + metal + "/" + currency);
+            return getGoldApiMetal(metalPrice);
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public GoldApi metalPrice(String metal, String currency, String date) {
+
+        //TODO uzupełnić kod, pobieranie kursu metali z konkretnej daty
+        return null;
+    }
+
+    private GoldApi getGoldApiMetal(String metalPrice) {
+        GoldApi goldApi = new GoldApi();
+        JSONObject jsonObject = new JSONObject(metalPrice);
+
+        goldApi.setTimestamp(longToDate(jsonObject.getLong("timestamp")));
+        goldApi.setMetalCod(jsonObject.getString("metal"));
+        goldApi.setMetal(GoldApiCodeEnum.valueOf(goldApi.getMetalCod()).getEn());
+        goldApi.setCurrency(jsonObject.getString("currency"));
+        goldApi.setExchange(jsonObject.getString("exchange"));
+        goldApi.setSymbol(jsonObject.getString("symbol"));
+        goldApi.setPrevClosePrice(jsonObject.getDouble("prev_close_price"));
+        goldApi.setOpenPrice(jsonObject.getDouble("open_price"));
+        goldApi.setLowPrice(jsonObject.getDouble("low_price"));
+        goldApi.setHighPrice(jsonObject.getDouble("high_price"));
+        goldApi.setOpenTime(longToDate(jsonObject.getLong("open_time")));
+        goldApi.setPrice(jsonObject.getDouble("price"));
+        goldApi.setCh(jsonObject.getDouble("ch"));
+        goldApi.setChp(jsonObject.getDouble("chp"));
+        goldApi.setAsk(jsonObject.getDouble("ask"));
+        goldApi.setBid(jsonObject.getDouble("bid"));
+
+
+        return goldApi;
+    }
+
+    private String longToDate(Long dateLong) {
+        Date date = new Date(dateLong * 1000l);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");
+        return df.format(date);
+    }
 }
