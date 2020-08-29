@@ -13,9 +13,9 @@ import pl.mateusz.Pecunia.models.GoldRate;
 import pl.mateusz.Pecunia.models.forms.Rates;
 import pl.mateusz.Pecunia.models.forms.enums.GoldApiCodeEnum;
 import pl.mateusz.Pecunia.models.forms.enums.WeightEnum;
-import pl.mateusz.Pecunia.models.forms.goldApi.GoldApi;
+import pl.mateusz.Pecunia.models.forms.goldApi.MetalPrice;
+import pl.mateusz.Pecunia.models.forms.goldApi.MetalPriceDate;
 import pl.mateusz.Pecunia.models.forms.metal.DataSet;
-import pl.mateusz.Pecunia.models.forms.metal.MetalPrice;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 
 import java.io.IOException;
@@ -151,7 +151,7 @@ public class ExchangeServiceImpl implements ExchangeService {
     public DataSet dataSet(String url, Integer limit) {
         String url1 = url + "limit=" + limit;
         DataSet dataSet = new DataSet();
-        MetalPrice metalPrice = new MetalPrice();
+        pl.mateusz.Pecunia.models.forms.metal.MetalPrice metalPrice = new pl.mateusz.Pecunia.models.forms.metal.MetalPrice();
         try {
             String dataSet1 = jsonString("https://www.quandl.com/api/v3/datasets/LBMA/SILVER.json?api_key=GU7pHR2TyK6qrZs7FsgH&limit=2");
 //            System.out.println(dataSet1);
@@ -206,7 +206,7 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public GoldApi metalPrice(String metal, String currency) {
+    public MetalPrice metalPrice(String metal, String currency) {
 
         try {
             String metalPrice = jsonStringApi("https://www.goldapi.io/api/" + metal + "/" + currency);
@@ -218,35 +218,50 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public GoldApi metalPrice(String metal, String currency, String date) {
+    public MetalPriceDate metalPriceDate(String metal, String currency, String date) {
+
+        try {
+            String metalPrice = jsonStringApi("https://www.goldapi.io/api/" + metal + "/" + currency + "/" + date.replace("-", ""));
+            MetalPriceDate metalPriceDate = new MetalPriceDate();
+            JSONObject jsonObject = new JSONObject(metalPrice);
+
+            metalPriceDate.setDate(jsonObject.getString("date"));
+
+            System.out.println(jsonObject);
+            System.out.println("POWINNA byc data!!!!!!!!!!!  " + metalPriceDate.getDate());
+
+            return metalPriceDate;
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
 
         //TODO uzupełnić kod, pobieranie kursu metali z konkretnej daty
-        return null;
     }
 
-    private GoldApi getGoldApiMetal(String metalPrice) {
-        GoldApi goldApi = new GoldApi();
-        JSONObject jsonObject = new JSONObject(metalPrice);
+    private MetalPrice getGoldApiMetal(String jsonMetalPrice) {
+        MetalPrice metalPrice = new MetalPrice();
+        JSONObject jsonObject = new JSONObject(jsonMetalPrice);
 
-        goldApi.setTimestamp(longToDate(jsonObject.getLong("timestamp")));
-        goldApi.setMetalCod(jsonObject.getString("metal"));
-        goldApi.setMetal(GoldApiCodeEnum.valueOf(goldApi.getMetalCod()).getEn());
-        goldApi.setCurrency(jsonObject.getString("currency"));
-        goldApi.setExchange(jsonObject.getString("exchange"));
-        goldApi.setSymbol(jsonObject.getString("symbol"));
-        goldApi.setPrevClosePrice(jsonObject.getDouble("prev_close_price"));
-        goldApi.setOpenPrice(jsonObject.getDouble("open_price"));
-        goldApi.setLowPrice(jsonObject.getDouble("low_price"));
-        goldApi.setHighPrice(jsonObject.getDouble("high_price"));
-        goldApi.setOpenTime(longToDate(jsonObject.getLong("open_time")));
-        goldApi.setPrice(jsonObject.getDouble("price"));
-        goldApi.setCh(jsonObject.getDouble("ch"));
-        goldApi.setChp(jsonObject.getDouble("chp"));
-        goldApi.setAsk(jsonObject.getDouble("ask"));
-        goldApi.setBid(jsonObject.getDouble("bid"));
+        metalPrice.setTimestamp(longToDate(jsonObject.getLong("timestamp")));
+        metalPrice.setMetalCod(jsonObject.getString("metal"));
+        metalPrice.setMetal(GoldApiCodeEnum.valueOf(metalPrice.getMetalCod()).getEn());
+        metalPrice.setCurrency(jsonObject.getString("currency"));
+        metalPrice.setExchange(jsonObject.getString("exchange"));
+        metalPrice.setSymbol(jsonObject.getString("symbol"));
+        metalPrice.setPrevClosePrice(jsonObject.getDouble("prev_close_price"));
+        metalPrice.setOpenPrice(jsonObject.getDouble("open_price"));
+        metalPrice.setLowPrice(jsonObject.getDouble("low_price"));
+        metalPrice.setHighPrice(jsonObject.getDouble("high_price"));
+        metalPrice.setOpenTime(longToDate(jsonObject.getLong("open_time")));
+        metalPrice.setPrice(jsonObject.getDouble("price"));
+        metalPrice.setCh(jsonObject.getDouble("ch"));
+        metalPrice.setChp(jsonObject.getDouble("chp"));
+        metalPrice.setAsk(jsonObject.getDouble("ask"));
+        metalPrice.setBid(jsonObject.getDouble("bid"));
 
 
-        return goldApi;
+        return metalPrice;
     }
 
     private String longToDate(Long dateLong) {
@@ -254,4 +269,6 @@ public class ExchangeServiceImpl implements ExchangeService {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");
         return df.format(date);
     }
+
+
 }

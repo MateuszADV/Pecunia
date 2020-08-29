@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.mateusz.Pecunia.models.NoteInfoView;
 import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
-import pl.mateusz.Pecunia.models.forms.goldApi.GoldApi;
+import pl.mateusz.Pecunia.models.forms.goldApi.MetalPrice;
+import pl.mateusz.Pecunia.models.forms.goldApi.MetalPriceDate;
 import pl.mateusz.Pecunia.models.repositories.NoteInfoViewRepository;
 import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.exchangeService.ExchangeService;
@@ -124,10 +125,11 @@ public class TestController {
     public String testPriceMetal(ModelMap modelMap) {
 //        exchangeService.dataSet("https://www.quandl.com/api/v3/datasets/LBMA/SILVER.json?limit=2", 2);
 
-        GoldApi metalPrice = exchangeService.metalPrice("XAG", "USD");
+        MetalPrice metalPrice = exchangeService.metalPrice("XAG", "USD");
         System.out.println(metalPrice);
         System.out.println(JsonUtils.gsonPretty(metalPrice));
         modelMap.addAttribute("metalPrice", metalPrice);
+
 
 //        Date date = new Date(1598526688l * 1000l);
 //        DateFormat df = new SimpleDateFormat("yyyy MMM dd HH:mm:ss zzz");
@@ -145,7 +147,11 @@ public class TestController {
     public String dataPriceMetal(@RequestParam (value = "dataPrice") String dataPrice,
                                  ModelMap modelMap) {
         formatDataPicker(modelMap);
+        MetalPriceDate goldApiDate = new MetalPriceDate();
+        System.out.println(goldApiDate);
         System.out.println(dataPrice);
+
+        exchangeService.metalPriceDate("XAG", "USD", dataPrice);
         return "price_metal";
     }
 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PRICE METALS</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="container">
+        <div th:insert="~{includes/menu :: heder}"></div>
+        <div th:insert="~{includes/menu :: menu}"></div>
+        <!--        <h2 th:text="${customer}"></h2>-->
+
+    </div>
+    <div class="container">
+        <h1>TEST CENY METALI</h1>
+    </div>
+    <div class="container">
+        <form th:action="@{/dataPriceMetal}" method="post">
+            <input type="date" th:name="dataPrice" th:value="${data}">
+            <input class="btn btn-primary" type="submit" th:value="DATA">
+        </form>
+
+    </div>
+
+
+    <div class="container" th:if="${metalPrice} != null">
+        <table class="table table-bordered">
+            <tr>
+                <td>Czas</td>
+                <td th:text="${metalPrice.timestamp}"></td>
+            </tr>
+            <tr>
+                <td>Kod metalu</td>
+                <td th:text="${metalPrice.metalCod}"></td>
+            </tr>
+            <tr>
+                <td>Metal</td>
+                <td th:text="${metalPrice.metal}"></td>
+            </tr>
+            <tr>
+                <td>Waluta</td>
+                <td th:text="${metalPrice.currency}"></td>
+            </tr>
+            <tr>
+                <td>Exchange</td>
+                <td th:text="${metalPrice.exchange}"></td>
+            </tr>
+            <tr>
+                <td>Symbol</td>
+                <td th:text="${metalPrice.symbol}"></td>
+            </tr>
+            <tr>
+                <td>Cena zamknięcia ostatniej sesji</td>
+                <td th:text="${metalPrice.getPrevClosePrice()}"></td>
+            </tr>
+            <tr>
+                <td>Cena otwarcia</td>
+                <td th:text="${metalPrice.openPrice}"></td>
+            </tr>
+            <tr>
+                <td>Najniższa cena</td>
+                <td th:text="${metalPrice.lowPrice}"></td>
+            </tr>
+            <tr>
+                <td>Najwyższa cena</td>
+                <td th:text="${metalPrice.highPrice}"></td>
+            </tr>
+            <tr>
+                <td>Czas otwarcia sesji</td>
+                <td th:text="${metalPrice.openTime}"></td>
+            </tr>
+            <tr>
+                <td>Cena</td>
+                <td th:text="${metalPrice.price}"></td>
+            </tr>
+            <tr>
+                <td>Zmiana kursu</td>
+                <td th:text="${metalPrice.ch}"></td>
+            </tr>
+            <tr>
+                <td>Zmiana procętowa</td>
+                <td th:text="${metalPrice.chp}"></td>
+            </tr>
+            <tr>
+                <td>ask</td>
+                <td th:text="${metalPrice.ask}"></td>
+            </tr>
+            <tr>
+                <td>Cena średnia</td>
+                <td th:text="${metalPrice.bid}"></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</body>
+</html>
