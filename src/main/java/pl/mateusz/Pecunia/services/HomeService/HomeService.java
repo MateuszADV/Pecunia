@@ -9,4 +9,5 @@ public interface HomeService {
     List<String> gatParameterList(CodeParam codeParam);
 
     String code (List<String> codeList);
+
 }

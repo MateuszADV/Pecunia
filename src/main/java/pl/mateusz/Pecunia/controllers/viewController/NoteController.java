@@ -23,7 +23,9 @@ import pl.mateusz.Pecunia.models.repositories.NoteRepository;
 import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
+import pl.mateusz.Pecunia.utils.PaternSet;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -37,6 +39,9 @@ public class NoteController {
     private CountryService countryService;
     private NoteInfoViewRepository noteInfoViewRepository;
     private NoteCountryViewRepository noteCountryViewRepository;
+
+    @Autowired
+    private PaternSet paternSet;
 
     @Autowired
     public NoteController(NoteService noteService, NoteRepository noteRepository, CurrencyRepository currencyRepository, CountryService countryService,
@@ -59,8 +64,9 @@ public class NoteController {
         return "/note";
     }
 
-    @GetMapping(value = {"/Pecunia/selectCountry","/selectCountry"})
-    public String getNotesSize(ModelMap modelMap) {
+    //TODO zmienić nazwę tak zżeby można było dodawać banknoty, montety...
+    @GetMapping(value = {"/Pecunia/selectCountryAddNote","/selectCountryAddNote"})
+    public String getNotesSize(ModelMap modelMap, HttpServletRequest request) {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
         modelMap.addAttribute("title","Wybierz państwo");
 
@@ -68,15 +74,24 @@ public class NoteController {
 //            System.out.println(countryDto);
 //        }
 
+        if (request.getRequestURI().contains("Note")) {
+            paternSet.patternSet("Note");
+        }
+
+
         return "banknotes";
     }
 
     @GetMapping(value = {"/Pecunia/selectCurrency/{countryId}","/selectCurrency/{countryId}"})
     public String getNotesCountry(@PathVariable Long countryId, ModelMap modelMap) {
+//        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
+        //TODO poprawić wybieranei państwa
         modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
         modelMap.addAttribute("countryVisible",true);
         modelMap.addAttribute("title","Wybierz walute");
         modelMap.addAttribute("country", countryService.countryFromId(countryId));
+
+        System.out.println("powinno byc coś!!!!!!!!!!!!!!!!! " + paternSet.getPatternSet());
 
         return "banknotes";
     }

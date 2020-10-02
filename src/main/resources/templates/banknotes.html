@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Banknoty</title>
@@ -21,6 +21,9 @@
     <div th:insert="~{includes/menu :: heder}"></div>
     <div th:insert="~{includes/menu :: menu}"></div>
 
+    <h1 th:name="naglowek">
+        <p>cokolwiek</p>
+    </h1>
     <div style="text-align: center">
         <h2 th:text="${title}"></h2>
         <!--<h2 th:text="${country.countryEn}"></h2>-->
@@ -54,6 +57,7 @@
                         <th>Poprzednia waluta</th>
                         <th>Przelicznik</th>
                         <th>Opis</th>
+                        <th>PATTERN</th>
                         <th>Dodaj banknot</th>
                     </tr>
                     <th:block th:each="currency : ${currencyList}">
@@ -67,6 +71,7 @@
                             <td th:text="${currency.currencyFrom}"></td>
                             <td th:text="${currency.converter}"></td>
                             <td th:text="${currency.description}"></td>
+                            <td th:text="${currency.pattern}"></td>
                             <th><a th:href="@{'/note/' + ${currency.id}}">Dodaj banknot</a></th>
                         </tr>
                     </th:block>

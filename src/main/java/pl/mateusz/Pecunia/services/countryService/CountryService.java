@@ -1,5 +1,6 @@
 package pl.mateusz.Pecunia.services.countryService;
 
+import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.dtos.*;
 import pl.mateusz.Pecunia.models.forms.*;
 
@@ -15,7 +16,8 @@ public interface CountryService {
 
     ContinentResponse continentResponse(ContinentRequest request);
 
-    List<CurrencyDto> currencyFromCountryId(Long currencyId);
+    List<CurrencyDto> currencyFromCountryId(Long countryId);
+    List<CurrencyDto> currencyFromCountryId(Country countryId, String pattern);
 
     ContinentCountryCurrencysResponse continentCountryCurrencysResponse();
 

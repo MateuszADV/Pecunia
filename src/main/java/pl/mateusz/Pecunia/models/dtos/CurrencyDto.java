@@ -24,7 +24,7 @@ public class CurrencyDto {
     private String converter;
     private String description;
 
-    private String pattern;     //Okrerśla rodzaj pieniąza NOTE/COIN
+    private String pattern;     //Okrerśla rodzaj pieniądza NOTE/COIN
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NoteJsonDto> noteList;

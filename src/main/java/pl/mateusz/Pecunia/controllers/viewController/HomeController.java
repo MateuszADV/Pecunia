@@ -75,6 +75,7 @@ public class HomeController {
         }catch (Exception e) {
             modelMap.addAttribute("exchange", false);
             modelMap.addAttribute("error", e.getMessage());
+            return "index";
         }
 
         modelMap.addAttribute("goldList", exchangeService.goldRate());

@@ -57,7 +57,7 @@
                 <td>Exchange</td>
                 <td th:text="${metalPrice.exchange}"></td>
             </tr>
-            <tr>
+            <tr th:if="${metalPrice.symbol}">
                 <td>Symbol</td>
                 <td th:text="${metalPrice.symbol}"></td>
             </tr>
@@ -65,19 +65,19 @@
                 <td>Cena zamknięcia ostatniej sesji</td>
                 <td th:text="${metalPrice.getPrevClosePrice()}"></td>
             </tr>
-            <tr>
+            <tr th:if="${metalPrice.openPrice}">
                 <td>Cena otwarcia</td>
                 <td th:text="${metalPrice.openPrice}"></td>
             </tr>
-            <tr>
+            <tr th:if="${metalPrice.lowPrice}">
                 <td>Najniższa cena</td>
                 <td th:text="${metalPrice.lowPrice}"></td>
             </tr>
-            <tr>
+            <tr th:if="${metalPrice.highPrice}">
                 <td>Najwyższa cena</td>
                 <td th:text="${metalPrice.highPrice}"></td>
             </tr>
-            <tr>
+            <tr th:if="${metalPrice.openTime}">
                 <td>Czas otwarcia sesji</td>
                 <td th:text="${metalPrice.openTime}"></td>
             </tr>
@@ -93,14 +93,14 @@
                 <td>Zmiana procętowa</td>
                 <td th:text="${metalPrice.chp}"></td>
             </tr>
-            <tr>
+            <tr th:if="${metalPrice.ask} != null">
                 <td>ask</td>
                 <td th:text="${metalPrice.ask}"></td>
             </tr>
-            <tr>
-                <td>Cena średnia</td>
-                <td th:text="${metalPrice.bid}"></td>
-            </tr>
+<!--            <tr>-->
+<!--                <td>Cena średnia</td>-->
+<!--                <td th:text="${metalPrice.bid}"></td>-->
+<!--            </tr>-->
 
         </table>
 
@@ -108,6 +108,7 @@
 
 
 </div>
+<div th:insert="~{includes/menu :: footer}"></div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

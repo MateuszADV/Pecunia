@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Waluta</title>
@@ -69,6 +69,12 @@
                             <td>Waluta</td>
                             <td><input class="form-control" type="text" th:field="*{nameCurrency}" placeholder="Nazwa waluty"></td>
                         </tr>
+
+                        <tr>
+                            <td>Pattern</td>
+                            <td><input class="form-control" type="text" th:field="*{pattern}" placeholder="Patern" readonly></td>
+                        </tr>
+
                         <tr>
                             <td>Drobne</td>
                             <td><input class="form-control" type="text" th:field="*{change}" placeholder="Drobna waluta"></td>
@@ -116,6 +122,7 @@
                         <th>Poprzednia waluta</th>
                         <th>Przelicznik</th>
                         <th>Opis</th>
+                        <th>pattern</th>
                         <th>Edytuj</th>
                         <th>Dodaj banknot</th>
                     </tr>
@@ -130,6 +137,7 @@
                             <td th:text="${currency.currencyFrom}"></td>
                             <td th:text="${currency.converter}"></td>
                             <td th:text="${currency.description}"></td>
+                            <td th:text="${currency.pattern}"></td>
                             <td><a th:href="@{'/currencyEdit/' + ${currency.id}}">Edytuj walute</a></td>
                             <th><a th:href="@{'/note/' + ${currency.id}}">Dodaj banknot</a></th>
                         </tr>

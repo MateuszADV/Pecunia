@@ -123,8 +123,20 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public List<CurrencyDto> currencyFromCountryId(Long currencyId) {
-        List<Currency> currencys = currencyRepository.findByCountry_IdOrderByDataExchangeDesc(currencyId);
+    public List<CurrencyDto> currencyFromCountryId(Long countryId) {
+        List<Currency> currencys = currencyRepository.findByCountry_IdOrderByDataExchangeDesc(countryId);
+        List<CurrencyDto> currencyDtos = new ArrayList<>();
+
+        for (Currency currency : currencys) {
+            currencyDtos.add(new ModelMapper().map(currency, CurrencyDto.class));
+        }
+
+        return currencyDtos;
+    }
+
+    @Override
+    public List<CurrencyDto> currencyFromCountryId(Country countryId, String pattern) {
+        List<Currency> currencys = currencyRepository.findByCountry_IdOrderByDataExchangeDesc(countryId, pattern.toUpperCase());
         List<CurrencyDto> currencyDtos = new ArrayList<>();
 
         for (Currency currency : currencys) {

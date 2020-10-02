@@ -14,7 +14,6 @@ import pl.mateusz.Pecunia.models.forms.Rates;
 import pl.mateusz.Pecunia.models.forms.enums.GoldApiCodeEnum;
 import pl.mateusz.Pecunia.models.forms.enums.WeightEnum;
 import pl.mateusz.Pecunia.models.forms.goldApi.MetalPrice;
-import pl.mateusz.Pecunia.models.forms.goldApi.MetalPriceDate;
 import pl.mateusz.Pecunia.models.forms.metal.DataSet;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 
@@ -218,54 +217,94 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public MetalPriceDate metalPriceDate(String metal, String currency, String date) {
+    public MetalPrice metalPrice(String metal, String currency, String date) {
 
         try {
             String metalPrice = jsonStringApi("https://www.goldapi.io/api/" + metal + "/" + currency + "/" + date.replace("-", ""));
-            MetalPriceDate metalPriceDate = new MetalPriceDate();
             JSONObject jsonObject = new JSONObject(metalPrice);
+            System.out.println("!!!!!!!!!!!!!!!!!\n" + JsonUtils.gsonPretty(jsonObject) + "\n!!!!!!!!!!!!!!!!!!!!!!!!");
 
-            metalPriceDate.setDate(jsonObject.getString("date"));
-
-            System.out.println(jsonObject);
-            System.out.println("POWINNA byc data!!!!!!!!!!!  " + metalPriceDate.getDate());
-
-            return metalPriceDate;
+            return getGoldApiMetal(metalPrice);
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return null;
 
-        //TODO uzupełnić kod, pobieranie kursu metali z konkretnej daty
+
     }
 
     private MetalPrice getGoldApiMetal(String jsonMetalPrice) {
         MetalPrice metalPrice = new MetalPrice();
         JSONObject jsonObject = new JSONObject(jsonMetalPrice);
 
+        if (jsonObject.has("date")) {
+            metalPrice.setDate(jsonObject.getString("date"));
+        }else {
+            metalPrice.setDate(null);
+        }
         metalPrice.setTimestamp(longToDate(jsonObject.getLong("timestamp")));
         metalPrice.setMetalCod(jsonObject.getString("metal"));
         metalPrice.setMetal(GoldApiCodeEnum.valueOf(metalPrice.getMetalCod()).getEn());
         metalPrice.setCurrency(jsonObject.getString("currency"));
         metalPrice.setExchange(jsonObject.getString("exchange"));
-        metalPrice.setSymbol(jsonObject.getString("symbol"));
-        metalPrice.setPrevClosePrice(jsonObject.getDouble("prev_close_price"));
-        metalPrice.setOpenPrice(jsonObject.getDouble("open_price"));
-        metalPrice.setLowPrice(jsonObject.getDouble("low_price"));
-        metalPrice.setHighPrice(jsonObject.getDouble("high_price"));
-        metalPrice.setOpenTime(longToDate(jsonObject.getLong("open_time")));
+        if (jsonObject.has("symbol")) {
+            metalPrice.setSymbol(jsonObject.getString("symbol"));
+        }else {
+            metalPrice.setSymbol(null);
+        }
+        if (jsonObject.has("prev_close_price")) {
+            metalPrice.setPrevClosePrice(jsonObject.getDouble("prev_close_price"));
+        }else metalPrice.setPrevClosePrice(null);
+        if (jsonObject.has("open_price")) {
+            metalPrice.setOpenPrice(jsonObject.getDouble("open_price"));
+        }else {
+            metalPrice.setOpenPrice(null);
+        }
+        if (jsonObject.has("low-price")) {
+            metalPrice.setLowPrice(jsonObject.getDouble("low_price"));
+        }else {
+            metalPrice.setLowPrice(null);
+        }
+        if (jsonObject.has("high_price")) {
+            metalPrice.setHighPrice(jsonObject.getDouble("high_price"));
+        }else {
+            metalPrice.setHighPrice(null);
+        }
+        if (jsonObject.has("open_time")) {
+            metalPrice.setOpenTime(longToDate(jsonObject.getLong("open_time")));
+        }else {
+            metalPrice.setOpenTime(null);
+        }
         metalPrice.setPrice(jsonObject.getDouble("price"));
         metalPrice.setCh(jsonObject.getDouble("ch"));
-        metalPrice.setChp(jsonObject.getDouble("chp"));
-        metalPrice.setAsk(jsonObject.getDouble("ask"));
-        metalPrice.setBid(jsonObject.getDouble("bid"));
-
+        if (jsonObject.has("chp")) {
+            metalPrice.setChp(jsonObject.getDouble("chp"));
+        }else {
+            metalPrice.setChp(null);
+        }
+        if ((jsonObject.has("ask")) ) {
+            metalPrice.setAsk(jsonObject.getDouble("ask"));
+        }else {
+            metalPrice.setAsk(null);
+        }
+        if (jsonObject.has("bid")) {
+            metalPrice.setBid(jsonObject.getDouble("bid"));
+        }else {
+            metalPrice.setBid(null);
+        }
 
         return metalPrice;
     }
 
     private String longToDate(Long dateLong) {
-        Date date = new Date(dateLong * 1000l);
+        Date date;
+        date = new Date(dateLong * 1000l);
+        if (dateLong.toString().length() <= 10) {
+            date = new Date(dateLong * 1000l);
+        }else {
+            date = new Date(dateLong);
+        }
+
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");
         return df.format(date);
     }

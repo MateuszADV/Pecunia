@@ -14,7 +14,9 @@ import pl.mateusz.Pecunia.models.Currency;
 import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
+import pl.mateusz.Pecunia.utils.PaternSet;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,9 @@ public class CountryController {
     private CountryRepository countryRepository;
     private CurrencyRepository currencyRepository;
     private CountryServiceImpl countryService;
+
+    @Autowired
+    private PaternSet paternSet;
 
     @Autowired
     public CountryController(CountryRepository countryRepository, CurrencyRepository currencyRepository, CountryServiceImpl countryService) {
@@ -70,7 +75,7 @@ public class CountryController {
 
         Country country = (new ModelMapper().map(countryDto, Country.class));
 
-//        countryRepository.save(country);
+        countryRepository.save(country);
         System.out.println(countryDto);
         return "redirect:/country";
     }
@@ -100,23 +105,38 @@ public class CountryController {
         return "country";
     }
 
-    @GetMapping(value = {"/Pecunia/currency","/currency"})
-    public String getCurrency1(ModelMap modelMap) {
+    /*
+        Wybieranie państwa do dodanie waluty dla banknotów
+     */
+    @GetMapping(value = {"/Pecunia/currencyNote","/currencyNote"})
+    public String getCurrencyNote(ModelMap modelMap, HttpServletRequest request) {
         modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
         modelMap.addAttribute("currencyTrue", false);
         modelMap.addAttribute("chooseCountry", "Wyberz państwo");
+
+        System.out.println("DODAWANIE waluty do państwa!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        if (request.getRequestURI().contains("Note")) {
+            paternSet.patternSet("Note");
+        }
+        System.out.println(paternSet.getPatternSet());
 
         return "currency";
     }
 
     @GetMapping(value = {"/Pecunia/currency/{countryEn}","/currency/{countryEn}"})
     public String getCurrency(@PathVariable String countryEn, ModelMap modelMap) {
-        modelMap.addAttribute("currency", new Currency());
+        Currency currency = new Currency();
+        currency.setPattern(paternSet.getPatternSet().toUpperCase());
+        modelMap.addAttribute("currency", currency);
         Country country = countryRepository.findByCountryEn(countryEn);
         modelMap.addAttribute("chooseCountry", "Dodaj walutę");
 
         modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
-        return currencyDate(modelMap, country);
+
+        //TODO poprawić dodawanie banknotów i monet do walut
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  " + paternSet.getPatternSet());
+
+        return currencyDate(modelMap, country, paternSet.getPatternSet());
     }
 
     @PostMapping(value = {"/Pecunia/currency","/currency"})
@@ -127,11 +147,12 @@ public class CountryController {
         Country country = countryRepository.findByCountryEn(countryEn);
         currency.setCountry(country);
 
-         currencyRepository.save(currency);
+        currencyRepository.save(currency);
 
         modelMap.addAttribute("countryEn", country.getCountryEn());
         modelMap.addAttribute("countryPl", country.getCountryPl());
-        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country.getId()));
+//        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country.getId()));
+        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country, paternSet.getPatternSet()));
         modelMap.addAttribute("countryId", currency.getCountry().getId()); //Wysyła Id państwa potrzebnego do wyswietlenia Jsona
 
 //        if (edit == null) {
@@ -161,11 +182,38 @@ public class CountryController {
         return "currency";
     }
 
+    private String currencyDate(ModelMap modelMap, Country country, String pattern) {
+        modelMap.addAttribute("countryEn", country.getCountryEn());
+        modelMap.addAttribute("countryPl", country.getCountryPl());
+        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country, pattern.toUpperCase()));
+
+        System.out.println(country.getId().longValue());
+        modelMap.addAttribute("countryId", country.getId());
+        return "currency";
+    }
+
     @GetMapping(value = {"/Pecunia/all_countrys", "/all_countrys"})
     public String getAllCountryOfWorld(ModelMap modelMap) {
 
         countryList(modelMap);
         return "country_of_world";
+    }
+
+
+    @GetMapping(value = {"/Pecunia/currencyCoin","/currencyCoin"})
+    public String getCurrencyCoin(ModelMap modelMap, HttpServletRequest request) {
+        modelMap.addAttribute("countrys", countryService.countryDtoList().getCountryDtoList());
+        modelMap.addAttribute("currencyTrue", false);
+        modelMap.addAttribute("chooseCountry", "Wyberz państwo");
+
+        System.out.println("DODAWANIE waluty do państwa!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        if (request.getRequestURI().contains("Coin")) {
+            paternSet.patternSet("Coin");
+        }
+
+        System.out.println(paternSet.getPatternSet());
+
+        return "currency";
     }
 
 }

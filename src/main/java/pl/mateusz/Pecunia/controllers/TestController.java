@@ -12,11 +12,9 @@ import pl.mateusz.Pecunia.models.NoteInfoView;
 import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.models.forms.goldApi.MetalPrice;
-import pl.mateusz.Pecunia.models.forms.goldApi.MetalPriceDate;
 import pl.mateusz.Pecunia.models.repositories.NoteInfoViewRepository;
 import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.exchangeService.ExchangeService;
-import pl.mateusz.Pecunia.utils.JsonUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -121,15 +119,13 @@ public class TestController {
         Test pobierania kusru metali
      */
 
-    @GetMapping(value = {"/Pecunia/test", "/test"})
+    @GetMapping(value = {"/Pecunia/GoldApi", "/GoldApi"})
     public String testPriceMetal(ModelMap modelMap) {
 //        exchangeService.dataSet("https://www.quandl.com/api/v3/datasets/LBMA/SILVER.json?limit=2", 2);
 
         MetalPrice metalPrice = exchangeService.metalPrice("XAG", "USD");
-        System.out.println(metalPrice);
-        System.out.println(JsonUtils.gsonPretty(metalPrice));
         modelMap.addAttribute("metalPrice", metalPrice);
-
+        formatDataPicker(modelMap);
 
 //        Date date = new Date(1598526688l * 1000l);
 //        DateFormat df = new SimpleDateFormat("yyyy MMM dd HH:mm:ss zzz");
@@ -139,19 +135,21 @@ public class TestController {
 //        System.out.println(date1);
 //        System.out.println(df.format(date1));
 
-        formatDataPicker(modelMap);
+
         return "price_metal";
     }
 
     @PostMapping(value = {"/Pecunia/dataPriceMetal", "/dataPriceMetal"})
     public String dataPriceMetal(@RequestParam (value = "dataPrice") String dataPrice,
                                  ModelMap modelMap) {
-        formatDataPicker(modelMap);
-        MetalPriceDate goldApiDate = new MetalPriceDate();
-        System.out.println(goldApiDate);
-        System.out.println(dataPrice);
 
-        exchangeService.metalPriceDate("XAG", "USD", dataPrice);
+        MetalPrice metalPrice = exchangeService.metalPrice("XAG", "USD", dataPrice);
+        modelMap.addAttribute("metalPrice", metalPrice);
+        formatDataPicker(modelMap);
+//        MetalPrice goldApiDate = new MetalPrice();
+//        System.out.println(goldApiDate);
+//        System.out.println(dataPrice);
+
         return "price_metal";
     }
 
