@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
+import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.Note;
 import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.NoteInfoView;
@@ -24,6 +25,7 @@ import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 import pl.mateusz.Pecunia.utils.PaternSet;
+import pl.mateusz.Pecunia.utils.PecuniaUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -78,6 +80,8 @@ public class NoteController {
             paternSet.patternSet("Note");
         }
 
+        System.out.println(paternSet.patternGet());
+
 
         return "banknotes";
     }
@@ -85,13 +89,18 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/selectCurrency/{countryId}","/selectCurrency/{countryId}"})
     public String getNotesCountry(@PathVariable Long countryId, ModelMap modelMap) {
 //        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
+        Country country = PecuniaUtils.getCountry(countryId);
         //TODO poprawić wybieranei państwa
-        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
+//        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(countryId));
+        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country, paternSet.getPatternSet()));
         modelMap.addAttribute("countryVisible",true);
         modelMap.addAttribute("title","Wybierz walute");
         modelMap.addAttribute("country", countryService.countryFromId(countryId));
 
         System.out.println("powinno byc coś!!!!!!!!!!!!!!!!! " + paternSet.getPatternSet());
+        System.out.println(country.getCountryEn());
+
+        System.out.println(PatternEnum.valueOf(paternSet.getPatternSet()).getNamePl());
 
         return "banknotes";
     }

@@ -8,11 +8,12 @@ import java.util.List;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
     Country findByCountryEn(String countryEn);
-    Country findById (long countryId);
+//    Country findById (long countryId);
     List<Country> findAllByOrderByCountryEn();
     List<Country> findByContinent(String continent);
 
-//    @Query(value = "SELECT cou.continent, COUNT(cou.continent) FROM Country cou GROUP BY cou.continent")
-//    List<Country> CountryOn();
+
+    @Query(value = "SELECT cou FROM Country cou WHERE cou.id = ?1")
+    Country getCountry(Long countryId);
 
 }
