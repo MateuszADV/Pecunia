@@ -100,7 +100,7 @@ public class NoteController {
         System.out.println("powinno byc coś!!!!!!!!!!!!!!!!! " + paternSet.getPatternSet());
         System.out.println(country.getCountryEn());
 
-        System.out.println(PatternEnum.valueOf(paternSet.getPatternSet()).getNamePl());
+        System.out.println(PatternEnum.valueOf("Note").getNamePl());
 
         return "banknotes";
     }
