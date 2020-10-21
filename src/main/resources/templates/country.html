@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Państwa</title>
@@ -47,7 +47,8 @@
                     </tr>
                     <tr>
                         <td>Państwo po angielsku</td>
-                        <td><input class="form-control" type="text" th:field="*{countryEn}" placeholder="Nazwa po angielsku">
+                        <td>
+                            <input class="form-control" type="text" th:field="*{countryEn}" placeholder="Nazwa po angielsku">
                             <span  th:if="${#fields.hasErrors('countryEn')}" th:errors="*{countryEn}" style="color: red">></span>
                         </td>
                     </tr>
@@ -61,7 +62,7 @@
                     <tr>
                         <td>Stolica</td>
                         <td><input class="form-control" type="text" th:field="*{capitalCity}" placeholder="Stolica">
-                            <span  th:if="${#fields.hasErrors('capitalCity')}" th:errors="*{capitalCity}" style="color: red">></span>
+                            <span  th:if="${#fields.hasErrors('capitalCity')}" th:errors="*{capitalCity}" style="color: red"></span>
                         </td>
                     </tr>
                     <tr>

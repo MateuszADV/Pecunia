@@ -12,6 +12,7 @@ import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.Note;
 import pl.mateusz.Pecunia.models.NoteCountryView;
 import pl.mateusz.Pecunia.models.NoteInfoView;
+import pl.mateusz.Pecunia.models.dtos.CoinDto;
 import pl.mateusz.Pecunia.models.dtos.NoteCountryViewDto;
 import pl.mateusz.Pecunia.models.dtos.NoteDto;
 import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
@@ -29,6 +30,8 @@ import pl.mateusz.Pecunia.utils.PecuniaUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -60,10 +63,25 @@ public class NoteController {
     @GetMapping(value = {"/Pecunia/note/{currencyId}","/note/{currencyId}"})
     public String getNote(@PathVariable Long currencyId, ModelMap modelMap) {
 
-        modelMap.addAttribute("button", Constans.BUTTON_ADD_NOTE);
-        NoteModelMap(currencyId, modelMap);
+        if (paternSet.getPatternSet() == "Note") {
+            modelMap.addAttribute("button", Constans.BUTTON_ADD_NOTE);
+            NoteModelMap(currencyId, modelMap);
 
-        return "/note";
+            return "/note";
+        }
+        if (paternSet.getPatternSet() == "Coin") {
+            modelMap.addAttribute("button", Constans.BUTTON_ADD_COIN);
+//            NoteModelMap(currencyId, modelMap);
+//            modelMap.addAttribute("currencyNoteList",noteService.currencyNoteList(currencyId));
+            CoinDto coinDto = new CoinDto();
+            coinDto.setDateBuyNote(Date.valueOf(LocalDate.now()));
+
+            modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
+            modelMap.addAttribute("currencyId", currencyId);
+            modelMap.addAttribute("coinDto", coinDto);
+            return "/Coin";
+        }
+        return "index";
     }
 
     //TODO zmienić nazwę tak zżeby można było dodawać banknoty, montety...
@@ -100,7 +118,8 @@ public class NoteController {
         System.out.println("powinno byc coś!!!!!!!!!!!!!!!!! " + paternSet.getPatternSet());
         System.out.println(country.getCountryEn());
 
-        System.out.println(PatternEnum.valueOf("Note").getNamePl());
+        // Zmiana pattenr
+        modelMap.addAttribute("pattern", PatternEnum.valueOf(paternSet.getPatternSet().toUpperCase()).getNamePl());
 
         return "banknotes";
     }
