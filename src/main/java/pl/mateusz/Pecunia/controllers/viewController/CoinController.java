@@ -66,6 +66,8 @@ public class CoinController {
             coinDto1.setDateBuyNote(Date.valueOf(LocalDate.now()));
             modelMap.addAttribute("coinDto", coinDto1);
             modelMap.addAttribute("currencyId", currencyId);
+
+            System.out.println(JsonUtils.gsonPretty(coinDto));
             return "coin";
         }
 

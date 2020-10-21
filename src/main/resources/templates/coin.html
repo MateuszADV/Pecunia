@@ -61,13 +61,20 @@
                         <input class="form-control" type="text" th:field="*{coinDate}" placeholder="Data druku banknotu">
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <span>Średnica monety</span>
+                        <input class="form-control" type="text" th:field="*{diameter}" pattern="[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Średnica">
+                    </td>
+                    <td>
+                        <span>Grubość monety</span>
+                        <input class="form-control" type="text" th:field="*{thickness}" pattern="[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Grubość">
+                    </td>
+                </tr>
             </table>
             <input class="btn btn-primary" type="submit" th:value="${button}">
         </form>
-
-    <div>
-
-
+    </div>
 </div>
 
 <div th:insert="~{includes/menu :: footer}"></div>
