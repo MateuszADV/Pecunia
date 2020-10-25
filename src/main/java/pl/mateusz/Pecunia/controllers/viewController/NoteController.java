@@ -79,6 +79,7 @@ public class NoteController {
             modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
             modelMap.addAttribute("currencyId", currencyId);
             modelMap.addAttribute("coinDto", coinDto);
+            EnumForm(modelMap);
             return "/Coin";
         }
         return "index";

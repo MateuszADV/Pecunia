@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.dtos.CoinDto;
+import pl.mateusz.Pecunia.models.forms.enums.ImgTypeEnum;
+import pl.mateusz.Pecunia.models.forms.enums.MakingEnum;
+import pl.mateusz.Pecunia.models.forms.enums.StatusEnum;
+import pl.mateusz.Pecunia.models.forms.enums.StatusSellEnum;
 import pl.mateusz.Pecunia.services.coinService.CoinService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
@@ -55,6 +59,7 @@ public class CoinController {
                                  ModelMap modelMap) {
         modelMap.addAttribute("button", Constans.BUTTON_ADD_COIN);
         CoinDto coinDto1 = new CoinDto();
+        coinDto1.setComposition("Fe - 80%\r\nCu - 20%");
         coinDto1.setDateBuyNote(Date.valueOf(LocalDate.now()));
         modelMap.addAttribute("coinDto", coinDto1);
         modelMap.addAttribute("currencyId", currencyId);
@@ -67,7 +72,10 @@ public class CoinController {
             modelMap.addAttribute("coinDto", coinDto1);
             modelMap.addAttribute("currencyId", currencyId);
 
+            System.out.println("Średnica - " + coinDto.getDiameter()
+                              + "/ Grubość - " + coinDto.getThickness());
             System.out.println(JsonUtils.gsonPretty(coinDto));
+            EnumForm(modelMap);
             return "coin";
         }
 
@@ -75,5 +83,12 @@ public class CoinController {
         System.out.println(JsonUtils.gsonPretty(coinDto));
         System.out.println("Powinno byc ID waluty - " + currencyId);
         return "coin";
+    }
+
+    private void EnumForm(ModelMap modelMap) {
+        modelMap.addAttribute("status", StatusEnum.values());
+        modelMap.addAttribute("statusSell", StatusSellEnum.values());
+        modelMap.addAttribute("making", MakingEnum.values());
+        modelMap.addAttribute("imgType", ImgTypeEnum.values());
     }
 }
