@@ -36,14 +36,14 @@
                     <!--                         <td>Gdzie banknot został kupiony</td>-->
                     <td>
                         <span>Miejsce zakupu</span><br>
-                        <input class="form-control" type="text" th:field="*{bought}" placeholder="Miejsce zakupu banknotu">
+                        <input class="form-control" type="text" th:field="*{bought}" placeholder="Miejsce zakupu monety">
                     </td>
                 </tr>
                 <tr>
                     <!--                        <td>Nominał</td>-->
                     <td>
                         <span>Nominał</span>
-                        <input class="form-control" type="text" th:field="*{denomination}" placeholder="Nominał banknotu">
+                        <input class="form-control" type="text" th:field="*{denomination}" placeholder="Nominał monety">
                     </td>
                     <!--                        <td>Nazwa</td>-->
                     <td>
@@ -58,17 +58,17 @@
                     <!--                        <td>Data druku</td>-->
                     <td>
                         <span>Data druku</span>
-                        <input class="form-control" type="text" th:field="*{coinDate}" placeholder="Data druku banknotu">
+                        <input class="form-control" type="text" th:field="*{coinDate}" placeholder="Data bićia monety">
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span>Średnica monety</span>
-                        <input class="form-control" type="text" th:field="*{diameter}" pattern="[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Średnica">
+                        <input class="form-control" type="text" th:field="*{diameter}" pattern="[0-9]{1,4}|[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Średnica">
                     </td>
                     <td>
                         <span>Grubość monety</span>
-                        <input class="form-control" type="text" th:field="*{thickness}" pattern="[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Grubość">
+                        <input class="form-control" type="text" th:field="*{thickness}" pattern="[0-9]{1,4}|[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Grubość">
                     </td>
                     <td>
                         <span>Stan monety</span>
@@ -83,13 +83,13 @@
                 <tr>
                     <td>
                         <span>Cena zakupu</span>
-                        <input class="form-control" type="text" th:field="*{priceBuy}" pattern="[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Cena zakupu">
+                        <input class="form-control" type="text" th:field="*{priceBuy}" pattern="[0-9]{1,4}|[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Cena zakupu">
                     </td>
 
                     <!--                        <td>Cena sprzedaży</td>-->
                     <td>
                         <span>Cena Sprzedaży</span>
-                        <input class="form-control" type="text" th:field="*{priceSell}" pattern="[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Cena sprzedaży">
+                        <input class="form-control" type="text" th:field="*{priceSell}" pattern="[0-9]{1,4}|[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="Cena sprzedaży">
                     </td>
                     <td>
                         <span>Ilość sztuk</span>
