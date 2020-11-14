@@ -40,4 +40,7 @@ public class Currency {
     @OneToMany(mappedBy = "currency", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Note> notes;
 
+    @OneToMany(mappedBy = "currency", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Coin> coins;
+
 }

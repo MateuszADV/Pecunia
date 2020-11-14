@@ -8,14 +8,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
-import pl.mateusz.Pecunia.models.Country;
-import pl.mateusz.Pecunia.models.Note;
-import pl.mateusz.Pecunia.models.NoteCountryView;
-import pl.mateusz.Pecunia.models.NoteInfoView;
-import pl.mateusz.Pecunia.models.dtos.CoinDto;
-import pl.mateusz.Pecunia.models.dtos.NoteCountryViewDto;
-import pl.mateusz.Pecunia.models.dtos.NoteDto;
-import pl.mateusz.Pecunia.models.dtos.NoteInfoViewDto;
+import pl.mateusz.Pecunia.models.*;
+import pl.mateusz.Pecunia.models.Currency;
+import pl.mateusz.Pecunia.models.dtos.*;
+import pl.mateusz.Pecunia.models.forms.Coins;
+import pl.mateusz.Pecunia.models.forms.CurrencyCoinDto;
 import pl.mateusz.Pecunia.models.forms.ExposedNoteDto;
 import pl.mateusz.Pecunia.models.forms.enums.*;
 import pl.mateusz.Pecunia.models.repositories.CurrencyRepository;
@@ -23,6 +20,7 @@ import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteInfoViewRepository;
 import pl.mateusz.Pecunia.models.repositories.NoteRepository;
 import pl.mateusz.Pecunia.services.NoteService.NoteService;
+import pl.mateusz.Pecunia.services.coinService.CoinService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
 import pl.mateusz.Pecunia.utils.JsonUtils;
 import pl.mateusz.Pecunia.utils.PaternSet;
@@ -44,21 +42,21 @@ public class NoteController {
     private CountryService countryService;
     private NoteInfoViewRepository noteInfoViewRepository;
     private NoteCountryViewRepository noteCountryViewRepository;
+    private CoinService coinService;
 
     @Autowired
     private PaternSet paternSet;
 
     @Autowired
-    public NoteController(NoteService noteService, NoteRepository noteRepository, CurrencyRepository currencyRepository, CountryService countryService,
-                          NoteInfoViewRepository noteInfoViewRepository, NoteCountryViewRepository noteCountryViewRepository) {
+    public NoteController(NoteService noteService, NoteRepository noteRepository, CurrencyRepository currencyRepository, CountryService countryService, NoteInfoViewRepository noteInfoViewRepository, NoteCountryViewRepository noteCountryViewRepository, CoinService coinService) {
         this.noteService = noteService;
         this.noteRepository = noteRepository;
         this.currencyRepository = currencyRepository;
         this.countryService = countryService;
         this.noteInfoViewRepository = noteInfoViewRepository;
         this.noteCountryViewRepository = noteCountryViewRepository;
+        this.coinService = coinService;
     }
-
 
     @GetMapping(value = {"/Pecunia/note/{currencyId}","/note/{currencyId}"})
     public String getNote(@PathVariable Long currencyId, ModelMap modelMap) {
@@ -71,8 +69,9 @@ public class NoteController {
         }
         if (paternSet.getPatternSet() == "Coin") {
             modelMap.addAttribute("button", Constans.BUTTON_ADD_COIN);
-//            NoteModelMap(currencyId, modelMap);
-//            modelMap.addAttribute("currencyNoteList",noteService.currencyNoteList(currencyId));
+
+            modelMap.addAttribute("coinList", coinService.currencyAndListCoin(currencyId).getCoinDtosList());
+
             CoinDto coinDto = new CoinDto();
             coinDto.setDateBuyNote(Date.valueOf(LocalDate.now()));
 

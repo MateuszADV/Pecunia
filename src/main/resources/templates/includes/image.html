@@ -24,3 +24,30 @@
         </td>
     </div>
 </div>
+
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="image_coin">
+    <div th:if="*{#strings.length(coin.aversPath) < 100}">
+        <td style="background-color: lawngreen">
+            <a target="_blank" th:href="#{notePath} + ${coin.aversPath}">
+                <img class="imageNote" th:src="#{notePath} + ${coin.aversPath}">
+            </a>
+        </td>
+        <td style="background-color: lawngreen">
+            <a target="_blank" th:href="#{notePath} + ${coin.reversePath}">
+                <img class="imageNote" th:src="#{notePath} + ${coin.reversePath}">
+            </a>
+        </td>
+    </div>
+    <div th:if="*{#strings.length(coin.aversPath) > 100}">
+        <td>
+            <a target="_blank" th:href="${coin.aversPath}">
+                <img class="imageNote" th:src="${coin.aversPath}">
+            </a>
+        </td>
+        <td>
+            <a target="_blank" th:href="${coin.reversePath}">
+                <img class="imageNote" th:src="${coin.reversePath}">
+            </a>
+        </td>
+    </div>
+</div>
