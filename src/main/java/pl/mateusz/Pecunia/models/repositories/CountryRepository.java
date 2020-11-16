@@ -16,4 +16,9 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
     @Query(value = "SELECT cou FROM Country cou WHERE cou.id = ?1")
     Country getCountry(Long countryId);
 
+    @Query(value = "SELECT DISTINCT (cou) FROM Country cou, Currency cur " +
+                   "WHERE cou.id = cur.country " +
+                   "  AND cur.pattern = 'COIN'")
+    List<Country> countryCoin();
+
 }

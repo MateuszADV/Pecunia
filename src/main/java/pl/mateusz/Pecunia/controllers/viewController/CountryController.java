@@ -151,7 +151,6 @@ public class CountryController {
 
         modelMap.addAttribute("countryEn", country.getCountryEn());
         modelMap.addAttribute("countryPl", country.getCountryPl());
-//        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country.getId()));
         modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country, paternSet.getPatternSet()));
         modelMap.addAttribute("countryId", currency.getCountry().getId()); //Wysyła Id państwa potrzebnego do wyswietlenia Jsona
 
@@ -159,7 +158,10 @@ public class CountryController {
 //            modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
 //        }
         modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
-        modelMap.addAttribute("currency", new Currency());
+        System.out.println(paternSet.getPatternSet());
+        Currency currencyNext = new Currency();
+        currencyNext.setPattern(paternSet.getPatternSet());
+        modelMap.addAttribute("currency", currencyNext);
         return "currency";
     }
 

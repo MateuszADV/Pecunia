@@ -324,6 +324,11 @@ public class NoteController {
 
     @GetMapping(value = {"/Pecunia/view_note/{countryEn}", "/view_note/{countryEn}"})
     public String getSelectCountry(@PathVariable String countryEn, ModelMap modelMap) {
+
+        if (paternSet.getPatternSet().equalsIgnoreCase("Coin")) {
+            System.out.println("TO JEST TU");
+        }
+
         modelMap.addAttribute("noteTrue", true);
         modelMap.addAttribute("countryEn", countryEn);
         modelMap.addAttribute("banknotes", noteService.noteFromCountry(countryEn));

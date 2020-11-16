@@ -8,13 +8,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
 import pl.mateusz.Pecunia.models.Coin;
+import pl.mateusz.Pecunia.models.Country;
 import pl.mateusz.Pecunia.models.dtos.CoinDto;
-import pl.mateusz.Pecunia.models.dtos.NoteDto;
+import pl.mateusz.Pecunia.models.dtos.CountryDto;
 import pl.mateusz.Pecunia.models.forms.enums.ImgTypeEnum;
 import pl.mateusz.Pecunia.models.forms.enums.MakingEnum;
 import pl.mateusz.Pecunia.models.forms.enums.StatusEnum;
 import pl.mateusz.Pecunia.models.forms.enums.StatusSellEnum;
 import pl.mateusz.Pecunia.models.repositories.CoinRepository;
+import pl.mateusz.Pecunia.models.repositories.CountryRepository;
 import pl.mateusz.Pecunia.services.NoteService.NoteService;
 import pl.mateusz.Pecunia.services.coinService.CoinService;
 import pl.mateusz.Pecunia.services.countryService.CountryService;
@@ -26,25 +28,32 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Controller
 public class CoinController {
 
-    private CountryService countryService;
-    private CoinService coinService;
-    private PaternSet paternSet;
     private CoinRepository coinRepository;
+    private CountryRepository countryRepository;
+    private CountryService countryService;
+
+    private CoinService coinService;
     private NoteService noteService;
 
+    private PaternSet paternSet;
 
     @Autowired
-    public CoinController(CountryService countryService, CoinService coinService, PaternSet paternSet, CoinRepository coinRepository, NoteService noteService) {
+    public CoinController(CoinRepository coinRepository, CountryRepository countryRepository, CountryService countryService, CoinService coinService, NoteService noteService, PaternSet paternSet) {
+        this.coinRepository = coinRepository;
+        this.countryRepository = countryRepository;
         this.countryService = countryService;
         this.coinService = coinService;
-        this.paternSet = paternSet;
-        this.coinRepository = coinRepository;
         this.noteService = noteService;
+        this.paternSet = paternSet;
     }
 
     @GetMapping(value = {"/Pecunia/addCoin", "/addCoin"})
@@ -103,6 +112,8 @@ public class CoinController {
             modelMap.addAttribute("statusSave", true);
             modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
             modelMap.addAttribute("coinList", coinService.currencyAndListCoin(currencyId).getCoinDtosList());
+            Logger LOGGER = Logger.getLogger(NoteService.class.toString());
+            LOGGER.log(Level.INFO, noteService.toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             modelMap.addAttribute("error_message", e.getMessage());
@@ -168,8 +179,30 @@ public class CoinController {
             modelMap.addAttribute("errorId", coinId);
             return "error404";
         }
-
-
         return "/coin";
     }
+
+    @GetMapping(value = {"/Pecunia/select_country_coin", "/select_country_coin"})
+    public String getCountryCoinColection(HttpServletRequest request, ModelMap modelMap) {
+        modelMap.addAttribute("countryTrue", true);
+
+        List<Country> countryListCoin = countryRepository.countryCoin();
+        List<CountryDto> countryDtoListCoin = new ArrayList<>();
+        for (Country country : countryListCoin) {
+            countryDtoListCoin.add(new ModelMapper().map(country, CountryDto.class));
+        }
+        modelMap.addAttribute("countrys", countryDtoListCoin);
+        modelMap.addAttribute("countryFromContinent", "Wszystkie kontynenty");
+
+        if (request.getRequestURI().contains("coin")) {
+            paternSet.patternSet("Coin");
+        }
+        System.out.println("Powinien byc ustawiony patern COIN - " + paternSet.getPatternSet());
+
+        System.out.println("powinna byćilośc elementów - " + countryListCoin.get(0).getCurrencies().get(0).getCoins().size());
+
+        return "view_note";
+//        return "index";
+    }
+
 }
