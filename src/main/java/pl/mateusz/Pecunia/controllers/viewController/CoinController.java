@@ -83,8 +83,11 @@ public class CoinController {
         modelMap.addAttribute("currencyId", currencyId);
 
         if (result.hasErrors()) {
+
             modelMap.addAttribute("error", "Wypełnij poprawnie pole");
             modelMap.addAttribute("button", Constans.BUTTON_ADD_COIN);
+            modelMap.addAttribute("countryCurrency", noteService.countryCurrencyView(currencyId));
+            modelMap.addAttribute("coinList", coinService.currencyAndListCoin(currencyId).getCoinDtosList());
             System.out.println("!!!!!!!!!!POWINIEN BYC BLAD!!!!!!!!!!!!!!");
             coinDto.setDateBuyNote(Date.valueOf(LocalDate.now()));
             coinDtoError(coinDto);

@@ -17,6 +17,7 @@ import pl.mateusz.Pecunia.models.repositories.NoteCountryViewRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -270,5 +271,19 @@ public class CountryServiceImpl implements CountryService {
     private Boolean checkCodeInsaidNotNumber(String code) {
         Pattern pattern = Pattern.compile("[a-zA-Z]{3}");
         return pattern.matcher(code).matches();
+    }
+
+    @Override
+    public Boolean saveCurrency(CurrencyDto currencyDto, String countryEN) {
+        try {
+            Country country = countryRepository.findByCountryEn(countryEN);
+            Currency currency = (new ModelMapper().map(currencyDto, Currency.class));
+            currency.setCountry(country);
+            currencyRepository.save(currency);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 }

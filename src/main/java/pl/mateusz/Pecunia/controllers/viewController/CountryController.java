@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateusz.Pecunia.controllers.Constans;
+import pl.mateusz.Pecunia.models.dtos.CurrencyDto;
 import pl.mateusz.Pecunia.models.forms.enums.ContinentEnum;
 import pl.mateusz.Pecunia.services.countryService.CountryServiceImpl;
 import pl.mateusz.Pecunia.models.Country;
@@ -125,9 +126,9 @@ public class CountryController {
 
     @GetMapping(value = {"/Pecunia/currency/{countryEn}","/currency/{countryEn}"})
     public String getCurrency(@PathVariable String countryEn, ModelMap modelMap) {
-        Currency currency = new Currency();
-        currency.setPattern(paternSet.getPatternSet().toUpperCase());
-        modelMap.addAttribute("currency", currency);
+        CurrencyDto currencyDto = new CurrencyDto();
+        currencyDto.setPattern(paternSet.getPatternSet().toUpperCase());
+        modelMap.addAttribute("currencyDto", currencyDto);
         Country country = countryRepository.findByCountryEn(countryEn);
         modelMap.addAttribute("chooseCountry", "Dodaj walutę");
 
@@ -140,39 +141,44 @@ public class CountryController {
     }
 
     @PostMapping(value = {"/Pecunia/currency","/currency"})
-    public String postCurrency(@ModelAttribute("currency") Currency currency,
+    public String postCurrency(@ModelAttribute("currencyDto") CurrencyDto currencyDto,
                                @RequestParam(value = "countryEn") String countryEn,
                                @RequestParam(value = "edit") Integer edit,
                                ModelMap modelMap) {
         Country country = countryRepository.findByCountryEn(countryEn);
-        currency.setCountry(country);
+//        currency.setCountry(country);
 
-        currencyRepository.save(currency);
-
-        modelMap.addAttribute("countryEn", country.getCountryEn());
-        modelMap.addAttribute("countryPl", country.getCountryPl());
-        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country, paternSet.getPatternSet()));
-        modelMap.addAttribute("countryId", currency.getCountry().getId()); //Wysyła Id państwa potrzebnego do wyswietlenia Jsona
+//        currencyRepository.save(currency);
+          countryService.saveCurrency(currencyDto, countryEn);
+//        modelMap.addAttribute("countryEn", country.getCountryEn());
+//        modelMap.addAttribute("countryPl", country.getCountryPl());
+//        modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country, paternSet.getPatternSet()));
+//        modelMap.addAttribute("countryId", currency.getCountry().getId()); //Wysyła Id państwa potrzebnego do wyswietlenia Jsona
 
 //        if (edit == null) {
 //            modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
 //        }
         modelMap.addAttribute("button", Constans.BUTTON_ADD_CURRENCY);
-        System.out.println(paternSet.getPatternSet());
-        Currency currencyNext = new Currency();
-        currencyNext.setPattern(paternSet.getPatternSet());
-        modelMap.addAttribute("currency", currencyNext);
-        return "currency";
+        CurrencyDto currencyDto1 = new CurrencyDto();
+        currencyDto1.setPattern(paternSet.getPatternSet().toUpperCase());
+        modelMap.addAttribute("currencyDto", currencyDto1);
+        return currencyDate(modelMap, country, paternSet.getPatternSet());
+//        return "currency";
     }
 
     @GetMapping(value = {"/Pecunia/currencyEdit/{currencyId}","/currencyEdit/{currencyId}"})
     public String postCurrency(@PathVariable Long currencyId, ModelMap modelMap) {
         Optional<Currency> currency = currencyRepository.findById(currencyId);
         Country country = currency.get().getCountry();
-        modelMap.addAttribute("currency", currency);
+        CurrencyDto currencyDto = new ModelMapper().map(currency.get(), CurrencyDto.class);
+        modelMap.addAttribute("currencyDto", currencyDto);
+
+        System.out.println("Powinna byćwaluta do edycji - " + currencyDto);
 
         modelMap.addAttribute("edit", 1);
         modelMap.addAttribute("button", Constans.BUTTON_SAVE_CHANGE);
+
+        //TODO dodać poprawne wyświelanie walit powiązanych z patternem
         return currencyDate(modelMap, country);
     }
 
@@ -189,7 +195,6 @@ public class CountryController {
         modelMap.addAttribute("countryPl", country.getCountryPl());
         modelMap.addAttribute("currencyList", countryService.currencyFromCountryId(country, pattern.toUpperCase()));
 
-        System.out.println(country.getId().longValue());
         modelMap.addAttribute("countryId", country.getId());
         return "currency";
     }

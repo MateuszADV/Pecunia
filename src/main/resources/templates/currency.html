@@ -56,7 +56,7 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <form th:action="@{/currency}" method="post" th:object="${currency}">
+                <form th:action="@{/currency}" method="post" th:object="${currencyDto}">
 
                     <table class="table table-bordered">
                         <input type="number" th:name="edit" th:value="${edit}" style="display: none">

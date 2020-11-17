@@ -29,4 +29,6 @@ public interface CountryService {
 
     //Spawdzanie poprawności codu waluty
     List<String> codeCurrency(List<String> code);
+
+    Boolean saveCurrency(CurrencyDto currencyDto, String countryEN);
 }
