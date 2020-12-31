@@ -52,7 +52,7 @@
                     </th>
                     <th>
                         <span>przelew/gotówka</span>
-                        <input class="form-control" type="text" th:field="*{cash}" placeholder="przelew/gotówka">
+                        <input class="form-control" type="text" th:field="*{cash}"pattern="[0-9]{1,4}|[0-9]{1,4}[\.]?[0-9]{1,2}" placeholder="cash">
                     </th>
                 </tr>
                 <tr>
